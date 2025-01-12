@@ -17,7 +17,6 @@ export default function Home() {
           <ul className="flex space-x-6">
             <li><Link href="/">Home</Link></li>
             <li><a href="https://blog.jowinjc.in" target="_blank" rel="noopener noreferrer">Blog</a></li>
-            <li><Link href="/contact">Contact</Link></li>
           </ul>
         </nav>
       </header>
@@ -52,51 +51,6 @@ export default function Home() {
       </main>
 
       {/* Footer Section */}
-      <footer className="bg-gray-900 text-white py-4 text-center">
-        <p>&copy; 2025 Jowin John Chemban. All rights reserved.</p>
-      </footer>
-    </div>
-  );
-}
-
-export function Contact() {
-  return (
-    <div>
-      <Head>
-        <title>Contact Me - Jowin John Chemban</title>
-      </Head>
-      <header className="bg-gray-900 text-white py-6 px-10 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Contact Me</h1>
-        <nav>
-          <ul className="flex space-x-6">
-            <li><Link href="/">Home</Link></li>
-            <li><a href="https://blog.jowinjc.in" target="_blank" rel="noopener noreferrer">Blog</a></li>
-          </ul>
-        </nav>
-      </header>
-
-      <main className="py-16 px-10 bg-gray-100">
-        <section className="text-center mb-16">
-          <h2 className="text-5xl font-bold">Get in Touch</h2>
-          <p className="text-lg text-gray-700">Fill out the form below to reach out to me.</p>
-          <form className="bg-white shadow-md rounded-lg p-8 mt-8 mx-auto max-w-md">
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name</label>
-              <input type="text" id="name" className="w-full px-3 py-2 border rounded-lg" />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email</label>
-              <input type="email" id="email" className="w-full px-3 py-2 border rounded-lg" />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="message" className="block text-gray-700 font-bold mb-2">Message</label>
-              <textarea id="message" rows="4" className="w-full px-3 py-2 border rounded-lg"></textarea>
-            </div>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Send</button>
-          </form>
-        </section>
-      </main>
-
       <footer className="bg-gray-900 text-white py-4 text-center">
         <p>&copy; 2025 Jowin John Chemban. All rights reserved.</p>
       </footer>
