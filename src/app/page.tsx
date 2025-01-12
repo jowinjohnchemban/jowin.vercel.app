@@ -16,7 +16,7 @@ export default function Home() {
         <nav>
           <ul className="flex space-x-6">
             <li><Link href="/">Home</Link></li>
-            <li><Link href="/blog">Blog</Link></li>
+            <li><a href="https://blog.jowinjc.in" target="_blank" rel="noopener noreferrer">Blog</a></li>
             <li><Link href="/contact">Contact</Link></li>
           </ul>
         </nav>
@@ -59,36 +59,6 @@ export default function Home() {
   );
 }
 
-export function Blog() {
-  return (
-    <div>
-      <Head>
-        <title>Blog - Jowin John Chemban</title>
-      </Head>
-      <header className="bg-gray-900 text-white py-6 px-10 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Blog</h1>
-        <nav>
-          <ul className="flex space-x-6">
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/contact">Contact</Link></li>
-          </ul>
-        </nav>
-      </header>
-
-      <main className="py-16 px-10 bg-gray-100">
-        <section className="text-center mb-16">
-          <h2 className="text-5xl font-bold">My Blogs</h2>
-          <p className="text-lg text-gray-700">Insights and experiences from my tech journey.</p>
-        </section>
-      </main>
-
-      <footer className="bg-gray-900 text-white py-4 text-center">
-        <p>&copy; 2025 Jowin John Chemban. All rights reserved.</p>
-      </footer>
-    </div>
-  );
-}
-
 export function Contact() {
   return (
     <div>
@@ -100,7 +70,7 @@ export function Contact() {
         <nav>
           <ul className="flex space-x-6">
             <li><Link href="/">Home</Link></li>
-            <li><Link href="/blog">Blog</Link></li>
+            <li><a href="https://blog.jowinjc.in" target="_blank" rel="noopener noreferrer">Blog</a></li>
           </ul>
         </nav>
       </header>
