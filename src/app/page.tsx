@@ -1,5 +1,5 @@
 "use client";
-
+import { Analytics } from "@vercel/analytics/react"
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
@@ -148,6 +148,7 @@ const Contact = () => {
 export default function Home() {
   return (
     <main>
+      <Analytics />
       <HeroSection />
       <Certifications />
       <Experience />
