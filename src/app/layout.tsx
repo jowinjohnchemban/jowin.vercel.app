@@ -7,6 +7,22 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Jowin John Chemban",
   description: "Portfolio in Progress",
+  openGraph: {
+    title: "Jowin John Chemban",
+    description: "Portfolio in Progress",
+    url: "https://jowinjc.in",
+    siteName: "Jowin's Portfolio",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Jowin's Portfolio",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

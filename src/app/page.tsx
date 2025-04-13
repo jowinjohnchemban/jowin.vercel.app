@@ -12,16 +12,19 @@ const HeroSection = () => {
     <section className="min-h-screen flex flex-col justify-center items-center text-center bg-white text-black px-4">
       <h1 className="text-5xl font-bold">Jowin John Chemban</h1>
       <p className="text-xl mt-2">
-        Systems/Network Engineer | Cloud | Security
+        <strong>IT Infrastructure Engineer</strong>
+      </p>
+      <p className="text-lg mt-2">
+        Systems | Network | Cloud | Security | DevOps
       </p>
       <div className="flex space-x-4 mt-4">
-        <a href="https://linkedin.com/in/jowinjc" target="_blank">
+        <a href="https://linkedin.com/in/jowinjohnchemban" target="_blank">
           <FaLinkedin size={30} />
         </a>
-        <a href="https://github.com/jowinjc" target="_blank">
+        <a href="https://github.com/jowinjohnchemban" target="_blank">
           <FaGithub size={30} />
         </a>
-        <a href="mailto:jowinjc@example.com">
+        <a href="mailto:mail@jowinjc.in">
           <FaEnvelope size={30} />
         </a>
       </div>
@@ -54,6 +57,16 @@ const Experience = () => {
         <div className="mb-6">
           <h3 className="text-xl font-semibold">
             Security Quotient - Associate IT Infrastructure Engineer
+          </h3>
+          <p className="text-gray-700">
+            Managed IT infrastructure, Linux/Windows servers, cloud
+            environments, troubleshooting, security compliance, and collaborated
+            with cybersecurity teams.
+          </p>
+        </div>
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold">
+            Kerala Fibre Optic Network (KFON) - Engineer
           </h3>
           <p className="text-gray-700">
             Managed IT infrastructure, Linux/Windows servers, cloud
@@ -137,7 +150,7 @@ const Contact = () => {
           placeholder="Your Message"
           className="w-full p-2 mb-4 border"
         ></textarea>
-        <button className="w-full bg-blue-600 text-white py-2">
+        <button className="w-full bg-gray-600 text-white py-2">
           Send Message
         </button>
       </form>
@@ -150,7 +163,7 @@ export default function Home() {
   return (
     <main>
       <Analytics />
-      <SpeedInsights/>
+      <SpeedInsights />
       <HeroSection />
       <Certifications />
       <Experience />
