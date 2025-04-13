@@ -1,5 +1,6 @@
 "use client";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
@@ -149,6 +150,7 @@ export default function Home() {
   return (
     <main>
       <Analytics />
+      <SpeedInsights/>
       <HeroSection />
       <Certifications />
       <Experience />
