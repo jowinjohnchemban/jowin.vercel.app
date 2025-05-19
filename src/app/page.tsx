@@ -49,7 +49,6 @@ const Certifications = () => {
                 alt={cert.alt}
                 width={100}
                 height={100}
-                href={cert.url}
                 style={{ cursor: 'default' }}
               />
             </Link>
