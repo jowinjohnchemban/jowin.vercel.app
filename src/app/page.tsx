@@ -43,7 +43,16 @@ const Certifications = () => {
       <div className="flex justify-center space-x-10">
         {assets.map((cert) => (
           <div key={cert.id} className="text-center">
-            <Image src={cert.image} alt={cert.alt} width={100} height={100} />
+            <Link href={cert.url} target="_blank">
+              <Image
+                src={cert.image}
+                alt={cert.alt}
+                width={100}
+                height={100}
+                href={cert.url}
+                style={{ cursor: 'default' }}
+              />
+            </Link>
           </div>
         ))}
       </div>
