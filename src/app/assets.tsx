@@ -18,7 +18,7 @@ export const assets = [
   {
     id: "cert3",
     name: "Some Other Certification",
-    image: "/cert3.png", // Keeping this as a direct path since it's not imported
+  //  image: "/cert3.png", // Keeping this as a direct path since it's not imported
     alt: "Cert 3",
   },
 ];

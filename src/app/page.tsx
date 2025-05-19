@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
 import { assets } from "./assets";
+import Script from "next/script";
 import Head from "next/head";
 
 // Hero Section
@@ -165,10 +166,14 @@ export default function Home() {
   return (
     <main>
       <Head>
-      <script src="https://analytics.ahrefs.com/analytics.js" data-key="WM+GMaeXCwfPC/2o9/C3WQ" async></script>
-      <Analytics />
-      <SpeedInsights />
+        <Analytics />
+        <SpeedInsights />
       </Head>
+      <Script
+        src="https://analytics.ahrefs.com/analytics.js"
+        data-key="WM+GMaeXCwfPC/2o9/C3WQ"
+        strategy="afterInteractive"
+      />
       <HeroSection />
       <Certifications />
       <Experience />
