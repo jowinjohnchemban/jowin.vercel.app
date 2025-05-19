@@ -1,10 +1,12 @@
 "use client";
+import Link from "next/link";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
 import { assets } from "./assets";
+import Head from "next/head";
 
 // Hero Section
 const HeroSection = () => {
@@ -35,7 +37,7 @@ const HeroSection = () => {
 // Certifications Section
 const Certifications = () => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 px-4 bg-white">
       <h2 className="text-3xl text-center font-bold mb-8">Certifications</h2>
       <div className="flex justify-center space-x-10">
         {assets.map((cert) => (
@@ -51,7 +53,7 @@ const Certifications = () => {
 // Experience Section
 const Experience = () => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 px-4 bg-white">
       <h2 className="text-3xl text-center font-bold mb-8">Experience</h2>
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
@@ -133,7 +135,7 @@ const Education = () => {
 // Contact Section
 const Contact = () => {
   return (
-    <section className="py-16 bg-white">
+    <section id="contact" className="py-16 bg-white">
       <h2 className="text-3xl text-center font-bold mb-8">Contact Me</h2>
       <form className="max-w-md mx-auto">
         <input
@@ -162,8 +164,11 @@ const Contact = () => {
 export default function Home() {
   return (
     <main>
+      <Head>
+      <script src="https://analytics.ahrefs.com/analytics.js" data-key="WM+GMaeXCwfPC/2o9/C3WQ" async></script>
       <Analytics />
       <SpeedInsights />
+      </Head>
       <HeroSection />
       <Certifications />
       <Experience />
