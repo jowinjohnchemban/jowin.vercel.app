@@ -6241,6 +6241,7 @@ snapshots:
     dependencies:
       '@eslint/config-array': 0.21.0
       '@eslint/object-schema': 2.1.6
+      '@payloadcms/db-postgres': 3.49.1(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))
       '@payloadcms/next': 3.49.1(@types/react@19.1.9)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.77.4))(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)
       '@payloadcms/richtext-lexical': 3.49.1(@faceless-ui/modal@3.0.0-beta.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@faceless-ui/scroll-info@2.0.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@payloadcms/next@3.49.1(@types/react@19.1.9)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.77.4))(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2))(@types/react@19.1.9)(monaco-editor@0.52.2)(next@15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.77.4))(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)(yjs@13.6.27)
       '@radix-ui/react-slot': 1.2.3(@types/react@19.1.9)(react@19.1.1)
@@ -6265,21 +6266,48 @@ snapshots:
       tailwind-variants: 2.1.0(tailwind-merge@3.3.1)(tailwindcss@4.1.11)
       tailwindcss-animate: 1.0.7(tailwindcss@4.1.11)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
       - '@babel/core'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
       - '@emotion/is-prop-valid'
       - '@faceless-ui/modal'
       - '@faceless-ui/scroll-info'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
       - '@opentelemetry/api'
+      - '@planetscale/database'
       - '@playwright/test'
+      - '@prisma/client'
       - '@remix-run/react'
       - '@sveltejs/kit'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
       - '@types/react'
+      - '@types/sql.js'
+      - '@upstash/redis'
+      - '@vercel/postgres'
+      - '@xata.io/client'
       - babel-plugin-macros
       - babel-plugin-react-compiler
+      - better-sqlite3
       - bufferutil
+      - bun-types
+      - expo-sqlite
+      - gel
+      - knex
+      - kysely
       - monaco-editor
+      - mysql2
+      - pg-native
       - postcss
+      - postgres
+      - prisma
       - sass
+      - sql.js
+      - sqlite3
       - supports-color
       - svelte
       - tailwindcss
