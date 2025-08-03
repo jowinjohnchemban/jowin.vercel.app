@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -78,7 +82,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border;
   }
   html {
     scroll-behavior: smooth;
@@ -87,3 +91,5 @@
     @apply bg-background text-foreground;
   }
 }
+
+
