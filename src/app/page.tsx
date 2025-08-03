@@ -1,4 +1,6 @@
-import "./globals.css";
+"use client";
+import React from "react";
+
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
