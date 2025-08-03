@@ -29,6 +29,8 @@ export default buildConfig({
   db: postgresAdapter({
     pool:{
     connectionString: process.env.POSTGRES_URL || '',
+    ssl: {
+      rejectUnauthorized: process.env.NODE_TLS_REJECT_UNAUTHORIZED === '0' ? false : true,
     }
   }),
   // database-adapter-config-end
