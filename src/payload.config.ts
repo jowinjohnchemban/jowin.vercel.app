@@ -40,7 +40,7 @@ export default buildConfig({
   // email-adapter-config-start
   email: resendAdapter({
     defaultFromAddress: 'noreply@mail.jowinjc.in',
-    defaultFromName: 'Jowin <jowinjc.in>',
+    defaultFromName: 'Jowin - jowinjc.in',
     apiKey: process.env.RESEND_API_KEY || '',
   }),
   // email-adapter-config-end
