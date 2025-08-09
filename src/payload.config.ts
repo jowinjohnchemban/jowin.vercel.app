@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres' // database-adapter-import
+import { resendAdapter } from '@payloadcms/email-resend' // email-adapter-import
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -35,6 +36,15 @@ export default buildConfig({
     }
   }),
   // database-adapter-config-end
+
+  // email-adapter-config-start
+  email: resendAdapter({
+    defaultFromAddress: 'noreply@mail.jowinjc.in',
+    defaultFromName: 'Jowin <jowinjc.in>',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
+  // email-adapter-config-end
+
   sharp,
   plugins: [
     // storage-adapter-placeholder
