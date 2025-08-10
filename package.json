@@ -18,6 +18,7 @@
     "@payloadcms/plugin-redirects": "^3.50.0",
     "@payloadcms/plugin-seo": "^3.50.0",
     "@payloadcms/richtext-lexical": "^3.50.0",
+    "@payloadcms/storage-vercel-blob": "^3.50.0",
     "@radix-ui/react-slot": "^1.2.3",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",

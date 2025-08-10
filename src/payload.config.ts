@@ -1,4 +1,5 @@
 // storage-adapter-import-placeholder
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob' // storage-adapter-import
 import { postgresAdapter } from '@payloadcms/db-postgres' // database-adapter-import
 import { resendAdapter } from '@payloadcms/email-resend' // email-adapter-import
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -47,6 +48,13 @@ export default buildConfig({
 
   sharp,
   plugins: [
-    // storage-adapter-placeholder
+    // storage-adapter-config-start
+      vercelBlobStorage({
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
   ],
+  // storage-adapter-config-end
 })
