@@ -51,7 +51,7 @@ const Certifications = () => {
                 alt={cert.alt}
                 width={100}
                 height={100}
-                style={{ cursor: 'default' }}
+                style={{ cursor: "default" }}
               />
             </Link>
           </div>
@@ -146,27 +146,29 @@ const Education = () => {
 // Contact Section
 const Contact = () => {
   return (
-    <section id="contact" className="py-16 bg-white">
-      <h2 className="text-3xl text-center font-bold mb-8">Contact Me</h2>
-      <form className="max-w-md mx-auto">
-        <input
-          type="text"
-          placeholder="Your Name"
-          className="w-full p-2 mb-4 border"
-        />
-        <input
-          type="email"
-          placeholder="Your Email"
-          className="w-full p-2 mb-4 border"
-        />
-        <textarea
-          placeholder="Your Message"
-          className="w-full p-2 mb-4 border"
-        ></textarea>
-        <button className="w-full bg-gray-600 text-white py-2">
-          Send Message
-        </button>
-      </form>
+    <section id="contact" className="py-16 bg-white ">
+      <div className="mb-6">
+        <h2 className="text-3xl text-center font-bold mb-8">Contact Me</h2>
+        <form className="max-w-md mx-auto">
+          <input
+            type="text"
+            placeholder="Your Name"
+            className="w-full p-2 mb-4 border"
+          />
+          <input
+            type="email"
+            placeholder="Your Email"
+            className="w-full p-2 mb-4 border"
+          />
+          <textarea
+            placeholder="Your Message"
+            className="w-full p-2 mb-4 border"
+          ></textarea>
+          <button className="w-full bg-gray-600 text-white py-2">
+            Send Message
+          </button>
+        </form>
+      </div>
     </section>
   );
 };
