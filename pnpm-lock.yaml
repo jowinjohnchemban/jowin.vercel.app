@@ -2835,11 +2835,6 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
 
-  lucide-react@0.536.0:
-    resolution: {integrity: sha512-2PgvNa9v+qz4Jt/ni8vPLt4jwoFybXHuubQT8fv4iCW5TjDxkbZjNZZHa485ad73NSEn/jdsEtU57eE1g+ma8A==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
   lucide-react@0.539.0:
     resolution: {integrity: sha512-VVISr+VF2krO91FeuCrm1rSOLACQUYVy7NQkzrOty52Y8TlTPcXcMdQFj9bYzBgXbWCiywlwSZ3Z8u6a+6bMlg==}
     peerDependencies:
@@ -3429,6 +3424,11 @@ packages:
 
   sanitize-filename@1.6.3:
     resolution: {integrity: sha512-y/52Mcy7aw3gRm7IrcGDFx/bCk4AhRh2eI9luHOQM86nZsqwiRkkq2GekHXBBD+SmPidc8i2PqtYZl+pWJ8Oeg==}
+
+  sass-migrator@2.4.2:
+    resolution: {integrity: sha512-YNvfvXtlP91H1YJ/csKs9IL3SnGHfAJNU/en/AfJmKKcFpouYX8K1NsQ+3hqyo9rP1zGPrlNM3Lp7mteeXReyQ==}
+    engines: {node: '>=10.12.0'}
+    hasBin: true
 
   sass@1.77.4:
     resolution: {integrity: sha512-vcF3Ckow6g939GMA4PeU7b2K/9FALXk2KF9J87txdHzXbUF9XRQRwSxcAs/fGaTnJeBFd7UoV22j3lzMLdM0Pw==}
@@ -6496,7 +6496,7 @@ snapshots:
       framer-motion: 12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       graphql: 16.11.0
       gsap: 3.13.0
-      lucide-react: 0.536.0(react@19.1.1)
+      lucide-react: 0.539.0(react@19.1.1)
       next: 15.4.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.90.0)
       nextjs: 0.0.3
       payload: 3.50.0(graphql@16.11.0)(typescript@5.9.2)
@@ -6505,6 +6505,7 @@ snapshots:
       react-dom: 19.1.1(react@19.1.1)
       react-hook-form: 7.62.0(react@19.1.1)
       react-icons: 5.5.0(react@19.1.1)
+      sass-migrator: 2.4.2
       sharp: 0.34.3
       tailwind-merge: 3.3.1
       tailwind-variants: 2.1.0(tailwind-merge@3.3.1)(tailwindcss@4.1.11)
@@ -6689,10 +6690,6 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
-
-  lucide-react@0.536.0(react@19.1.1):
-    dependencies:
-      react: 19.1.1
 
   lucide-react@0.539.0(react@19.1.1):
     dependencies:
@@ -7464,6 +7461,8 @@ snapshots:
   sanitize-filename@1.6.3:
     dependencies:
       truncate-utf8-bytes: 1.0.2
+
+  sass-migrator@2.4.2: {}
 
   sass@1.77.4:
     dependencies:

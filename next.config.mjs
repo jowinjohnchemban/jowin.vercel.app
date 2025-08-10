@@ -2,9 +2,9 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-      //turbopack: {
-    // ...
-  //},
+    turbopack: {
+    // ...  other turbopack options
+  },
 };
 
 export default withPayload(nextConfig);
