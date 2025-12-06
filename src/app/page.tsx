@@ -48,6 +48,7 @@ function HeroSection() {
   }, []);
 
   return (
+    <>
     <section
       ref={heroRef}
       className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-20 md:py-28 flex flex-col-reverse lg:flex-row items-center justify-between gap-12"
@@ -95,6 +96,7 @@ function HeroSection() {
         />
       </div>
     </section>
+    </>
   );
 }
 
@@ -154,7 +156,7 @@ function BlogSection() {
                 </CardTitle>
               </CardHeader>
 
-              <CardContent className="flex-grow">
+              <CardContent className="grow">
                 <CardDescription className="line-clamp-3">
                   {post.excerpt}
                 </CardDescription>
@@ -195,11 +197,11 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen w-full bg-background text-foreground">
-        <HeroSection />
-        <BlogSection />
-        <Footer />
-      </main>
+        <main className="min-h-screen w-full bg-background text-foreground">
+          <HeroSection />
+          <BlogSection />
+        </main>
+      <Footer />
     </>
   );
 }
