@@ -17,9 +17,14 @@ const nextConfig: NextConfig = {
     // optimizePackageImports: ["lucide-react"],
   },
 
-  // If you ever need images from external hosts, add here:
+  // Allow images from external hosts
   images: {
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.hashnode.com",
+      },
+    ],
   },
 };
 
