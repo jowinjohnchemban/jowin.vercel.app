@@ -57,12 +57,12 @@ export function HeroSection() {
         </h1>
 
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
-          Full-Stack Developer & IT DevOps Engineer
+          Full-Stack Coder & IT DevOps Engineer
         </h2>
 
         <p className="text-base sm:text-lg text-muted-foreground">
-          Building scalable cloud infrastructure, modern web applications, and
-          developer tools. Specialized in Next.js, React, TypeScript, and cloud-native solutions.
+          Building scalable system infrastructure, modern applications, and
+          tools. Specialized in Next.js, React, TypeScript, and cloud-native solutions.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4">
