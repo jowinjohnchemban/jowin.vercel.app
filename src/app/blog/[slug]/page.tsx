@@ -6,6 +6,8 @@ import { BlogPostCover } from "@/components/blog/BlogPostCover";
 import { BlogPostHeader } from "@/components/blog/BlogPostHeader";
 import { BlogPostContent } from "@/components/blog/BlogPostContent";
 import { BlogPostTags } from "@/components/blog/BlogPostTags";
+import { BlogPostNavigation } from "@/components/blog/BlogPostNavigation";
+import { BlogBreadcrumb } from "@/components/blog/BlogBreadcrumb";
 
 import type { Metadata } from "next";
 
@@ -81,6 +83,13 @@ export default async function BlogPostPage({
     notFound();
   }
 
+  // Get all posts for navigation
+  const allPosts = await getBlogPosts(50); // Fetch more posts for better navigation
+  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
+  
+  const previousPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+  const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+
   return (
     <>
       <Navbar />
@@ -104,15 +113,32 @@ export default async function BlogPostPage({
             <meta itemProp="image" content={post.coverImage.url} />
           )}
 
+          <BlogBreadcrumb currentTitle={post.title} currentSlug={slug} />
+
           <BlogPostHeader
             title={post.title}
             publishedAt={post.publishedAt}
             readTimeInMinutes={post.readTimeInMinutes}
+            authorName={post.author.name}
+            slug={slug}
           />
 
           <BlogPostContent content={post.content} />
 
           <BlogPostTags tags={post.tags} />
+
+          <BlogPostNavigation
+            previousPost={
+              previousPost
+                ? { slug: previousPost.slug, title: previousPost.title }
+                : null
+            }
+            nextPost={
+              nextPost
+                ? { slug: nextPost.slug, title: nextPost.title }
+                : null
+            }
+          />
         </article>
       </main>
       <Footer />

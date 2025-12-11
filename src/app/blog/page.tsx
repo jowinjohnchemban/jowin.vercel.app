@@ -7,20 +7,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "In-depth technical articles covering DevOps, cloud infrastructure, web development, React, Next.js, TypeScript, and modern software engineering practices.",
+  description: "Blog - Jowin John Chemban",
   keywords: [
-    "DevOps blog",
-    "Cloud infrastructure",
-    "Web development tutorials",
-    "React articles",
-    "Next.js guides",
-    "TypeScript tips",
-    "Software engineering",
-    "Technical writing",
+    "Blog",
+    "Articles",
   ],
   openGraph: {
-    title: "Technical Blog - Jowin John Chemban",
-    description: "Explore technical articles on modern web development, DevOps practices, and cloud architecture.",
+    title: "Blog - Jowin John Chemban",
+    description: " ",
     type: "website",
   },
   alternates: {
@@ -36,11 +30,11 @@ export default async function BlogPage() {
       <Navbar />
       <main className="min-h-screen bg-linear-to-b from-background to-muted/20">
         {/* Header Section */}
-        <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24 lg:py-28">
-          <div className="space-y-3 sm:space-y-4 md:space-y-6">
+        <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-10 md:pb-12">
+          <div className="space-y-3 sm:space-y-4 md:space-y-5">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">Blog</h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl leading-relaxed">
-              Technical articles on DevOps, cloud infrastructure, web development, and engineering insights.
+                Explore articles, tutorials, and insights.
             </p>
           </div>
         </section>
