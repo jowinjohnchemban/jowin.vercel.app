@@ -34,7 +34,7 @@ export default async function BlogPage() {
           <div className="space-y-3 sm:space-y-4 md:space-y-5">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">Blog</h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl leading-relaxed">
-                Explore articles, tutorials, and insights.
+                Articles, tutorials & insights worth your time 📚
             </p>
           </div>
         </section>

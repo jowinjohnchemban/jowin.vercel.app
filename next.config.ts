@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  // Allow dev server access from local network
+  allowedDevOrigins: [
+    "http://localhost:3000",
+  ],
 };
 
 export default nextConfig;

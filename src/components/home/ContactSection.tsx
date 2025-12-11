@@ -16,8 +16,8 @@ export function ContactSection() {
     >
       <div className="max-w-4xl mx-auto">
         <ContactForm 
-          title="Get In Touch"
-          description=""
+          title="Let's Connect"
+          description="Have a question or want to discuss something? Send me a message!"
           showCard={true}
         />
       </div>

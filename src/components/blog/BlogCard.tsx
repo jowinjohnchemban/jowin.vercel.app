@@ -43,7 +43,7 @@ export function BlogCard({
         <div className={forceHorizontal ? "flex h-full" : "flex md:hidden h-full"}>
           {/* Thumbnail - Full Height */}
           {coverImage?.url ? (
-            <div className="relative w-28 flex-shrink-0 overflow-hidden bg-muted">
+            <div className="relative w-28 shrink-0 overflow-hidden bg-muted">
               <Image
                 src={coverImage.url}
                 alt={title}
@@ -53,7 +53,7 @@ export function BlogCard({
               />
             </div>
           ) : (
-            <div className="w-28 flex-shrink-0 bg-muted flex items-center justify-center">
+            <div className="w-28 shrink-0 bg-muted flex items-center justify-center">
               <span className="text-4xl text-muted-foreground">📝</span>
             </div>
           )}

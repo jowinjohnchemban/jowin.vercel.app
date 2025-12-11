@@ -37,14 +37,14 @@ export default function ConnectPage() {
               Let&apos;s <span className="text-primary">Connect</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Have something in mind or want to connect? Fill out the form below and I&apos;ll get back to you.
+              Got ideas or just wanna chat? Drop me a message! 💬
             </p>
           </div>
 
           {/* Contact Form */}
           <div className="max-w-2xl mx-auto mb-12 sm:mb-16">
             <ContactForm 
-              title="Send a Message"
+              title="Slide into my inbox 📬"
               description=""
               showCard={true}
             />
@@ -52,8 +52,8 @@ export default function ConnectPage() {
 
           {/* Social Media Links */}
           <div className="text-center">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4">Find me on _</h2>
-            <p className="text-sm text-muted-foreground mb-6">Follow for updates, insights or know more...</p>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">Catch me on socials 👇</h2>
+            <p className="text-sm text-muted-foreground mb-6">Follow for the latest vibes, thoughts & more ✨</p>
             <div className="flex flex-wrap justify-center gap-4">
               {[
                 {
@@ -105,7 +105,7 @@ export default function ConnectPage() {
                       className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-card border border-border rounded-lg hover:bg-accent hover:border-primary transition-all group"
                     >
                       <Icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                      <span className="text-sm font-medium">{link.name}</span>
+                      <span className="text-sm font-medium md:block hidden">{link.name}</span>
                     </Link>
                   );
                 })}

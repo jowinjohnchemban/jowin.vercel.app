@@ -4,21 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
-import DOMPurify from "dompurify";
 import { z } from "zod";
-
-// Zod schema for contact form validation
-const contactFormSchema = z.object({
-  name: z.string()
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must be less than 100 characters")
-    .regex(/^[a-zA-Z\s\-']+$/, "Name can only contain letters, spaces, hyphens, and apostrophes"),
-  email: z.string().email("Please enter a valid email address"),
-  message: z.string()
-    .min(10, "Message must be at least 10 characters")
-    .max(2000, "Message must be less than 2000 characters"),
-  captchaToken: z.string().min(1, "Please complete the captcha verification")
-});
+import { contactFormSchema } from "@/lib/validation";
+import { Sanitizer } from "@/lib/security";
 
 // TypeScript declarations for Cloudflare Turnstile
 declare global {
@@ -51,8 +39,8 @@ interface ContactFormProps {
 type FormStatus = "idle" | "loading" | "success" | "error";
 
 export function ContactForm({ 
-  title = "Get In Touch",
-  description = "Have a question or want to discuss something? Ping me here!",
+  title = "Let's Connect",
+  description = "Have a question or want to discuss something? Send me a message!",
   showCard = true 
 }: ContactFormProps) {
   const [formData, setFormData] = useState({
@@ -152,11 +140,8 @@ export function ContactForm({
   }, [isDevelopment]);
 
   const sanitizeInput = (input: string): string => {
-    // Remove any HTML tags and dangerous characters
-    return DOMPurify.sanitize(input, { 
-      ALLOWED_TAGS: [],
-      ALLOWED_ATTR: []
-    }).trim();
+    // Use the Sanitizer class for consistency
+    return Sanitizer.sanitizeHTML(input);
   };
 
   const validateForm = (): string | null => {

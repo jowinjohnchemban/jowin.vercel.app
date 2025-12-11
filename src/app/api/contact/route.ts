@@ -1,73 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { z } from "zod";
-
-// Simple server-side sanitization (defense in depth)
-function sanitizeInput(input: string): string {
-  // Remove HTML tags and trim
-  return input.replace(/<[^>]*>/g, '').trim();
-}
-
-// Zod schema for contact form validation
-const contactFormSchema = z.object({
-  name: z.string()
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must be less than 100 characters")
-    .regex(/^[a-zA-Z\s\-']+$/, "Name can only contain letters, spaces, hyphens, and apostrophes"),
-  email: z.string().email("Please enter a valid email address"),
-  message: z.string()
-    .min(10, "Message must be at least 10 characters")
-    .max(2000, "Message must be less than 2000 characters"),
-  captchaToken: z.string().min(1, "Captcha verification required")
-});
+import { contactFormSchema } from "@/lib/validation";
+import { Sanitizer, TurnstileService } from "@/lib/security";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Verify Cloudflare Turnstile token
-async function verifyTurnstileToken(
-  token: string,
-  remoteip?: string
-): Promise<{ success: boolean; errorCodes?: string[] }> {
-  const secretKey = process.env.TURNSTILE_SECRET_KEY;
-  
-  if (!secretKey) {
-    console.error("[API] TURNSTILE_SECRET_KEY is not configured");
-    return { success: false, errorCodes: ["missing-secret-key"] };
-  }
-
-  try {
-    // Use FormData as recommended by Cloudflare docs
-    const formData = new FormData();
-    formData.append("secret", secretKey);
-    formData.append("response", token);
-    if (remoteip) {
-      formData.append("remoteip", remoteip);
-    }
-
-    const response = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await response.json();
-    console.log("[API] Turnstile verification response:", {
-      success: data.success,
-      errorCodes: data["error-codes"],
-      hostname: data.hostname,
-    });
-
-    return {
-      success: data.success === true,
-      errorCodes: data["error-codes"] || [],
-    };
-  } catch (error) {
-    console.error("[API] Turnstile verification error:", error);
-    return { success: false, errorCodes: ["internal-error"] };
-  }
-}
+const turnstile = new TurnstileService(process.env.TURNSTILE_SECRET_KEY || "");
 
 export async function POST(request: NextRequest) {
   try {
@@ -83,32 +20,43 @@ export async function POST(request: NextRequest) {
     }
 
     // Get client IP address
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0] ||
-              request.headers.get("x-real-ip") ||
-              "unknown";
-    
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+
     console.log("[API] Verifying captcha for IP:", ip);
-    const captchaResult = await verifyTurnstileToken(captchaToken, ip);
     
+    // Verify turnstile token
+    if (!turnstile.isConfigured()) {
+      console.error("[API] Turnstile not configured");
+      return NextResponse.json(
+        { error: "Server configuration error" },
+        { status: 500 }
+      );
+    }
+
+    const captchaResult = await turnstile.verify(captchaToken, ip);
+
     if (!captchaResult.success) {
       console.error("[API] Captcha verification failed:", captchaResult.errorCodes);
       return NextResponse.json(
-        { 
+        {
           error: "Captcha verification failed. Please try again.",
-          details: captchaResult.errorCodes 
+          details: captchaResult.errorCodes,
         },
         { status: 400 }
       );
     }
-    
+
     console.log("[API] Captcha verification passed");
 
     // Sanitize inputs
     const sanitizedData = {
-      name: sanitizeInput(name),
-      email: sanitizeInput(email),
-      message: sanitizeInput(message),
-      captchaToken
+      name: Sanitizer.sanitizePlainText(name),
+      email: Sanitizer.sanitizePlainText(email),
+      message: Sanitizer.sanitizePlainText(message),
+      captchaToken,
     };
 
     console.log('[API] Received data:', { 

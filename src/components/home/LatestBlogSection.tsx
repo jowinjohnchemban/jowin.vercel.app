@@ -36,7 +36,7 @@ export function LatestBlogSection() {
         </h2>
 
         <p className="text-lg text-muted-foreground text-center max-w-2xl mx-auto mb-16">
-            Dive into the insights and articles on my blog.
+            Fresh takes, insights & deep dives ✨
         </p>
 
         {loading ? (

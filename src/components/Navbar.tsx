@@ -49,7 +49,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="w-full sticky top-0 z-50 bg-white/70 dark:bg-background/70 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-background/60">
+      <header className="w-full sticky top-0 z-50 bg-white/70 dark:bg-background/70 backdrop-blur-xl border-b border-border/40 shadow-sm supports-backdrop-filter:bg-white/60 supports-backdrop-filter:dark:bg-background/60">
         <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
           {/* Logo */}
           <Link 
@@ -91,7 +91,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay - Outside header */}
       {isOpen && (
-        <div className="fixed inset-0 bg-white/90 dark:bg-background/90 backdrop-blur-sm md:hidden z-[60] animate-in fade-in slide-in-from-right duration-300">
+        <div className="fixed inset-0 bg-white/90 dark:bg-background/90 backdrop-blur-sm md:hidden z-60 animate-in fade-in slide-in-from-right duration-300">
           {/* Close Button */}
           <div className="absolute top-4 right-4">
             <button
