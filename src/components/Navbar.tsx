@@ -8,7 +8,6 @@ import { Menu, X, Home } from "lucide-react";
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || " ";
 
 const navLinks = [
-  { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
   { href: "/connect", label: "Let's Connect" },
 ];

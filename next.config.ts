@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
     // optimizePackageImports: ["lucide-react"],
   },
 
+  // Remove console logs in production
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? {
+      exclude: ["error"], // Keep console.error in production for monitoring
+    } : false,
+  },
+
   // Allow images from external hosts
   images: {
     remotePatterns: [
