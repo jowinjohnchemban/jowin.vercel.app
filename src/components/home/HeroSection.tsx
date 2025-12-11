@@ -57,7 +57,7 @@ export function HeroSection() {
         </h1>
 
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
-          Full-Stack Developer & DevOps Engineer
+          Full-Stack Developer & IT DevOps Engineer
         </h2>
 
         <p className="text-base sm:text-lg text-muted-foreground">
