@@ -1,0 +1,97 @@
+"use client";
+
+/**
+ * Hero Section Component
+ * Landing page hero with GSAP animations
+ * @module components/home/HeroSection
+ */
+
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+export function HeroSection() {
+  const heroRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!heroRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const elements = heroRef.current!.querySelectorAll(".hero-fade");
+      
+      // Animate from hidden to visible
+      gsap.fromTo(
+        elements,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.1,
+          stagger: 0.22,
+          ease: "power3.out",
+        }
+      );
+    }, heroRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, []);
+
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Jowin";
+
+  return (
+    <section
+      ref={heroRef}
+      className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-20 md:py-28 flex flex-col-reverse lg:flex-row items-center justify-between gap-12"
+    >
+      {/* LEFT */}
+      <div className="flex-1 space-y-6 text-center lg:text-left hero-fade max-w-xl mx-auto lg:mx-0">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          Hi, I&apos;m <span className="text-primary">{siteName}</span>
+        </h1>
+
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
+          Full-Stack Developer & DevOps Engineer
+        </h2>
+
+        <p className="text-base sm:text-lg text-muted-foreground">
+          Building scalable cloud infrastructure, modern web applications, and
+          developer tools. Specialized in Next.js, React, TypeScript, and cloud-native solutions.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4">
+          <Button size="lg" asChild className="w-full sm:w-auto">
+            <Link href="/blog">View Blog</Link>
+          </Button>
+
+          <Button
+            size="lg"
+            variant="outline"
+            asChild
+            className="w-full sm:w-auto"
+          >
+            <Link href="/#contact">Get in Touch</Link>
+          </Button>
+        </div>
+      </div>
+
+      {/* RIGHT */}
+      <div className="flex-1 flex justify-center hero-fade">
+        <Image
+          src="/profile.jpg"
+          alt={`${siteName} Profile Picture`}
+          width={300}
+          height={300}
+          className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-2xl shadow-2xl object-cover"
+          priority
+        />
+      </div>
+    </section>
+  );
+}

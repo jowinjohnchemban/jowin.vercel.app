@@ -13,7 +13,7 @@ function MobileMenu() {
         <div className="absolute right-0 mt-2 w-40 bg-background border rounded shadow-md py-2 px-3 flex flex-col gap-2">
           <Link href="/projects" className="text-sm hover:text-primary">Projects</Link>
           <Link href="/blog" className="text-sm hover:text-primary">Blog</Link>
-          <Link href="#contact" className="text-sm hover:text-primary">Contact</Link>
+          <Link href="/contact" className="text-sm hover:text-primary">Contact</Link>
         </div>
       </details>
     </div>
@@ -25,7 +25,7 @@ function DesktopMenu() {
     <div className="hidden md:flex items-center space-x-6">
       <Link href="/projects" className="text-sm hover:text-primary">Projects</Link>
       <Link href="/blog" className="text-sm hover:text-primary">Blog</Link>
-      <Link href="#contact" className="text-sm hover:text-primary">Contact</Link>
+      <Link href="/contact" className="text-sm hover:text-primary">Contact</Link>
     </div>
   );
 }
