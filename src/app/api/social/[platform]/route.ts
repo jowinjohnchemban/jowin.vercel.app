@@ -15,7 +15,7 @@ export async function GET(
 ) {
   const { platform: platformParam } = await params;
   const platform = platformParam.toLowerCase();
-  const fallbackUrl = new URL("/contact", request.nextUrl.origin);
+  const fallbackUrl = new URL("/connect", request.nextUrl.origin);
 
   // Check if platform exists in our map
   if (!socialMediaMap[platform]) {
@@ -25,7 +25,7 @@ export async function GET(
   // Get the URL for the platform
   const socialUrl = socialMediaMap[platform]();
 
-  // If no URL configured, redirect to contact page
+  // If no URL configured, redirect to connect page
   if (!socialUrl) {
     return NextResponse.redirect(fallbackUrl);
   }

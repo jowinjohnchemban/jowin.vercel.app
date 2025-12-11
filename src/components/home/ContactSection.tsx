@@ -11,7 +11,7 @@ import { ContactForm } from "@/components/ContactForm";
 export function ContactSection() {
   return (
     <section
-      id="contact"
+      id="connect"
       className="w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-4xl mx-auto">

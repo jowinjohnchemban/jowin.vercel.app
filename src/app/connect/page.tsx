@@ -6,31 +6,30 @@ import Link from "next/link";
 import { Github, Linkedin, Twitter, Youtube, Instagram, Facebook } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Contact Me",
-  description: "Get in touch with Jowin John Chemban for collaborations, projects, or inquiries about DevOps, cloud infrastructure, and web development.",
+  title: "Connect with Me",
+  description: "Get in touch with Jowin John Chemban",
   keywords: [
-    "Contact",
+    "Connect",
     "Get in touch",
     "Collaboration",
-    "Project inquiry",
-    "DevOps consultant",
-    "Web developer contact",
+    "Inquiry",
+    "Support",
   ],
   openGraph: {
-    title: "Contact - Jowin John Chemban",
-    description: "Let's work together! Reach out for projects, collaborations, or just to say hello.",
+    title: "Let's Connect - Jowin John Chemban",
+    description: "Let's work together! Reach out, or just to say hello.",
     type: "website",
   },
   alternates: {
-    canonical: "/contact",
+    canonical: "/connect",
   },
 };
 
-export default function ContactPage() {
+export default function ConnectPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <main className="min-h-screen bg-linear-to-b from-background to-muted/20">
         {/* Header Section */}
         <section className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
           <div className="text-center space-y-3 sm:space-y-4 mb-8 sm:mb-12">
@@ -38,7 +37,7 @@ export default function ContactPage() {
               Let&apos;s <span className="text-primary">Connect</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Have a project in mind or want to collaborate? Fill out the form below and I&apos;ll get back to you soon.
+              Have something in mind or want to connect? Fill out the form below and I&apos;ll get back to you.
             </p>
           </div>
 
@@ -53,8 +52,8 @@ export default function ContactPage() {
 
           {/* Social Media Links */}
           <div className="text-center">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4">Connect on Social Media</h2>
-            <p className="text-sm text-muted-foreground mb-6">Follow me for updates and insights</p>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">Find me on _</h2>
+            <p className="text-sm text-muted-foreground mb-6">Follow for updates, insights or know more...</p>
             <div className="flex flex-wrap justify-center gap-4">
               {[
                 {

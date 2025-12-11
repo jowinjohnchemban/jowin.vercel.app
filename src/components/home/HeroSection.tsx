@@ -76,7 +76,7 @@ export function HeroSection() {
             asChild
             className="w-full sm:w-auto"
           >
-            <Link href="/#contact">Get in Touch</Link>
+            <Link href="/#connect">Get in Touch</Link>
           </Button>
         </div>
       </div>

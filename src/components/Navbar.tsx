@@ -10,7 +10,7 @@ const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || " ";
 const navLinks = [
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
+  { href: "/connect", label: "Let's Connect" },
 ];
 
 const mobileNavLinks = [
