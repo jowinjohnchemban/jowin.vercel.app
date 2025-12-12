@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
@@ -12,7 +14,8 @@ import {
   Ban,
   ServerCrash,
   Clock,
-  XCircle
+  XCircle,
+  MessageCircle
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -105,8 +108,25 @@ const DEFAULT_ERROR: ErrorInfo = {
 export function ErrorPageContent({ statusCode, error, reset }: ErrorPageContentProps) {
   const config = ERROR_CONFIGS[statusCode] || DEFAULT_ERROR;
   const Icon = config.icon;
+  const router = useRouter();
+  const [countdown, setCountdown] = useState(10);
   
   const isServerError = statusCode >= 500;
+
+  // Auto-redirect to home after 10 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          router.push('/');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [router]);
 
   const getColorClasses = () => {
     switch (config.color) {
@@ -193,14 +213,20 @@ export function ErrorPageContent({ statusCode, error, reset }: ErrorPageContentP
             </Button>
           </div>
 
-          {/* Quick Links */}
-          <div className="pt-4">
-            <div className="flex flex-wrap justify-center gap-2 text-xs sm:text-sm">
-              <Link href="/connect" className="text-primary hover:underline">
+          {/* Connect Button */}
+          <div className="pt-2">
+            <Button variant="default" asChild className="w-full sm:w-auto">
+              <Link href="/connect">
+                <MessageCircle className="h-4 w-4" />
                 Let&apos;s Connect
               </Link>
-            </div>
+            </Button>
           </div>
+
+          {/* Auto-redirect countdown */}
+          <p className="text-xs text-muted-foreground pt-2">
+            Redirecting to home in {countdown} second{countdown !== 1 ? 's' : ''}...
+          </p>
         </div>
       </main>
     </div>

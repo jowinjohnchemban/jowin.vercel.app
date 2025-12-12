@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function GlobalError({
@@ -10,10 +11,27 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const [countdown, setCountdown] = useState(10);
+  
   useEffect(() => {
     // Log the error to an error reporting service
     console.error("Global error:", error);
   }, [error]);
+
+  // Auto-redirect after 10 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          window.location.href = '/';
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <html>
@@ -91,6 +109,31 @@ export default function GlobalError({
                 Go Home
               </Link>
             </div>
+            <div style={{ marginTop: "1.5rem" }}>
+              <Link
+                href="/connect"
+                style={{
+                  padding: "0.75rem 2rem",
+                  fontSize: "1rem",
+                  fontWeight: 500,
+                  backgroundColor: "#3b82f6",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "0.5rem",
+                  textDecoration: "none",
+                  display: "inline-block",
+                }}
+              >
+                Let&apos;s Connect
+              </Link>
+            </div>
+            <p style={{
+              fontSize: "0.875rem",
+              color: "#9ca3af",
+              marginTop: "1.5rem",
+            }}>
+              Redirecting to home in {countdown} second{countdown !== 1 ? 's' : ''}...
+            </p>
           </div>
         </div>
       </body>
