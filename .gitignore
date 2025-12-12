@@ -48,5 +48,13 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
+# Hashnode module - exclude standalone package files not needed in main repo
+src/lib/api/hashnode/.gitignore
+src/lib/api/hashnode/.npmignore
+src/lib/api/hashnode/package.json
+src/lib/api/hashnode/LICENSE
+src/lib/api/hashnode/.github/
+src/lib/api/hashnode/node_modules/
+
 
 
