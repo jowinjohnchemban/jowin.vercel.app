@@ -1,9 +1,33 @@
 /**
- * Hashnode API Service
+ * Hashnode API Service Layer
+ * 
+ * **Core Business Logic** for the Hashnode adapter.
+ * This service class handles all interactions with Hashnode's GraphQL API,
+ * providing a clean interface for data fetching operations.
+ * 
  * @module lib/api/hashnode/service
+ * 
+ * @architecture
+ * - **Service Pattern**: Encapsulates business logic
+ * - **Singleton**: Single instance exported as `hashnodeService`
+ * - **Dependency Injection**: Accepts config via constructor
+ * - **Error Handling**: Converts API errors to domain errors
+ * 
+ * @responsibilities
+ * - Execute GraphQL queries
+ * - Transform API responses to application models
+ * - Handle pagination and adjacent post logic
+ * - Coordinate caching with Next.js ISR
+ * 
+ * @example Direct Service Usage
+ * ```typescript
+ * import { hashnodeService } from '@/lib/api/hashnode/service';
+ * 
+ * const posts = await hashnodeService.getBlogPosts(20);
+ * ```
  */
 
-import { HttpClient, APIError } from '../http-client';
+import { GraphQLClient } from './graphql-client';
 import { HASHNODE_CONFIG } from './config';
 import { HashnodeQueries } from './queries';
 import type {
@@ -42,7 +66,7 @@ export class HashnodeService {
     query: string,
     variables: Record<string, unknown>
   ): Promise<GraphQLResponse<T>> {
-    return HttpClient.postJSON<GraphQLResponse<T>>(
+    return GraphQLClient.query<GraphQLResponse<T>>(
       this.apiUrl,
       { query, variables },
       { 
@@ -108,8 +132,7 @@ export class HashnodeService {
       return data.publication.posts.edges.map((edge) => edge.node);
     } catch (error) {
       // Fallback to basic query if extended fails
-      if (error instanceof APIError && error.status === 400) {
-        
+      try {
         const response = await this.executeQuery<PublicationPostsResponse>(
           HashnodeQueries.getBlogPosts(false),
           variables
@@ -117,6 +140,9 @@ export class HashnodeService {
         
         const data = this.validateResponse(response);
         return data.publication.posts.edges.map((edge) => edge.node);
+      } catch {
+        // Return empty array on complete failure
+        return [];
       }
       
       throw error;
@@ -144,9 +170,8 @@ export class HashnodeService {
       const data = this.validateResponse(response);
       return data.publication.post;
     } catch (error) {
-      // Fallback to basic query if extended fails
-      if (error instanceof APIError && error.status === 400) {
-        
+      // Fallback to basic query if extended fails (e.g., GraphQL errors)
+      try {
         const response = await this.executeQuery<PublicationPostResponse>(
           HashnodeQueries.getBlogPostBySlug(false),
           variables
@@ -154,9 +179,10 @@ export class HashnodeService {
         
         const data = this.validateResponse(response);
         return data.publication.post;
+      } catch {
+        // If both queries fail, throw the original error
+        throw error;
       }
-      
-      throw error;
     }
   }
 }

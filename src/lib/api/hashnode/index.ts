@@ -1,6 +1,25 @@
 /**
- * Hashnode API facade
+ * Hashnode API Integration Module
+ * 
+ * **Standalone Adapter/Handler** for Hashnode GraphQL API.
+ * This module encapsulates all Hashnode-specific logic and can be replaced
+ * with another blogging platform adapter without affecting consuming code.
+ * 
  * @module lib/api/hashnode
+ * @see {@link ./README.md} for detailed architecture documentation
+ * 
+ * @example Basic Usage
+ * ```typescript
+ * import { getBlogPosts, getBlogPostBySlug } from '@/lib/api/hashnode';
+ * 
+ * const posts = await getBlogPosts(10);
+ * const post = await getBlogPostBySlug('my-post-slug');
+ * ```
+ * 
+ * @architecture
+ * - Facade Pattern: Simplified API for consumers
+ * - Service Layer: Business logic encapsulation
+ * - Repository Pattern: Data access abstraction
  */
 
 export * from './types';

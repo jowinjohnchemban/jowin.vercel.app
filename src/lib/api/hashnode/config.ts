@@ -1,6 +1,16 @@
 /**
  * Hashnode API Configuration
+ * 
+ * Centralized configuration for the Hashnode adapter module.
+ * All Hashnode-specific settings are defined here to make the adapter
+ * easily configurable and portable.
+ * 
  * @module lib/api/hashnode/config
+ * 
+ * @example Environment Setup
+ * ```env
+ * NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST="hashnode.jowinjc.in"
+ * ```
  */
 
 export const HASHNODE_CONFIG = {

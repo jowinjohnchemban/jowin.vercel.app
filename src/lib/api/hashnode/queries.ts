@@ -1,6 +1,24 @@
 /**
- * GraphQL query builder for Hashnode API
+ * GraphQL Query Builder for Hashnode API
+ * 
+ * **Query Construction Layer** providing reusable GraphQL query templates.
+ * Uses field fragments for DRY (Don't Repeat Yourself) principle.
+ * 
  * @module lib/api/hashnode/queries
+ * 
+ * @architecture
+ * - **Builder Pattern**: Constructs complex GraphQL queries
+ * - **Fragment Composition**: Reusable field sets
+ * - **Type Safety**: Ensures queries match type definitions
+ * 
+ * @example Query Fragments
+ * ```
+ * POST_BASE_FIELDS    → Basic post data (id, title, excerpt)
+ * POST_EXTENDED_FIELDS → Base + tags
+ * POST_FULL_FIELDS    → Base + content (html/markdown)
+ * ```
+ * 
+ * @see {@link https://apidocs.hashnode.com/} Hashnode GraphQL API Docs
  */
 
 /** Base fields for blog posts */
