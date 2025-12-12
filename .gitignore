@@ -55,6 +55,5 @@ src/lib/api/hashnode/package.json
 src/lib/api/hashnode/LICENSE
 src/lib/api/hashnode/.github/
 src/lib/api/hashnode/node_modules/
-
-
+src/lib/api/hashnode/.env
 
