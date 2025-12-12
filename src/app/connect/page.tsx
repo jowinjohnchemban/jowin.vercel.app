@@ -99,7 +99,7 @@ export default function ConnectPage() {
                   return (
                     <Link
                       key={link.name}
-                      href={`/api/social/${link.platform}`}
+                      href={`/social/${link.platform}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-card border border-border rounded-lg hover:bg-accent hover:border-primary transition-all group"

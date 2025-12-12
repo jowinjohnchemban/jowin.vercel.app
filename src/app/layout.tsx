@@ -97,6 +97,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script 
+          src="https://analytics.ahrefs.com/analytics.js" 
+          data-key="WM+GMaeXCwfPC/2o9/C3WQ" 
+          async
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
