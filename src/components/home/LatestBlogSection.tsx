@@ -8,23 +8,15 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
-import { getBlogPosts } from "@/lib/api/hashnode";
 import type { BlogPost } from "@/lib/api/hashnode";
 import { BlogCard } from "@/components/blog/BlogCard";
 
-export function LatestBlogSection() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+interface LatestBlogSectionProps {
+  posts: BlogPost[];
+}
 
-  useEffect(() => {
-    getBlogPosts(3).then((data) => {
-      setPosts(data);
-      setLoading(false);
-    });
-  }, []);
-
+export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
   return (
     <section
       id="blog"
@@ -39,11 +31,7 @@ export function LatestBlogSection() {
             Fresh takes, insights & deep dives ✨
         </p>
 
-        {loading ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">Loading posts...</p>
-          </div>
-        ) : posts.length === 0 ? (
+        {posts.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">No posts available yet.</p>
           </div>
