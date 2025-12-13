@@ -94,7 +94,7 @@ export class ContactEmailService {
         from: this.fromEmail,
         to: this.recipientEmail,
         replyTo: data.email,
-        subject: `New message from ${data.name}`,
+        subject: `Message from ${data.name} - ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} via jowinjc.in`,
         html,
       });
 
