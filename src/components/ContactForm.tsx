@@ -86,13 +86,8 @@ export function ContactForm({
               console.error('[ContactForm] ✗ Turnstile error:', errorCode || 'unknown');
               setCaptchaToken("");
               setCaptchaError(true);
-              
-              if (isDevelopment) {
-                console.warn('[ContactForm] Development mode: Captcha errors will be logged but may be bypassed');
-              }
             },
             'expired-callback': () => {
-              console.warn('[ContactForm] ⚠ Turnstile token expired - user needs to solve again');
               setCaptchaToken("");
             },
           });
@@ -100,12 +95,6 @@ export function ContactForm({
           console.error('[ContactForm] ✗ Failed to render Turnstile widget:', error);
           setCaptchaError(true);
         }
-      } else {
-        console.warn('[ContactForm] Cannot render widget:', {
-          hasContainer: !!turnstileRef.current,
-          hasTurnstileAPI: !!window.turnstile,
-          alreadyRendered: !!turnstileWidgetId.current
-        });
       }
     };
 
@@ -145,21 +134,12 @@ export function ContactForm({
         captchaToken,
       };
 
-      console.log('[ContactForm] Validating data:', { 
-        ...sanitizedData, 
-        captchaToken: captchaToken ? 'present' : 'missing',
-        captchaError,
-        isDevelopment
-      });
-
       // Validate with Zod schema
       contactFormSchema.parse(sanitizedData);
-      console.log('[ContactForm] Validation passed');
       return null;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessage = error.issues[0].message;
-        console.log('[ContactForm] Validation error:', errorMessage);
         
         // Show helpful message if captcha failed
         if (errorMessage.includes('captcha') && captchaError) {
@@ -171,7 +151,6 @@ export function ContactForm({
         
         return errorMessage;
       }
-      console.log('[ContactForm] Unknown validation error:', error);
       return "Validation failed";
     }
   };
@@ -184,8 +163,6 @@ export function ContactForm({
     e.preventDefault();
     setStatus("loading");
     setErrorMessage("");
-
-    console.log('[ContactForm] Submit started');
 
     // Validate form
     const validationError = validateForm();
@@ -207,11 +184,6 @@ export function ContactForm({
         message: sanitizeInput(formData.message),
         captchaToken,
       };
-
-      console.log('[ContactForm] Sending to API:', { 
-        ...sanitizedData, 
-        captchaToken: captchaToken ? 'present' : 'missing' 
-      });
 
       const response = await fetch("/api/contact", {
         method: "POST",

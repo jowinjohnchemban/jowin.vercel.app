@@ -24,8 +24,6 @@ export async function POST(request: NextRequest) {
       request.headers.get("x-real-ip") ||
       "unknown";
 
-    console.log("[API] Verifying captcha for IP:", ip);
-    
     // Verify turnstile token
     if (!turnstile.isConfigured()) {
       console.error("[API] Turnstile not configured");
@@ -48,8 +46,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("[API] Captcha verification passed");
-
     // Sanitize inputs
     const sanitizedData = {
       name: Sanitizer.sanitizePlainText(name),
@@ -57,13 +53,6 @@ export async function POST(request: NextRequest) {
       message: Sanitizer.sanitizePlainText(message),
       captchaToken,
     };
-
-    console.log('[API] Received data:', { 
-      name: sanitizedData.name, 
-      email: sanitizedData.email, 
-      messageLength: sanitizedData.message.length,
-      hasCaptcha: !!sanitizedData.captchaToken 
-    });
 
     // Validate with Zod schema
     const validationResult = contactFormSchema.safeParse(sanitizedData);
@@ -76,7 +65,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('[API] Validation passed');
     const { name: sanitizedName, email: sanitizedEmail, message: sanitizedMessage } = validationResult.data;
 
     // Get user information
