@@ -58,7 +58,7 @@ src/lib/api/hashnode/tsconfig.json
 src/lib/api/hashnode/.github/
 src/lib/api/hashnode/node_modules/
 src/lib/api/hashnode/.env
-# Compiled files from hashnode module
+# Compiled files from hashnode module ( - excluded from main repo, but will be in npm package)
 src/lib/api/hashnode/*.js
 src/lib/api/hashnode/*.d.ts
 src/lib/api/hashnode/*.d.ts.map

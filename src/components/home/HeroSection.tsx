@@ -34,6 +34,7 @@ export function HeroSection() {
           duration: 1.1,
           stagger: 0.22,
           ease: "power3.out",
+          delay: 0.1, // Small delay to prevent flash
         }
       );
     }, heroRef);
@@ -49,7 +50,7 @@ export function HeroSection() {
       className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-0 min-h-[calc(100vh-4rem)] flex flex-col-reverse lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-12"
     >
       {/* LEFT */}
-      <div className="flex-1 space-y-6 text-center lg:text-left hero-fade max-w-xl mx-auto lg:mx-0">
+      <div className="flex-1 space-y-6 text-center lg:text-left hero-fade opacity-0 max-w-xl mx-auto lg:mx-0">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
           Hi, I&apos;m <span className="text-primary">Jowin</span>
         </h1>
@@ -80,7 +81,7 @@ export function HeroSection() {
       </div>
 
       {/* RIGHT */}
-      <div className="flex-1 flex justify-center hero-fade">
+      <div className="flex-1 flex justify-center hero-fade opacity-0">
         <Image
           src="/profile.jpg"
           alt={`Profile Picture`}
