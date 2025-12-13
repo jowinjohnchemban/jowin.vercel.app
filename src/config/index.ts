@@ -9,7 +9,6 @@ export {
   siteConfig,
   socialLinks,
   seoConfig,
-  securityConfig,
   emailConfig,
   features,
   navConfig,

@@ -43,12 +43,6 @@ export const seoConfig = {
 /**
  * Security Configuration
  */
-export const securityConfig = {
-  turnstile: {
-    siteKey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA", // Public test key
-    secretKey: process.env.TURNSTILE_SECRET_KEY || "1x0000000000000000000000000000000AA", // Public test secret key
-  },
-} as const;
 
 /**
  * Email Configuration

@@ -6,7 +6,7 @@ A modern, high-performance website and blog built with Next.js 16, React 19, and
 - Lazy-loaded GSAP for fast paint
 - Optimized images (WebP, fetchPriority)
 - Blog: Hashnode integration, tag filtering, SEO, responsive grid
-- Contact: Secure form, Turnstile captcha, geolocation, HTML email
+- Contact: Secure form with geolocation, HTML email
 - Centralized config for site, SEO, security, email
 - All SEO metadata defined locally per page (recommended)
 - Security headers, input validation, and sanitization
@@ -46,7 +46,6 @@ npm run lint:fix
 ```
 
 ## 🔒 Security
-- Cloudflare Turnstile captcha
 - Zod validation, DOMPurify sanitization
 - Security headers, HTTPS-only links
 

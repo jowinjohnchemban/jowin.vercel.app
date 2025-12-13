@@ -1,22 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/validation";
-import { Sanitizer, TurnstileService } from "@/lib/security";
+import { Sanitizer } from "@/lib/security";
 import { createContactEmailService } from "@/lib/email";
-
-const turnstile = new TurnstileService(process.env.TURNSTILE_SECRET_KEY || "");
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, message, captchaToken } = body;
-
-    // Verify captcha token
-    if (!captchaToken) {
-      return NextResponse.json(
-        { error: "Captcha verification required" },
-        { status: 400 }
-      );
-    }
+    const { name, email, message } = body;
 
     // Get client IP address
     const ip =
@@ -24,34 +14,11 @@ export async function POST(request: NextRequest) {
       request.headers.get("x-real-ip") ||
       "unknown";
 
-    // Verify turnstile token
-    if (!turnstile.isConfigured()) {
-      console.error("[API] Turnstile not configured");
-      return NextResponse.json(
-        { error: "Server configuration error" },
-        { status: 500 }
-      );
-    }
-
-    const captchaResult = await turnstile.verify(captchaToken, ip);
-
-    if (!captchaResult.success) {
-      console.error("[API] Captcha verification failed:", captchaResult.errorCodes);
-      return NextResponse.json(
-        {
-          error: "Captcha verification failed. Please try again.",
-          details: captchaResult.errorCodes,
-        },
-        { status: 400 }
-      );
-    }
-
     // Sanitize inputs
     const sanitizedData = {
       name: Sanitizer.sanitizePlainText(name),
       email: Sanitizer.sanitizePlainText(email),
       message: Sanitizer.sanitizePlainText(message),
-      captchaToken,
     };
 
     // Validate with Zod schema

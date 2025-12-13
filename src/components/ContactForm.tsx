@@ -1,35 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validation";
 import { Sanitizer } from "@/lib/security";
-import { securityConfig } from "@/config/site";
-
-// TypeScript declarations for Cloudflare Turnstile
-declare global {
-  interface Window {
-    turnstile?: {
-      reset: (widgetId?: string) => void;
-      render: (element: HTMLElement, options: {
-        sitekey: string;
-        callback?: string | ((token: string) => void);
-        'error-callback'?: string | (() => void);
-        'expired-callback'?: string | (() => void);
-        theme?: string;
-        size?: string;
-        appearance?: string;
-      }) => string;
-      remove: (widgetId: string) => void;
-      getResponse: (widgetId?: string) => string | undefined;
-      isExpired: (widgetId?: string) => boolean;
-    };
-    onTurnstileLoad?: () => void;
-  }
-}
 
 interface ContactFormProps {
   title?: string;
@@ -51,99 +28,6 @@ export function ContactForm({
   });
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [captchaToken, setCaptchaToken] = useState<string>("");
-  const [captchaError, setCaptchaError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const turnstileRef = useRef<HTMLDivElement>(null);
-  const turnstileWidgetId = useRef<string | null>(null);
-
-  // Check if we're in development mode
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
-  // Retry captcha loading
-  const retryCaptcha = () => {
-    setCaptchaError(false);
-    setErrorMessage("");
-    setRetryCount(prev => prev + 1);
-    // Force re-run of useEffect by updating a dependency
-    setCaptchaToken("");
-  };
-
-  // Map Turnstile error codes to user-friendly messages
-  const getTurnstileErrorMessage = (errorCode: string): string => {
-    const errorMessages: Record<string, string> = {
-      '300010': 'Captcha configuration error. Please refresh the page and try again.',
-      '300020': 'Captcha verification failed. Please try again.',
-      '300030': 'Invalid captcha response. Please try again.',
-      '300040': 'Captcha challenge failed. Please refresh and try again.',
-      '300050': 'Captcha expired. Please try again.',
-      '300060': 'Domain not authorized for captcha. Please contact support.',
-      '300070': 'Invalid captcha action. Please try again.',
-      '300080': 'Captcha service temporarily unavailable. Please try again later.',
-    };
-
-    return errorMessages[errorCode] || 'Captcha verification failed. Please refresh the page and try again.';
-  };
-
-  // Load Cloudflare Turnstile script and render widget
-  useEffect(() => {
-    const siteKey = securityConfig.turnstile.siteKey;
-
-    if (!siteKey) {
-      setCaptchaError(true);
-      setErrorMessage('Captcha is not properly configured. Please contact support.');
-      return;
-    }
-
-    // Define global callback for explicit rendering
-    window.onTurnstileLoad = () => {
-      
-      if (turnstileRef.current && window.turnstile && !turnstileWidgetId.current) {
-        try {
-          turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
-            sitekey: siteKey,
-            theme: 'dark',
-            size: 'normal',
-            callback: (token: string) => {
-              setCaptchaToken(token);
-              setCaptchaError(false);
-            },
-            'error-callback': (errorCode?: string) => {
-              setCaptchaToken("");
-              setCaptchaError(true);
-              setErrorMessage(getTurnstileErrorMessage(errorCode || 'unknown'));
-            },
-            'expired-callback': () => {
-              setCaptchaToken("");
-            },
-          });
-        } catch {
-          setCaptchaError(true);
-          setErrorMessage('Failed to load captcha. Please refresh the page and try again.');
-        }
-      }
-    };
-
-    // Add script with explicit rendering and onload callback
-    const script = document.createElement("script");
-    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
-    script.async = true;
-    script.defer = true;
-    
-    script.onerror = () => {
-      setCaptchaError(true);
-      setErrorMessage('Failed to load captcha service. Please check your internet connection and try again.');
-    };
-
-    document.body.appendChild(script);
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-      delete window.onTurnstileLoad;
-    };
-  }, [isDevelopment, retryCount]);
 
   const sanitizeInput = (input: string): string => {
     // Use the Sanitizer class for consistency
@@ -157,7 +41,6 @@ export function ContactForm({
         name: sanitizeInput(formData.name),
         email: sanitizeInput(formData.email),
         message: sanitizeInput(formData.message),
-        captchaToken,
       };
 
       // Validate with Zod schema
@@ -166,15 +49,6 @@ export function ContactForm({
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessage = error.issues[0].message;
-        
-        // Show helpful message if captcha failed
-        if (errorMessage.includes('captcha') && captchaError) {
-          if (isDevelopment) {
-            return 'Captcha failed to load. For local development, add "localhost" to your Cloudflare Turnstile domain whitelist, or use a test sitekey: 1x00000000000000000000AA';
-          }
-          return 'Captcha verification failed. Please refresh the page and try again.';
-        }
-        
         return errorMessage;
       }
       return "Validation failed";
@@ -213,7 +87,6 @@ export function ContactForm({
         name: sanitizeInput(formData.name),
         email: sanitizeInput(formData.email),
         message: sanitizeInput(formData.message),
-        captchaToken,
       };
 
       const response = await fetch("/api/contact", {
@@ -232,12 +105,6 @@ export function ContactForm({
 
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
-      setCaptchaToken("");
-      
-      // Reset Turnstile widget
-      if (window.turnstile && turnstileWidgetId.current) {
-        window.turnstile.reset(turnstileWidgetId.current);
-      }
       
       // Reset success message after 5 seconds
       setTimeout(() => {
@@ -246,12 +113,6 @@ export function ContactForm({
     } catch (error) {
       setStatus("error");
       setErrorMessage(error instanceof Error ? error.message : "Something went wrong");
-      
-      // Reset captcha on error
-      if (window.turnstile && turnstileWidgetId.current) {
-        window.turnstile.reset(turnstileWidgetId.current);
-      }
-      setCaptchaToken("");
       
       // Reset error message after 5 seconds
       setTimeout(() => {
@@ -329,32 +190,6 @@ export function ContactForm({
               className="w-full px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
               disabled={status === "loading"}
             />
-          </div>
-
-          {/* Cloudflare Turnstile */}
-          <div>
-            <div ref={turnstileRef} />
-            {captchaError && isDevelopment && (
-              <p className="text-xs text-yellow-600 dark:text-yellow-500 mt-2">
-                ⚠️ Captcha error in development. Add <code className="px-1 py-0.5 bg-muted rounded">localhost</code> to Cloudflare dashboard or use test key: <code className="px-1 py-0.5 bg-muted rounded">1x00000000000000000000AA</code>
-              </p>
-            )}
-            {captchaError && !isDevelopment && (
-              <div className="flex items-center justify-between mt-2">
-                <p className="text-xs text-destructive">
-                  ⚠️ Captcha failed to load.
-                </p>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={retryCaptcha}
-                  className="h-6 px-2 text-xs"
-                >
-                  Retry
-                </Button>
-              </div>
-            )}
           </div>
 
           {/* Status Messages */}
