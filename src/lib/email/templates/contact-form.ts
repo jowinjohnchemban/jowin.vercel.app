@@ -16,52 +16,50 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
 
   return `
 <html>
-<body style="margin: 0; padding: 0; background-color: #f5f5f5;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f5f5f5;">
+<body style="margin: 0; padding: 0; background-color: #ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
-      <td align="center" style="padding: 40px 20px;">
-        <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+      <td align="center" style="padding: 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; font-family: Arial, sans-serif; font-size: 14px; color: #333; max-width: 700px;">
           
           <!-- Header -->
           <tr>
             <td style="padding: 30px 30px 20px 30px; background-color: #000000; color: #ffffff;">
-              <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Message from ${senderName}</strong>
+              <strong style="font-size: 18px; display: block; margin-bottom: 8px;">New Message</strong>
               <span style="font-size: 13px; color: #999999;">${metadata.submittedAtIST}</span>
             </td>
           </tr>
           
-          <!-- Sender Info -->
+          <!-- From, Email & Message Section -->
           <tr>
-            <td style="padding: 25px 30px; border-bottom: 1px solid #e5e7eb;">
+            <td style="padding: 30px; border-bottom: 2px solid #e5e7eb;">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
-                  <td style="padding: 6px 0;">
+                  <td style="padding-bottom: 12px;">
                     <span style="color: #6b7280; font-size: 13px;">From:</span>
-                    <strong style="color: #111827; margin-left: 8px;">${senderName}</strong>
+                    <strong style="color: #111827; margin-left: 8px; font-size: 15px;">${senderName}</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 6px 0;">
+                  <td style="padding-bottom: 20px;">
                     <span style="color: #6b7280; font-size: 13px;">Email:</span>
                     <a href="mailto:${senderEmail}" style="color: #2563eb; text-decoration: none; margin-left: 8px;">${senderEmail}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-top: 10px; border-top: 1px solid #e5e7eb;">
+                    <div style="margin-top: 15px; white-space: pre-wrap; color: #111827; line-height: 1.6; font-size: 14px;">${message}</div>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
           
-          <!-- Message -->
+          <!-- Technical Details Section -->
           <tr>
-            <td style="padding: 25px 30px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
-              <div style="white-space: pre-wrap; color: #111827; line-height: 1.6;">${message}</div>
-            </td>
-          </tr>
-          
-          <!-- Tracking Details Section -->
-          <tr>
-            <td style="padding: 25px 30px;">
+            <td style="padding: 30px; background-color: #f9fafb;">
               <div style="margin-bottom: 18px;">
-                <strong style="font-size: 13px; color: #111827; text-transform: uppercase; letter-spacing: 0.5px;">Tracking Details</strong>
+                <strong style="font-size: 13px; color: #111827; text-transform: uppercase; letter-spacing: 0.5px;">More Details</strong>
               </div>
               
               <table cellpadding="6" cellspacing="0" border="0" style="font-size: 13px; width: 100%;">

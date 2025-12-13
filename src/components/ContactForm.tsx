@@ -168,7 +168,7 @@ export function ContactForm({
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessage = error.issues[0].message;
-        console.error('[ContactForm] Validation error:', errorMessage);
+        console.log('[ContactForm] Validation error:', errorMessage);
         
         // Show helpful message if captcha failed
         if (errorMessage.includes('captcha') && captchaError) {
@@ -180,7 +180,7 @@ export function ContactForm({
         
         return errorMessage;
       }
-      console.error('[ContactForm] Unknown validation error:', error);
+      console.log('[ContactForm] Unknown validation error:', error);
       return "Validation failed";
     }
   };
@@ -199,7 +199,7 @@ export function ContactForm({
     // Validate form
     const validationError = validateForm();
     if (validationError) {
-      console.error('[ContactForm] Validation failed, not sending to API');
+      console.log('[ContactForm] Validation failed:', validationError);
       setStatus("error");
       setErrorMessage(validationError);
       setTimeout(() => {
