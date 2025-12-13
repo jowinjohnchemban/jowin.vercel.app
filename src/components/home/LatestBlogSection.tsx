@@ -78,7 +78,7 @@ export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
     <section
       ref={sectionRef}
       id="blog"
-      className="w-full bg-muted/20 py-20 md:py-28 px-4 sm:px-6 lg:px-8"
+      className="w-full bg-muted/20 py-4 md:py-16 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-6xl mx-auto">
         <div className="blog-title">

@@ -42,7 +42,7 @@ export function ContactSection() {
     <section
       ref={sectionRef}
       id="connect"
-      className="w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8"
+      className="w-full py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-4xl mx-auto contact-form-animate">
         <ContactForm 

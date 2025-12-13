@@ -43,7 +43,7 @@ export function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-0 min-h-[calc(100vh-4rem)] flex flex-col-reverse lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-12"
+      className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 pt-16 pb-6 sm:py-12 lg:py-0 min-h-[calc(100vh-4rem)] flex flex-col-reverse lg:flex-row items-center justify-between gap-0 sm:gap-8 lg:gap-10"
     >
       {/* LEFT */}
       <div className="flex-1 space-y-6 text-center lg:text-left hero-fade max-w-xl mx-auto lg:mx-0">
