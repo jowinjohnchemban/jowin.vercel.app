@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
 
   // (Optional) Useful for debugging GSAP animations
   experimental: {
-    // optimizePackageImports: ["lucide-react"],
+    optimizePackageImports: ["lucide-react"],
   },
 
   // Remove console logs in production
@@ -48,6 +48,15 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/profile.jpg",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
 
@@ -62,6 +71,7 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 192, 256, 384],
     formats: ["image/webp"],
+    qualities: [75, 85],
   },
 
   // Allow dev server access from local network

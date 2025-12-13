@@ -1,65 +1,19 @@
-"use client";
-
 /**
  * Hero Section Component
- * Landing page hero with GSAP animations
- * SEO-friendly: Content visible by default, enhanced with subtle animation
+ * Landing page hero with server-side rendering for fast paint
+ * SEO-friendly: Content visible immediately, no JS required for initial render
  * @module components/home/HeroSection
  */
 
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
-import { getImageQuality } from "@/lib/imageQuality";
 
 export function HeroSection({ blurDataURL }: { blurDataURL?: string } = {}) {
-  const heroRef = useRef<HTMLDivElement | null>(null);
-  const hasAnimated = useRef(false);
-  const [quality, setQuality] = useState(75);
-
-  useEffect(() => {
-    setQuality(getImageQuality());
-  }, []);
-
-  useEffect(() => {
-    if (!heroRef.current || hasAnimated.current) return;
-    hasAnimated.current = true;
-
-    // Lazy load GSAP only if needed (saves ~80KB on initial load)
-    import("gsap").then(({ default: gsap }) => {
-      const elements = heroRef.current?.querySelectorAll(".hero-fade");
-      if (!elements) return;
-
-      // Set initial state and animate in one go
-      gsap.fromTo(
-        elements,
-        {
-          opacity: 0.3,
-          y: 20,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          ease: "power2.out",
-          clearProps: "transform", // Only remove transform, keep opacity
-          onComplete: () => {
-            // Remove opacity-0 class after animation completes
-            elements.forEach((el) => el.classList.remove("opacity-0"));
-          },
-        }
-      );
-    });
-  }, []);
-
   return (
-    <section
-      ref={heroRef}
-      className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 pt-16 pb-6 sm:py-12 lg:py-0 min-h-[calc(100vh-4rem)] flex flex-col-reverse lg:flex-row items-center justify-between gap-0 sm:gap-8 lg:gap-10"
-    >
+    <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 pt-16 pb-6 sm:py-12 lg:py-0 min-h-[calc(100vh-4rem)] flex flex-col-reverse lg:flex-row items-center justify-between gap-0 sm:gap-8 lg:gap-10">
       {/* LEFT */}
-      <div className="flex-1 space-y-6 text-center lg:text-left hero-fade opacity-0">
+      <div className="flex-1 space-y-6 text-center lg:text-left hero-content">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
           Hi, I&apos;m <span className="text-primary">Jowin</span>
         </h1>
@@ -90,7 +44,7 @@ export function HeroSection({ blurDataURL }: { blurDataURL?: string } = {}) {
       </div>
 
       {/* RIGHT */}
-      <div className="flex-1 flex justify-center hero-fade max-w-xl mx-auto lg:mx-0 opacity-0">
+      <div className="flex-1 flex justify-center hero-image max-w-xl mx-auto lg:mx-0">
         <Image
           src="/profile.jpg"
           alt="Jowin John Chemban"
@@ -102,7 +56,7 @@ export function HeroSection({ blurDataURL }: { blurDataURL?: string } = {}) {
           sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 288px"
           placeholder={blurDataURL ? 'blur' : undefined}
           blurDataURL={blurDataURL}
-          quality={quality}
+          quality={75}
         />
       </div>
     </section>

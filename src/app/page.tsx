@@ -6,9 +6,6 @@ import { HeroSection, LatestBlogSection, ContactSection } from "@/components/hom
 import { getBlogPosts } from "@/lib/api/hashnode";
 import { generatePageSEO } from "@/config/seo";
 import { siteConfig } from "@/config/site";
-import { getBlurDataURL } from "@/lib/placeholder";
-import fs from "fs";
-import path from "path";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -43,19 +40,9 @@ export default async function Home() {
   // Fetch blog posts on the server
   const latestPosts = await getBlogPosts(3);
 
-  // Generate blur placeholder for hero image
-  const profilePath = path.join(process.cwd(), "public", "profile.jpg");
-  let heroBlurDataURL: string | undefined;
-  try {
-    if (fs.existsSync(profilePath)) {
-      const buffer = fs.readFileSync(profilePath);
-      heroBlurDataURL = await getBlurDataURL(buffer);
-    }
-  } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("Failed to generate blur placeholder for hero image:", error);
-    }
-  }
+  // Skip blur placeholder generation for faster initial load
+  // Will use default blur or no blur for immediate paint
+  const heroBlurDataURL = undefined; // Remove expensive blur generation
 
   return (
     <>

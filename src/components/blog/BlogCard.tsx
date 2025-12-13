@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import { getImageQuality } from "@/lib/imageQuality";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Clock } from "lucide-react";
 
@@ -34,13 +33,27 @@ export function BlogCard({
   author,
   forceHorizontal = false,
 }: BlogCardProps) {
-  const [quality] = useState(getImageQuality());
+  // Start with SSR-safe quality, then update on client
+  const [quality, setQuality] = useState(75);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Dynamic import to avoid SSR issues
+    import("@/lib/imageQuality").then(({ getImageQuality }) => {
+      setQuality(getImageQuality());
+    });
+  }, []);
+
   const publishedDate = new Date(publishedAt);
   const formattedDate = publishedDate.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
+
+  // Only use dynamic quality after client-side hydration
+  const imageQuality = isClient ? quality : 75;
 
   return (
     <Link href={`/blog/${slug}`} className="group h-full">
@@ -59,7 +72,7 @@ export function BlogCard({
                 placeholder={coverImage.blurDataURL ? "blur" : undefined}
                 blurDataURL={coverImage.blurDataURL}
                 fetchPriority={slug === 'first' ? 'high' : undefined}
-                quality={quality}
+                quality={imageQuality}
               />
             </div>
           ) : (
@@ -104,7 +117,7 @@ export function BlogCard({
                 placeholder={coverImage.blurDataURL ? "blur" : undefined}
                 blurDataURL={coverImage.blurDataURL}
                 fetchPriority={slug === 'first' ? 'high' : undefined}
-                quality={quality}
+                quality={imageQuality}
               />
             </div>
           )}
@@ -130,7 +143,7 @@ export function BlogCard({
                     className="w-6 h-6 rounded-full object-cover"
                     placeholder={author.blurDataURL ? "blur" : undefined}
                     blurDataURL={author.blurDataURL}
-                    quality={quality}
+                    quality={imageQuality}
                   />
                 ) : (
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">

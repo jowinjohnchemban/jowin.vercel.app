@@ -96,7 +96,16 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <head />
+      <head>
+        {/* Preload critical hero image for faster LCP */}
+        <link
+          rel="preload"
+          href="/profile.jpg"
+          as="image"
+          type="image/jpeg"
+          fetchPriority="high"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
