@@ -83,7 +83,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ogImage ? [ogImage] : undefined,
     },
     verification: {
-      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
     },
     alternates: {
       canonical: siteUrl,
