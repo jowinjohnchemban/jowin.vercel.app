@@ -41,15 +41,15 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding-bottom: 20px;">
+                  <td style="padding-bottom: 12px;">
                     <span style="color: #6b7280; font-size: 13px;">Email:</span>
                     <a href="mailto:${senderEmail}" style="color: #2563eb; text-decoration: none; margin-left: 8px;">${senderEmail}</a>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding-top: 10px;">
+                  <td style="padding-top: 5px;">
                     <span style="color: #6b7280; font-size: 13px;">Message</span>
-                    <div style="margin-top: 15px; white-space: pre-wrap; color: #111827; line-height: 1.6; font-size: 14px;">${message}</div>
+                    <div style="margin-top: 15px; padding-left: 20px; white-space: pre-wrap; color: #111827; line-height: 1.6; font-size: 14px;">${message}</div>
                   </td>
                 </tr>
               </table>
@@ -60,7 +60,7 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
           <tr>
             <td style="padding: 30px; background-color: #f9fafb;">
               <div style="margin-bottom: 18px;">
-                <strong style="font-size: 13px; color: #111827; text-transform: uppercase; letter-spacing: 0.5px;">More Details</strong>
+                <strong style="font-size: 13px; color: #111827; text-transform: letter-spacing: 0.5px;">More Details</strong>
               </div>
               
               <table cellpadding="6" cellspacing="0" border="0" style="font-size: 13px; width: 100%;">
