@@ -47,7 +47,8 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding-top: 10px; border-top: 1px solid #e5e7eb;">
+                  <td style="padding-top: 10px;">
+                    <span style="color: #6b7280; font-size: 13px;">Message</span>
                     <div style="margin-top: 15px; white-space: pre-wrap; color: #111827; line-height: 1.6; font-size: 14px;">${message}</div>
                   </td>
                 </tr>
@@ -55,7 +56,7 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
             </td>
           </tr>
           
-          <!-- Technical Details Section -->
+          <!-- Details Section -->
           <tr>
             <td style="padding: 30px; background-color: #f9fafb;">
               <div style="margin-bottom: 18px;">
