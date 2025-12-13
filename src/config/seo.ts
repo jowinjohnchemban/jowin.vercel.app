@@ -5,7 +5,7 @@
  */
 
 import { Metadata } from "next";
-import { siteConfig } from "./site";
+import { siteConfig, seoConfig } from "./site";
 
 /**
  * Page-specific SEO configuration
@@ -44,19 +44,16 @@ import { siteConfig } from "./site";
  * - Recommended OG image size: 1200x630px
  */
 export const pageSEO = {
-  home: {
+  home: { // Home Page
     title: siteConfig.name,
     description: siteConfig.description,
     keywords: [
-      "Full Stack Developer",
-      "DevOps Engineer",
-      "Cloud Infrastructure",
-      "Software Engineer",
-      "Web Development",
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Node.js",
+      "Full Stack",
+      "DevOps",
+      "Cloud",
+      "Infrastructure",
+      "Software",
+      "Development",
       "Portfolio",
       siteConfig.author.name,
     ],
@@ -73,17 +70,14 @@ export const pageSEO = {
       ],
     },
   },
-  blog: {
+  blog: { // Blog Page
     title: "Blog",
-    description: `Read the latest articles and insights from ${siteConfig.author.name} on web development, DevOps, cloud infrastructure, and software engineering.`,
+    description: `Read the latest articles and insights from ${siteConfig.author.name}.`,
     keywords: [
       "Blog",
       "Articles",
-      "Web Development",
-      "DevOps",
-      "Cloud",
-      "Software Engineering",
-      "Technical Writing",
+      "Development",
+      "Engineering",
       siteConfig.author.name,
     ],
     openGraph: {
@@ -101,19 +95,17 @@ export const pageSEO = {
   },
   connect: {
     title: "Let's Connect",
-    description: `Get in touch with ${siteConfig.author.name}. Let's work together on your next project or just say hello!`,
+    description: `Get in touch with ${siteConfig.author.name}`,
     keywords: [
       "Connect",
       "Contact",
       "Get in touch",
-      "Collaboration",
       "Inquiry",
-      "Hire",
       siteConfig.author.name,
     ],
     openGraph: {
       title: `Let's Connect - ${siteConfig.name}`,
-      description: `Get in touch with ${siteConfig.author.name}. Let's work together!`,
+      description: `Get in touch with ${siteConfig.author.name}`,
       images: [
         {
           url: `${siteConfig.url}/og-connect.png`,
@@ -152,7 +144,7 @@ export function generatePageSEO(
       card: "summary_large_image",
       title: pageConfig.openGraph.title,
       description: pageConfig.openGraph.description,
-      creator: "@jowinchemban",
+      creator: seoConfig.twitterHandle || undefined,
       images: pageConfig.openGraph.images.map((img) => img.url),
     },
     alternates: {
@@ -173,13 +165,11 @@ export const defaultSEO: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "Full Stack Developer",
-    "Software Engineer",
-    "Web Development",
-    "React",
-    "Next.js",
-    "TypeScript",
-    "Node.js",
+    "Full Stack",
+    "Developer",
+    "Software", 
+    "Engineer",
+    "Cloud",
     "Portfolio",
     siteConfig.author.name,
   ],
@@ -209,7 +199,7 @@ export const defaultSEO: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    creator: "@jowinchemban",
+    creator: seoConfig.twitterHandle || undefined,
   },
   alternates: {
     canonical: siteConfig.url,
