@@ -3,40 +3,43 @@
 /**
  * Hero Section Component
  * Landing page hero with GSAP animations
+ * Progressive enhancement: visible by default, animated when JS loads
  * @module components/home/HeroSection
  */
 
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export function HeroSection() {
   const heroRef = useRef<HTMLDivElement | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
     if (!heroRef.current) return;
 
     const ctx = gsap.context(() => {
       const elements = heroRef.current!.querySelectorAll(".hero-fade");
       
-      // Animate from hidden to visible
-      gsap.fromTo(
-        elements,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.1,
-          stagger: 0.22,
-          ease: "power3.out",
-          delay: 0.1, // Small delay to prevent flash
-        }
-      );
+      // Set initial state for animation
+      gsap.set(elements, {
+        opacity: 0,
+        y: 30,
+      });
+
+      // Animate to visible
+      gsap.to(elements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        delay: 0.05,
+      });
     }, heroRef);
 
     return () => {
@@ -50,7 +53,7 @@ export function HeroSection() {
       className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-0 min-h-[calc(100vh-4rem)] flex flex-col-reverse lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-12"
     >
       {/* LEFT */}
-      <div className="flex-1 space-y-6 text-center lg:text-left hero-fade opacity-0 max-w-xl mx-auto lg:mx-0">
+      <div className={`flex-1 space-y-6 text-center lg:text-left hero-fade max-w-xl mx-auto lg:mx-0 ${!mounted ? 'opacity-100' : ''}`}>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
           Hi, I&apos;m <span className="text-primary">Jowin</span>
         </h1>
@@ -81,7 +84,7 @@ export function HeroSection() {
       </div>
 
       {/* RIGHT */}
-      <div className="flex-1 flex justify-center hero-fade opacity-0">
+      <div className={`flex-1 flex justify-center hero-fade ${!mounted ? 'opacity-100' : ''}`}>
         <Image
           src="/profile.jpg"
           alt={`Profile Picture`}

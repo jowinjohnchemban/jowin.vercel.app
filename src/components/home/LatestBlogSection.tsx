@@ -2,7 +2,7 @@
 
 /**
  * Latest Blog Section Component
- * Displays latest blog posts from Hashnode on home page
+ * Displays latest blog posts from Hashnode on home page with scroll animations
  * @module components/home/LatestBlogSection
  */
 
@@ -11,25 +11,85 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import type { BlogPost } from "@/lib/api/hashnode";
 import { BlogCard } from "@/components/blog/BlogCard";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface LatestBlogSectionProps {
   posts: BlogPost[];
 }
 
 export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Animate title
+      gsap.from(".blog-title", {
+        scrollTrigger: {
+          trigger: ".blog-title",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+
+      // Animate cards with stagger
+      gsap.from(".blog-card-animate", {
+        scrollTrigger: {
+          trigger: ".blog-grid",
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power2.out",
+      });
+
+      // Animate button
+      gsap.from(".blog-cta", {
+        scrollTrigger: {
+          trigger: ".blog-cta",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, [posts]);
+
   return (
     <section
+      ref={sectionRef}
       id="blog"
       className="w-full bg-muted/20 py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-4">
-          <span className="text-primary">L</span>atest Articles
-        </h2>
+        <div className="blog-title">
+          <h2 className="text-4xl font-bold text-center mb-4">
+            <span className="text-primary">L</span>atest Articles
+          </h2>
 
-        <p className="text-lg text-muted-foreground text-center max-w-2xl mx-auto mb-16">
+          <p className="text-lg text-muted-foreground text-center max-w-2xl mx-auto mb-16">
             Fresh takes, insights & deep dives ✨
-        </p>
+          </p>
+        </div>
 
         {posts.length === 0 ? (
           <div className="text-center py-12">
@@ -38,24 +98,25 @@ export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
         ) : (
           <>
             {/* GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-7 lg:gap-8">
+            <div className="blog-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-7 lg:gap-8">
               {posts.map((post) => (
-                <BlogCard
-                  key={post.id}
-                  slug={post.slug}
-                  title={post.title}
-                  excerpt={post.excerpt}
-                  coverImage={post.coverImage}
-                  publishedAt={post.publishedAt}
-                  readTimeInMinutes={post.readTimeInMinutes}
-                  author={post.author}
-                  forceHorizontal={true}
-                />
+                <div key={post.id} className="blog-card-animate">
+                  <BlogCard
+                    slug={post.slug}
+                    title={post.title}
+                    excerpt={post.excerpt}
+                    coverImage={post.coverImage}
+                    publishedAt={post.publishedAt}
+                    readTimeInMinutes={post.readTimeInMinutes}
+                    author={post.author}
+                    forceHorizontal={true}
+                  />
+                </div>
               ))}
             </div>
 
             {/* CTA */}
-            <div className="text-center mt-14">
+            <div className="blog-cta text-center mt-14">
               <Button variant="outline" size="lg" asChild>
                 <Link href="/blog">
                   View All Posts
