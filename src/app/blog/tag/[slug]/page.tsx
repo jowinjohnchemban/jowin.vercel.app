@@ -2,7 +2,8 @@ import { getBlogPosts } from "@/lib/api/hashnode";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -44,10 +45,6 @@ export default async function TagPage({
     )
   );
 
-  if (filteredPosts.length === 0) {
-    notFound();
-  }
-
   // Format tag name for display
   const tagName =
     filteredPosts[0]?.tags?.find(
@@ -71,27 +68,40 @@ export default async function TagPage({
               Blog <span className="text-primary">#{tagName}</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl leading-relaxed">
-              {filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"} tagged with {tagName} 📚
+              {filteredPosts.length > 0
+                ? `${filteredPosts.length} ${filteredPosts.length === 1 ? "article" : "articles"} tagged with ${tagName} 📚`
+                : `No articles found with tag "${tagName}"`}
             </p>
           </div>
         </section>
 
-        {/* Blog Posts Grid */}
+        {/* Blog Posts Grid or Empty State */}
         <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 md:pb-24">
-          <div className="grid gap-5 sm:gap-6 md:gap-7 lg:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {filteredPosts.map((post) => (
-              <BlogCard
-                key={post.id}
-                slug={post.slug}
-                title={post.title}
-                excerpt={post.excerpt}
-                coverImage={post.coverImage}
-                publishedAt={post.publishedAt}
-                readTimeInMinutes={post.readTimeInMinutes}
-                author={post.author}
-              />
-            ))}
-          </div>
+          {filteredPosts.length === 0 ? (
+            <div className="text-center py-12 space-y-6">
+              <p className="text-lg text-muted-foreground">
+                Oops! No posts with <span className="font-semibold text-foreground">#{tagName}</span> 🤷‍♂️
+              </p>
+              <Button asChild size="lg">
+                <Link href="/blog">Explore ✨</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="grid gap-5 sm:gap-6 md:gap-7 lg:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {filteredPosts.map((post) => (
+                <BlogCard
+                  key={post.id}
+                  slug={post.slug}
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  coverImage={post.coverImage}
+                  publishedAt={post.publishedAt}
+                  readTimeInMinutes={post.readTimeInMinutes}
+                  author={post.author}
+                />
+              ))}
+            </div>
+          )}
         </section>
       </main>
       <Footer />
