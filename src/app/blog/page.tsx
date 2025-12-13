@@ -3,10 +3,32 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { generatePageSEO } from "@/config/seo";
-
+import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = generatePageSEO("blog");
+export const metadata: Metadata = generatePageSEO(undefined, {
+  title: "Blog",
+  description: `Read the latest articles and insights from ${siteConfig.author.name}.`,
+  keywords: [
+    "Blog",
+    "Articles",
+    "Development",
+    "Engineering",
+    siteConfig.author.name,
+  ],
+  openGraph: {
+    title: `Blog - ${siteConfig.name}`,
+    description: `Read the latest articles and insights from ${siteConfig.author.name}`,
+    images: [
+      {
+        url: `${siteConfig.url}/og-blog.png`,
+        width: 1200,
+        height: 630,
+        alt: "Blog",
+      },
+    ],
+  },
+});
 
 export default async function BlogPage() {
   const posts = await getBlogPosts(20);

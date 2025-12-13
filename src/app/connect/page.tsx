@@ -4,10 +4,32 @@ import Footer from "@/components/Footer";
 import { ContactForm } from "@/components/ContactForm";
 import Link from "next/link";
 import { Github, Linkedin, Twitter, Youtube, Instagram, Facebook } from "lucide-react";
-import { socialLinks, features } from "@/config/site";
+import { socialLinks, features, siteConfig } from "@/config/site";
 import { generatePageSEO } from "@/config/seo";
 
-export const metadata: Metadata = generatePageSEO("connect");
+export const metadata: Metadata = generatePageSEO(undefined, {
+  title: "Let's Connect",
+  description: `Get in touch with ${siteConfig.author.name}`,
+  keywords: [
+    "Connect",
+    "Contact",
+    "Get in touch",
+    "Inquiry",
+    siteConfig.author.name,
+  ],
+  openGraph: {
+    title: `Let's Connect - ${siteConfig.name}`,
+    description: `Get in touch with ${siteConfig.author.name}`,
+    images: [
+      {
+        url: `${siteConfig.url}/og-connect.png`,
+        width: 1200,
+        height: 630,
+        alt: "Let's Connect",
+      },
+    ],
+  },
+});
 
 export default function ConnectPage() {
   return (
