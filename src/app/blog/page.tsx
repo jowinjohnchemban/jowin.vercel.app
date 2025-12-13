@@ -6,11 +6,15 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Blog - Jowin John Chemban",
+  title: "Jowin's Blog",
+  description: "Blog by Jowin John Chemban",
   keywords: [
     "Blog",
     "Articles",
+    "Insights",
+    "Ideas",
+    "Knowledge",
+
   ],
   openGraph: {
     title: "Blog - Jowin John Chemban",

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Github, Linkedin, Twitter, Youtube, Instagram, Facebook } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Connect with Me",
+  title: "Let's Connect",
   description: "Get in touch with Jowin John Chemban",
   keywords: [
     "Connect",
@@ -37,7 +37,7 @@ export default function ConnectPage() {
               Let&apos;s <span className="text-primary">Connect</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Got ideas or just wanna chat? Drop me a message! 💬
+              Got ideas or just wanna connect? Drop a message! 💬
             </p>
           </div>
 

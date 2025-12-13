@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Jowin John Chemban";
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jowin.vercel.app";
-const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@jowinjc";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jowinjc.in";
+const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "";
 
 export async function generateMetadata(): Promise<Metadata> {
   // Fetch publication details from Hashnode for dynamic SEO
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description = publication?.descriptionSEO || 
     publication?.about?.text || 
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 
-    "Full-stack developer and DevOps engineer specializing in cloud infrastructure, web development, and modern software architecture. Explore technical articles, projects, and insights.";
+    " ";
   
   const ogImage = publication?.ogMetaData?.image;
 
