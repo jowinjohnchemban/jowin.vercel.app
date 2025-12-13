@@ -22,8 +22,13 @@ export interface ContactFormData {
 export interface ContactFormMetadata {
   ip: string;
   location: string;
+  city: string;
+  region: string;
+  country: string;
+  postal: string;
   timezone: string;
   org: string;
+  loc?: string;
   submittedAtIST: string;
   submittedAtUTC: string;
   userAgent: string;

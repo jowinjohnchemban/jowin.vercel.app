@@ -11,6 +11,7 @@ export interface IPInfo {
   timezone: string;
   org: string;
   postal: string;
+  loc?: string;
 }
 
 export interface IPGeolocationProvider {
@@ -56,6 +57,7 @@ export class IPInfoProvider implements IPGeolocationProvider {
           timezone: data.timezone || "Unknown",
           org: data.org || "Unknown",
           postal: data.postal || "Unknown",
+          loc: data.loc,
         };
       }
     } catch (error) {

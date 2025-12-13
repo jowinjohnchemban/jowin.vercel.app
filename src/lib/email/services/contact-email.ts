@@ -64,8 +64,13 @@ export class ContactEmailService {
     return {
       ip: data.ip,
       location,
+      city: ipInfo.city,
+      region: ipInfo.region,
+      country: ipInfo.country,
+      postal: ipInfo.postal,
       timezone: ipInfo.timezone,
       org: ipInfo.org,
+      loc: ipInfo.loc,
       submittedAtIST: times.ist,
       submittedAtUTC: times.utc,
       userAgent: data.userAgent,
