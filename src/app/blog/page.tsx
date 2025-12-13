@@ -6,7 +6,7 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Jowin's Blog",
+  title: "Blog",
   description: "Blog by Jowin John Chemban",
   keywords: [
     "Blog",
