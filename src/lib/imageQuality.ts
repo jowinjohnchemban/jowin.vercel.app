@@ -4,7 +4,7 @@
  * Used for Next.js Image components to balance performance and clarity.
  */
 export function getImageQuality(): number {
-  if (typeof window === "undefined") return 75; // SSR default
+  if (typeof window === "undefined") return 95; // SSR default
   const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection || {};
   if (conn.saveData) return 30;
   if (conn.effectiveType === "2g" || conn.effectiveType === "slow-2g") return 30;
