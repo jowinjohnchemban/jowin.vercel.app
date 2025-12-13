@@ -10,6 +10,7 @@ import { getBlurDataURL } from "@/lib/placeholder";
 import fs from "fs";
 import path from "path";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = generatePageSEO(undefined, {
   title: siteConfig.name,
@@ -51,7 +52,9 @@ export default async function Home() {
       heroBlurDataURL = await getBlurDataURL(buffer);
     }
   } catch (error) {
-    console.warn("Failed to generate blur placeholder for hero image:", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("Failed to generate blur placeholder for hero image:", error);
+    }
   }
 
   return (
@@ -59,8 +62,12 @@ export default async function Home() {
       <Navbar />
       <main className="min-h-screen w-full bg-background text-foreground">
         <HeroSection blurDataURL={heroBlurDataURL} />
-        <LatestBlogSection posts={latestPosts} />
-        <ContactSection />
+        <Suspense fallback={<div className="h-32" />}> {/* Minimal fallback for fast paint */}
+          <LatestBlogSection posts={latestPosts} />
+        </Suspense>
+        <Suspense fallback={null}>
+          <ContactSection />
+        </Suspense>
       </main>
       <Footer />
     </>

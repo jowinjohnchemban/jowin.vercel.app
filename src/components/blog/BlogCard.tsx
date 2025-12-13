@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import { getImageQuality } from "@/lib/imageQuality";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Clock } from "lucide-react";
 
@@ -31,6 +33,7 @@ export function BlogCard({
   author,
   forceHorizontal = false,
 }: BlogCardProps) {
+  const [quality] = useState(getImageQuality());
   const publishedDate = new Date(publishedAt);
   const formattedDate = publishedDate.toLocaleDateString("en-US", {
     year: "numeric",
@@ -55,6 +58,7 @@ export function BlogCard({
                 placeholder={coverImage.blurDataURL ? "blur" : undefined}
                 blurDataURL={coverImage.blurDataURL}
                 fetchPriority={slug === 'first' ? 'high' : undefined}
+                quality={quality}
               />
             </div>
           ) : (
@@ -99,6 +103,7 @@ export function BlogCard({
                 placeholder={coverImage.blurDataURL ? "blur" : undefined}
                 blurDataURL={coverImage.blurDataURL}
                 fetchPriority={slug === 'first' ? 'high' : undefined}
+                quality={quality}
               />
             </div>
           )}
@@ -124,6 +129,7 @@ export function BlogCard({
                     className="w-6 h-6 rounded-full object-cover"
                     placeholder={author.blurDataURL ? "blur" : undefined}
                     blurDataURL={author.blurDataURL}
+                    quality={quality}
                   />
                 ) : (
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">

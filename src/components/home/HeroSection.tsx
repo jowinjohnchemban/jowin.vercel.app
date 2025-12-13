@@ -10,11 +10,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { getImageQuality } from "@/lib/imageQuality";
 
 export function HeroSection({ blurDataURL }: { blurDataURL?: string } = {}) {
   const heroRef = useRef<HTMLDivElement | null>(null);
   const hasAnimated = useRef(false);
+  const [quality, setQuality] = useState(75);
+
+  useEffect(() => {
+    setQuality(getImageQuality());
+  }, []);
 
   useEffect(() => {
     if (!heroRef.current || hasAnimated.current) return;
@@ -96,6 +102,7 @@ export function HeroSection({ blurDataURL }: { blurDataURL?: string } = {}) {
           sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 288px"
           placeholder={blurDataURL ? 'blur' : undefined}
           blurDataURL={blurDataURL}
+          quality={quality}
         />
       </div>
     </section>

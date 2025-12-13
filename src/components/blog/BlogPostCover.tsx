@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { useState } from "react";
+import { getImageQuality } from "@/lib/imageQuality";
 
 interface BlogPostCoverProps {
   url: string;
@@ -7,6 +9,7 @@ interface BlogPostCoverProps {
 }
 
 export function BlogPostCover({ url, alt, blurDataURL }: BlogPostCoverProps) {
+  const [quality] = useState(getImageQuality());
   return (
     <div className="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden bg-muted">
       <Image
@@ -19,6 +22,7 @@ export function BlogPostCover({ url, alt, blurDataURL }: BlogPostCoverProps) {
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 900px"
         placeholder={blurDataURL ? "blur" : undefined}
         blurDataURL={blurDataURL}
+        quality={quality}
       />
     </div>
   );
