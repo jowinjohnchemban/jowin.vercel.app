@@ -53,19 +53,45 @@ export function ContactForm({
   const [errorMessage, setErrorMessage] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string>("");
   const [captchaError, setCaptchaError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetId = useRef<string | null>(null);
 
   // Check if we're in development mode
   const isDevelopment = process.env.NODE_ENV === 'development';
 
+  // Retry captcha loading
+  const retryCaptcha = () => {
+    setCaptchaError(false);
+    setErrorMessage("");
+    setRetryCount(prev => prev + 1);
+    // Force re-run of useEffect by updating a dependency
+    setCaptchaToken("");
+  };
+
+  // Map Turnstile error codes to user-friendly messages
+  const getTurnstileErrorMessage = (errorCode: string): string => {
+    const errorMessages: Record<string, string> = {
+      '300010': 'Captcha configuration error. Please refresh the page and try again.',
+      '300020': 'Captcha verification failed. Please try again.',
+      '300030': 'Invalid captcha response. Please try again.',
+      '300040': 'Captcha challenge failed. Please refresh and try again.',
+      '300050': 'Captcha expired. Please try again.',
+      '300060': 'Domain not authorized for captcha. Please contact support.',
+      '300070': 'Invalid captcha action. Please try again.',
+      '300080': 'Captcha service temporarily unavailable. Please try again later.',
+    };
+
+    return errorMessages[errorCode] || 'Captcha verification failed. Please refresh the page and try again.';
+  };
+
   // Load Cloudflare Turnstile script and render widget
   useEffect(() => {
     const siteKey = securityConfig.turnstile.siteKey;
-    
+
     if (!siteKey) {
-      console.error('[ContactForm] NEXT_PUBLIC_TURNSTILE_SITE_KEY is not configured');
       setCaptchaError(true);
+      setErrorMessage('Captcha is not properly configured. Please contact support.');
       return;
     }
 
@@ -83,17 +109,17 @@ export function ContactForm({
               setCaptchaError(false);
             },
             'error-callback': (errorCode?: string) => {
-              console.error('[ContactForm] ✗ Turnstile error:', errorCode || 'unknown');
               setCaptchaToken("");
               setCaptchaError(true);
+              setErrorMessage(getTurnstileErrorMessage(errorCode || 'unknown'));
             },
             'expired-callback': () => {
               setCaptchaToken("");
             },
           });
-        } catch (error) {
-          console.error('[ContactForm] ✗ Failed to render Turnstile widget:', error);
+        } catch {
           setCaptchaError(true);
+          setErrorMessage('Failed to load captcha. Please refresh the page and try again.');
         }
       }
     };
@@ -104,9 +130,9 @@ export function ContactForm({
     script.async = true;
     script.defer = true;
     
-    script.onerror = (error) => {
-      console.error('[ContactForm] ✗ Failed to load Turnstile script:', error);
+    script.onerror = () => {
       setCaptchaError(true);
+      setErrorMessage('Failed to load captcha service. Please check your internet connection and try again.');
     };
 
     document.body.appendChild(script);
@@ -117,7 +143,7 @@ export function ContactForm({
       }
       delete window.onTurnstileLoad;
     };
-  }, [isDevelopment]);
+  }, [isDevelopment, retryCount]);
 
   const sanitizeInput = (input: string): string => {
     // Use the Sanitizer class for consistency
@@ -157,6 +183,11 @@ export function ContactForm({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    // Clear error messages when user starts typing
+    if (status === "error") {
+      setStatus("idle");
+      setErrorMessage("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -309,9 +340,20 @@ export function ContactForm({
               </p>
             )}
             {captchaError && !isDevelopment && (
-              <p className="text-xs text-destructive mt-2">
-                ⚠️ Captcha failed to load. Please refresh the page.
-              </p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-xs text-destructive">
+                  ⚠️ Captcha failed to load.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={retryCaptcha}
+                  className="h-6 px-2 text-xs"
+                >
+                  Retry
+                </Button>
+              </div>
             )}
           </div>
 
