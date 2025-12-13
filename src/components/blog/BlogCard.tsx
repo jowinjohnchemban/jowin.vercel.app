@@ -9,12 +9,14 @@ interface BlogCardProps {
   excerpt: string;
   coverImage?: {
     url?: string;
+    blurDataURL?: string;
   };
   publishedAt: string;
   readTimeInMinutes: number;
   author: {
     name: string;
     profilePicture?: string;
+    blurDataURL?: string;
   };
   forceHorizontal?: boolean;
 }
@@ -50,6 +52,9 @@ export function BlogCard({
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
                 sizes="112px"
+                placeholder={coverImage.blurDataURL ? "blur" : undefined}
+                blurDataURL={coverImage.blurDataURL}
+                fetchPriority={slug === 'first' ? 'high' : undefined}
               />
             </div>
           ) : (
@@ -90,6 +95,10 @@ export function BlogCard({
                 alt={title}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                placeholder={coverImage.blurDataURL ? "blur" : undefined}
+                blurDataURL={coverImage.blurDataURL}
+                fetchPriority={slug === 'first' ? 'high' : undefined}
               />
             </div>
           )}
@@ -113,6 +122,8 @@ export function BlogCard({
                     width={24}
                     height={24}
                     className="w-6 h-6 rounded-full object-cover"
+                    placeholder={author.blurDataURL ? "blur" : undefined}
+                    blurDataURL={author.blurDataURL}
                   />
                 ) : (
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">

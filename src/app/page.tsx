@@ -6,6 +6,9 @@ import { HeroSection, LatestBlogSection, ContactSection } from "@/components/hom
 import { getBlogPosts } from "@/lib/api/hashnode";
 import { generatePageSEO } from "@/config/seo";
 import { siteConfig } from "@/config/site";
+import { getBlurDataURL } from "@/lib/placeholder";
+import fs from "fs";
+import path from "path";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = generatePageSEO(undefined, {
@@ -39,11 +42,23 @@ export default async function Home() {
   // Fetch blog posts on the server
   const latestPosts = await getBlogPosts(3);
 
+  // Generate blur placeholder for hero image
+  const profilePath = path.join(process.cwd(), "public", "profile.jpg");
+  let heroBlurDataURL: string | undefined;
+  try {
+    if (fs.existsSync(profilePath)) {
+      const buffer = fs.readFileSync(profilePath);
+      heroBlurDataURL = await getBlurDataURL(buffer);
+    }
+  } catch (error) {
+    console.warn("Failed to generate blur placeholder for hero image:", error);
+  }
+
   return (
     <>
       <Navbar />
       <main className="min-h-screen w-full bg-background text-foreground">
-        <HeroSection />
+        <HeroSection blurDataURL={heroBlurDataURL} />
         <LatestBlogSection posts={latestPosts} />
         <ContactSection />
       </main>

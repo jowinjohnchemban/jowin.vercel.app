@@ -12,7 +12,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef } from "react";
 
-export function HeroSection() {
+export function HeroSection({ blurDataURL }: { blurDataURL?: string } = {}) {
   const heroRef = useRef<HTMLDivElement | null>(null);
   const hasAnimated = useRef(false);
 
@@ -94,6 +94,8 @@ export function HeroSection() {
           priority
           fetchPriority="high"
           sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 288px"
+          placeholder={blurDataURL ? 'blur' : undefined}
+          blurDataURL={blurDataURL}
         />
       </div>
     </section>
