@@ -2,29 +2,11 @@ import { getBlogPosts } from "@/lib/api/hashnode";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BlogCard } from "@/components/blog/BlogCard";
+import { generatePageSEO } from "@/config/seo";
 
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Blog by Jowin John Chemban",
-  keywords: [
-    "Blog",
-    "Articles",
-    "Insights",
-    "Ideas",
-    "Knowledge",
-
-  ],
-  openGraph: {
-    title: "Blog - Jowin John Chemban",
-    description: " ",
-    type: "website",
-  },
-  alternates: {
-    canonical: "/blog",
-  },
-};
+export const metadata: Metadata = generatePageSEO("blog");
 
 export default async function BlogPage() {
   const posts = await getBlogPosts(20);

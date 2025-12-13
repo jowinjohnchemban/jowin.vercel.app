@@ -5,6 +5,7 @@ import "./globals.css";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { getPublication } from "@/lib/api/hashnode";
+import { siteConfig, seoConfig } from "@/config/site";
 
 
 const geistSans = Geist({
@@ -17,44 +18,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Jowin John Chemban";
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jowinjc.in";
-const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "";
-
 export async function generateMetadata(): Promise<Metadata> {
   // Fetch publication details from Hashnode for dynamic SEO
   const publication = await getPublication();
   
   const description = publication?.descriptionSEO || 
     publication?.about?.text || 
-    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 
-    " ";
+    siteConfig.description;
   
   const ogImage = publication?.ogMetaData?.image;
 
   return {
-    metadataBase: new URL(siteUrl),
+    metadataBase: new URL(siteConfig.url),
     title: {
-      default: siteName,
-      template: `%s | ${siteName}`,
+      default: siteConfig.name,
+      template: `%s | ${siteConfig.name}`,
     },
     description,
     keywords: [
       "Jowin John Chemban",
-      "Full-stack Developer",
+      "Full-stack Coder",
       "DevOps Engineer",
-      "Cloud Infrastructure",
-      "Web Development",
-      "React",
-      "Next.js",
-      "Node.js",
-      "TypeScript",
-      "Software Architecture",
+      "Cloud Architect",
+      "Development",
+      "IT Engineer",
       "Technical Blog",
     ],
-    authors: [{ name: publication?.author?.name || siteName }],
-    creator: siteName,
-    publisher: siteName,
+    authors: [{ name: publication?.author?.name || siteConfig.name }],
+    creator: siteConfig.name,
+    publisher: siteConfig.name,
     robots: {
       index: true,
       follow: true,
@@ -69,27 +61,27 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: "en_US",
-      url: siteUrl,
-      title: siteName,
+      url: siteConfig.url,
+      title: siteConfig.name,
       description,
-      siteName,
+      siteName: siteConfig.name,
       images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: siteName,
+      title: siteConfig.name,
       description,
-      creator: twitterHandle,
+      creator: seoConfig.twitterHandle,
       images: ogImage ? [ogImage] : undefined,
     },
     verification: {
-      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+      google: seoConfig.googleSiteVerification,
     },
     alternates: {
-      canonical: siteUrl,
+      canonical: siteConfig.url,
     },
     other: {
-      'dmca-site-verification': process.env.NEXT_PUBLIC_DMCA_VERIFICATION || '',
+      'dmca-site-verification': seoConfig.dmcaVerification,
     },
   };
 }
@@ -99,8 +91,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || '';
-  const ahrefsKey = process.env.NEXT_PUBLIC_AHREFS_KEY || '';
+  const gtmId = seoConfig.gtmId;
+  const ahrefsKey = seoConfig.ahrefsKey;
 
   return (
     <html lang="en">

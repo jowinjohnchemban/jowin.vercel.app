@@ -4,26 +4,10 @@ import Footer from "@/components/Footer";
 import { ContactForm } from "@/components/ContactForm";
 import Link from "next/link";
 import { Github, Linkedin, Twitter, Youtube, Instagram, Facebook } from "lucide-react";
+import { socialLinks, features } from "@/config/site";
+import { generatePageSEO } from "@/config/seo";
 
-export const metadata: Metadata = {
-  title: "Let's Connect",
-  description: "Get in touch with Jowin John Chemban",
-  keywords: [
-    "Connect",
-    "Get in touch",
-    "Collaboration",
-    "Inquiry",
-    "Support",
-  ],
-  openGraph: {
-    title: "Let's Connect - Jowin John Chemban",
-    description: "Let's work together! Reach out, or just to say hello.",
-    type: "website",
-  },
-  alternates: {
-    canonical: "/connect",
-  },
-};
+export const metadata: Metadata = generatePageSEO("connect");
 
 export default function ConnectPage() {
   return (
@@ -59,38 +43,38 @@ export default function ConnectPage() {
                 {
                   name: "GitHub",
                   icon: Github,
-                  platform: "github",
-                  enabled: !!process.env.NEXT_PUBLIC_GITHUB_URL,
+                  url: socialLinks.github,
+                  enabled: features.social.github,
                 },
                 {
                   name: "Twitter",
                   icon: Twitter,
-                  platform: "twitter",
-                  enabled: !!process.env.NEXT_PUBLIC_TWITTER_URL,
+                  url: socialLinks.twitter,
+                  enabled: features.social.twitter,
                 },
                 {
                   name: "LinkedIn",
                   icon: Linkedin,
-                  platform: "linkedin",
-                  enabled: !!process.env.NEXT_PUBLIC_LINKEDIN_URL,
+                  url: socialLinks.linkedin,
+                  enabled: features.social.linkedin,
                 },
                 {
                   name: "YouTube",
                   icon: Youtube,
-                  platform: "youtube",
-                  enabled: !!process.env.NEXT_PUBLIC_YOUTUBE_URL,
+                  url: socialLinks.youtube,
+                  enabled: features.social.youtube,
                 },
                 {
                   name: "Instagram",
                   icon: Instagram,
-                  platform: "instagram",
-                  enabled: !!process.env.NEXT_PUBLIC_INSTAGRAM_URL,
+                  url: socialLinks.instagram,
+                  enabled: features.social.instagram,
                 },
                 {
                   name: "Facebook",
                   icon: Facebook,
-                  platform: "facebook",
-                  enabled: !!process.env.NEXT_PUBLIC_FACEBOOK_URL,
+                  url: socialLinks.facebook,
+                  enabled: features.social.facebook,
                 },
               ]
                 .filter((link) => link.enabled)
@@ -99,7 +83,7 @@ export default function ConnectPage() {
                   return (
                     <Link
                       key={link.name}
-                      href={`/social/${link.platform}`}
+                      href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-card border border-border rounded-lg hover:bg-accent hover:border-primary transition-all group"

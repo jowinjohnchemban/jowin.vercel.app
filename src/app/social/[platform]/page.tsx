@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
+import { socialLinks } from "@/config/site";
 
-const socialMediaMap: Record<string, string | undefined> = {
-  github: process.env.NEXT_PUBLIC_GITHUB_URL,
-  twitter: process.env.NEXT_PUBLIC_TWITTER_URL,
-  linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL,
-  youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL,
-  instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL,
-  facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL,
+const socialMediaMap: Record<string, string> = {
+  github: socialLinks.github,
+  twitter: socialLinks.twitter,
+  linkedin: socialLinks.linkedin,
+  youtube: socialLinks.youtube,
+  instagram: socialLinks.instagram,
+  facebook: socialLinks.facebook,
 };
 
 export default async function SocialRedirectPage({

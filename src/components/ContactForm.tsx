@@ -7,6 +7,7 @@ import { Mail, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validation";
 import { Sanitizer } from "@/lib/security";
+import { securityConfig } from "@/config/site";
 
 // TypeScript declarations for Cloudflare Turnstile
 declare global {
@@ -60,7 +61,7 @@ export function ContactForm({
 
   // Load Cloudflare Turnstile script and render widget
   useEffect(() => {
-    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+    const siteKey = securityConfig.turnstile.siteKey;
     
     if (!siteKey) {
       console.error('[ContactForm] NEXT_PUBLIC_TURNSTILE_SITE_KEY is not configured');
@@ -68,25 +69,16 @@ export function ContactForm({
       return;
     }
 
-    console.log('[ContactForm] Initializing Turnstile', {
-      siteKey: siteKey.substring(0, 10) + '...',
-      isDevelopment,
-      host: typeof window !== 'undefined' ? window.location.hostname : 'unknown'
-    });
-
     // Define global callback for explicit rendering
     window.onTurnstileLoad = () => {
-      console.log('[ContactForm] Turnstile API loaded successfully');
       
       if (turnstileRef.current && window.turnstile && !turnstileWidgetId.current) {
-        console.log('[ContactForm] Attempting to render Turnstile widget...');
         try {
           turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
             sitekey: siteKey,
             theme: 'dark',
             size: 'normal',
             callback: (token: string) => {
-              console.log('[ContactForm] ✓ Turnstile success - token received');
               setCaptchaToken(token);
               setCaptchaError(false);
             },
@@ -104,7 +96,6 @@ export function ContactForm({
               setCaptchaToken("");
             },
           });
-          console.log('[ContactForm] ✓ Widget rendered successfully with ID:', turnstileWidgetId.current);
         } catch (error) {
           console.error('[ContactForm] ✗ Failed to render Turnstile widget:', error);
           setCaptchaError(true);
@@ -199,7 +190,6 @@ export function ContactForm({
     // Validate form
     const validationError = validateForm();
     if (validationError) {
-      console.log('[ContactForm] Validation failed:', validationError);
       setStatus("error");
       setErrorMessage(validationError);
       setTimeout(() => {

@@ -4,6 +4,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { HeroSection, LatestBlogSection, ContactSection } from "@/components/home";
 import { getBlogPosts } from "@/lib/api/hashnode";
+import { generatePageSEO } from "@/config/seo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = generatePageSEO("home");
 
 export default async function Home() {
   // Fetch blog posts on the server

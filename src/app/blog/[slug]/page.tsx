@@ -8,6 +8,7 @@ import { BlogPostContent } from "@/components/blog/BlogPostContent";
 import { BlogPostTags } from "@/components/blog/BlogPostTags";
 import { BlogPostNavigation } from "@/components/blog/BlogPostNavigation";
 import { BlogBreadcrumb } from "@/components/blog/BlogBreadcrumb";
+import { siteConfig } from "@/config/site";
 
 import type { Metadata } from "next";
 
@@ -26,19 +27,22 @@ export async function generateMetadata({
     };
   }
 
-  const publishedDate = new Date(post.publishedAt).toISOString();
-  
+  const url = `${siteConfig.url}/blog/${slug}`;
+  const keywords = post.tags?.map((tag) => tag.name) || [];
+
   return {
     title: post.title,
     description: post.excerpt,
-    keywords: post.tags?.map((tag) => tag.name) || [],
-    authors: [{ name: post.author.name }],
+    keywords: [...keywords, "blog", "article", siteConfig.author.name],
+    authors: post.author ? [{ name: post.author.name }] : [{ name: siteConfig.author.name }],
     openGraph: {
+      type: "article",
+      locale: "en_US",
+      url,
       title: post.title,
       description: post.excerpt,
-      type: "article",
-      publishedTime: publishedDate,
-      authors: [post.author.name],
+      siteName: siteConfig.name,
+      publishedTime: post.publishedAt,
       images: post.coverImage?.url
         ? [
             {
@@ -48,18 +52,18 @@ export async function generateMetadata({
               alt: post.title,
             },
           ]
-        : [],
-      tags: post.tags?.map((tag) => tag.name),
+        : undefined,
+      authors: post.author ? [post.author.name] : [siteConfig.author.name],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
-      images: post.coverImage?.url ? [post.coverImage.url] : [],
-      creator: process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@jowinjc",
+      creator: "@jowinchemban",
+      images: post.coverImage?.url ? [post.coverImage.url] : undefined,
     },
     alternates: {
-      canonical: `/blog/${slug}`,
+      canonical: url,
     },
   };
 }
@@ -90,8 +94,39 @@ export default async function BlogPostPage({
   const previousPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 
+  // Generate JSON-LD structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    image: post.coverImage?.url,
+    datePublished: post.publishedAt,
+    author: {
+      "@type": "Person",
+      name: post.author?.name || siteConfig.author.name,
+      image: post.author?.profilePicture,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteConfig.url}/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteConfig.url}/blog/${slug}`,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <Navbar />
       <main className="min-h-screen bg-background">
         {/* Hero Section with Cover Image */}

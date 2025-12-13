@@ -3,10 +3,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { siteConfig } from "@/config/site";
 import { usePathname } from "next/navigation";
 import { Menu, X, Home } from "lucide-react";
-
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || " ";
 
 const navLinks = [
   { href: "/blog", label: "Blog" },
@@ -58,7 +57,7 @@ export default function Navbar() {
             className="font-bold text-lg sm:text-xl hover:text-primary transition-colors"
             onClick={closeMenu}
           >
-            {SITE_NAME}
+            {siteConfig.name}
           </Link>
 
           {/* Desktop Navigation */}

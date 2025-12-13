@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -17,11 +18,30 @@ export async function generateMetadata({
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
+  const url = `${siteConfig.url}/blog/tag/${slug}`;
+  const title = `Blog tagged "${tagName}"`;
+  const description = `Browse all blog posts tagged with #${tagName}`;
+
   return {
-    title: `Blog #${tagName}`,
-    description: `Browse all blog posts tagged with ${tagName}`,
+    title,
+    description,
+    keywords: [tagName, "blog", "articles", siteConfig.author.name],
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url,
+      title,
+      description,
+      siteName: siteConfig.name,
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+      creator: "@jowinchemban",
+    },
     alternates: {
-      canonical: `/blog/tag/${slug}`,
+      canonical: url,
     },
   };
 }

@@ -1,8 +1,9 @@
 import { getBlogPosts } from "@/lib/api/hashnode";
 import type { MetadataRoute } from "next";
+import { siteConfig } from "@/config/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jowin.vercel.app";
+  const baseUrl = siteConfig.url;
   
   // Fetch blog posts dynamically
   const posts = await getBlogPosts(100);
