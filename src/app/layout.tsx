@@ -88,6 +88,9 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: siteUrl,
     },
+    other: {
+      'dmca-site-verification': process.env.NEXT_PUBLIC_DMCA_VERIFICATION || '',
+    },
   };
 }
 
