@@ -3,7 +3,7 @@
 /**
  * Hero Section Component
  * Landing page hero with GSAP animations
- * Progressive enhancement: visible by default, animated when JS loads
+ * SEO-friendly: Content visible by default, enhanced with subtle animation
  * @module components/home/HeroSection
  */
 
@@ -15,34 +15,30 @@ import gsap from "gsap";
 
 export function HeroSection() {
   const heroRef = useRef<HTMLDivElement | null>(null);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!heroRef.current) return;
+    if (!heroRef.current || hasAnimated.current) return;
+    hasAnimated.current = true;
 
-    const ctx = gsap.context(() => {
-      const elements = heroRef.current!.querySelectorAll(".hero-fade");
-      
-      // Set initial state for animation
-      gsap.set(elements, {
+    const elements = heroRef.current.querySelectorAll(".hero-fade");
+
+    // Set initial state and animate in one go
+    gsap.fromTo(
+      elements,
+      {
         opacity: 0,
-        y: 30,
-      });
-
-      // Animate to visible with same timing
-      gsap.to(elements, {
+        y: 20,
+      },
+      {
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        stagger: 0, // No stagger - animate together
+        duration: 0.6,
         ease: "power2.out",
-        delay: 0.1,
-      });
-    }, heroRef);
-
-    return () => {
-      ctx.revert();
-    };
-  }, []);
+        clearProps: "all", // Remove inline styles after animation
+      }
+    );
+  });
 
   return (
     <section
@@ -84,7 +80,7 @@ export function HeroSection() {
       <div className="flex-1 flex justify-center hero-fade">
         <Image
           src="/profile.jpg"
-          alt={`Profile Picture`}
+          alt="Jowin John Chemban"
           width={300}
           height={300}
           className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-2xl shadow-2xl object-cover"

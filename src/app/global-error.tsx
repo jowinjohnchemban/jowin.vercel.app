@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle, RefreshCcw, Home, MessageCircle } from "lucide-react";
 
 export default function GlobalError({
   error,
@@ -35,103 +37,76 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <div style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "1rem",
-          fontFamily: "system-ui, sans-serif",
-        }}>
-          <div style={{
-            maxWidth: "600px",
-            textAlign: "center",
-          }}>
-            <h1 style={{
-              fontSize: "6rem",
-              fontWeight: 700,
-              color: "#ef4444",
-              margin: 0,
-            }}>
-              Error
-            </h1>
-            <h2 style={{
-              fontSize: "2rem",
-              fontWeight: 600,
-              marginTop: "1rem",
-            }}>
-              Application Error
-            </h2>
-            <p style={{
-              fontSize: "1.125rem",
-              color: "#6b7280",
-              marginTop: "1rem",
-            }}>
+        <div className="min-h-screen bg-background flex items-center justify-center p-4">
+          <div className="w-full max-w-md text-center space-y-6">
+            {/* Icon */}
+            <div className="flex justify-center">
+              <div className="rounded-full bg-destructive/10 p-6">
+                <AlertTriangle className="h-16 w-16 sm:h-20 sm:w-20 text-destructive" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <div className="space-y-2">
+              <h1 className="text-6xl sm:text-7xl font-bold text-destructive">
+                Error
+              </h1>
+              <h2 className="text-xl sm:text-2xl font-semibold">
+                Application Error
+              </h2>
+            </div>
+
+            {/* Description */}
+            <p className="text-sm sm:text-base text-muted-foreground">
               A critical error occurred. Please refresh the page or try again later.
             </p>
-            <div style={{
-              marginTop: "2rem",
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}>
-              <button
-                onClick={reset}
-                style={{
-                  padding: "0.75rem 2rem",
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  backgroundColor: "#000",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "0.5rem",
-                  cursor: "pointer",
-                }}
-              >
+
+            {/* Development Error Details */}
+            {process.env.NODE_ENV === "development" && error?.message && (
+              <details className="text-left bg-muted p-3 rounded-lg text-xs">
+                <summary className="cursor-pointer font-semibold mb-2">
+                  Error Details
+                </summary>
+                <pre className="overflow-auto text-destructive whitespace-pre-wrap">
+                  {error.message}
+                </pre>
+                {error.digest && (
+                  <p className="text-muted-foreground mt-2">
+                    Digest: {error.digest}
+                  </p>
+                )}
+              </details>
+            )}
+
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <Button onClick={reset} className="w-full sm:w-auto">
+                <RefreshCcw className="h-4 w-4" />
                 Try Again
-              </button>
-              <Link
-                href="/"
-                style={{
-                  padding: "0.75rem 2rem",
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  backgroundColor: "#fff",
-                  color: "#000",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "0.5rem",
-                  textDecoration: "none",
-                  display: "inline-block",
-                }}
-              >
-                Go Home
-              </Link>
+              </Button>
+
+              <Button variant="outline" asChild className="w-full sm:w-auto">
+                <Link href="/">
+                  <Home className="h-4 w-4" />
+                  Go Home
+                </Link>
+              </Button>
             </div>
-            <div style={{ marginTop: "1.5rem" }}>
-              <Link
-                href="/connect"
-                style={{
-                  padding: "0.75rem 2rem",
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  backgroundColor: "#3b82f6",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "0.5rem",
-                  textDecoration: "none",
-                  display: "inline-block",
-                }}
-              >
-                Let&apos;s Connect
-              </Link>
+
+            {/* Connect Button */}
+            <div className="pt-2">
+              <Button variant="secondary" asChild className="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 group relative">
+                <Link href="/connect">
+                  <MessageCircle className="h-4 w-4" />
+                  Let&apos;s Connect
+                  <span className="absolute bottom-2 left-4 right-4 h-[1px] bg-border scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                </Link>
+              </Button>
             </div>
-            <p style={{
-              fontSize: "0.875rem",
-              color: "#9ca3af",
-              marginTop: "1.5rem",
-            }}>
-              Redirecting to home in {countdown} second{countdown !== 1 ? 's' : ''}...
+
+            {/* Auto-redirect countdown */}
+            <p className="text-xs text-muted-foreground pt-2">
+              Redirecting in {countdown} second{countdown !== 1 ? 's' : ''}...
             </p>
           </div>
         </div>

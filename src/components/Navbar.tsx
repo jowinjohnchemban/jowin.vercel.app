@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, Home } from "lucide-react";
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || " ";
@@ -19,6 +20,7 @@ const mobileNavLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   // Close menu when window is resized to desktop size
   useEffect(() => {
@@ -61,15 +63,21 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary rounded-lg transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`px-4 py-2 text-sm text-foreground transition-transform relative group ${
+                    isActive ? "font-bold" : "font-medium"
+                  }`}
+                >
+                  {link.label}
+                  <span className="absolute bottom-1 left-4 right-4 h-[1px] bg-gray-300 dark:bg-gray-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile Menu Button */}

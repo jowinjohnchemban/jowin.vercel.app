@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
@@ -108,17 +107,16 @@ const DEFAULT_ERROR: ErrorInfo = {
 export function ErrorPageContent({ statusCode, error, reset }: ErrorPageContentProps) {
   const config = ERROR_CONFIGS[statusCode] || DEFAULT_ERROR;
   const Icon = config.icon;
-  const router = useRouter();
   const [countdown, setCountdown] = useState(10);
   
   const isServerError = statusCode >= 500;
 
-  // Auto-redirect to home after 10 seconds
+  // Countdown timer and auto-redirect
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          router.push('/');
+          window.location.href = '/';
           return 0;
         }
         return prev - 1;
@@ -126,7 +124,7 @@ export function ErrorPageContent({ statusCode, error, reset }: ErrorPageContentP
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [router]);
+  }, []);
 
   const getColorClasses = () => {
     switch (config.color) {
@@ -215,7 +213,7 @@ export function ErrorPageContent({ statusCode, error, reset }: ErrorPageContentP
 
           {/* Connect Button */}
           <div className="pt-2">
-            <Button variant="default" asChild className="w-full sm:w-auto">
+            <Button variant="secondary" asChild className="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700">
               <Link href="/connect">
                 <MessageCircle className="h-4 w-4" />
                 Let&apos;s Connect
@@ -225,7 +223,7 @@ export function ErrorPageContent({ statusCode, error, reset }: ErrorPageContentP
 
           {/* Auto-redirect countdown */}
           <p className="text-xs text-muted-foreground pt-2">
-            Redirecting to home in {countdown} second{countdown !== 1 ? 's' : ''}...
+            Redirecting in {countdown} second{countdown !== 1 ? 's' : ''}...
           </p>
         </div>
       </main>
