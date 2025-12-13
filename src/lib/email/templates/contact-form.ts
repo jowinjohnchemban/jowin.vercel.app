@@ -15,7 +15,7 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
     : null;
 
   return `
-<html>
+<html lang="en">
 <body style="margin: 0; padding: 0; background-color: #ffffff;">
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
@@ -25,7 +25,7 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
           <!-- Header -->
           <tr>
             <td style="padding: 30px 30px 20px 30px; background-color: #000000; color: #ffffff;">
-              <strong style="font-size: 18px; display: block; margin-bottom: 8px;">New Message</strong>
+              <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Message from ${senderName}</strong>
               <span style="font-size: 13px; color: #999999;">${metadata.submittedAtIST}</span>
             </td>
           </tr>
