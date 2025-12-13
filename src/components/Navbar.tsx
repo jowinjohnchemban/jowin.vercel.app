@@ -74,7 +74,7 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
-                  <span className="absolute bottom-1 left-4 right-4 h-[1px] bg-gray-300 dark:bg-gray-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  <span className="absolute bottom-1 left-4 right-4 h-px bg-gray-300 dark:bg-gray-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </Link>
               );
             })}

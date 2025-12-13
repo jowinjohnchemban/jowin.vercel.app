@@ -99,7 +99,7 @@ export default function GlobalError({
                 <Link href="/connect">
                   <MessageCircle className="h-4 w-4" />
                   Let&apos;s Connect
-                  <span className="absolute bottom-2 left-4 right-4 h-[1px] bg-border scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  <span className="absolute bottom-2 left-4 right-4 h-px bg-border scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </Link>
               </Button>
             </div>
