@@ -35,9 +35,9 @@ export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
           start: "top 80%",
           toggleActions: "play none none none",
         },
-        opacity: 0,
-        y: 30,
-        duration: 0.6,
+        opacity: 0.3,
+        y: 20,
+        duration: 0.4,
         ease: "power2.out",
       });
 
@@ -48,10 +48,10 @@ export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
           start: "top 75%",
           toggleActions: "play none none none",
         },
-        opacity: 0,
-        y: 40,
-        duration: 0.7,
-        stagger: 0.1,
+        opacity: 0.3,
+        y: 20,
+        duration: 0.4,
+        stagger: 0.08,
         ease: "power2.out",
       });
 
@@ -62,9 +62,9 @@ export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
           start: "top 85%",
           toggleActions: "play none none none",
         },
-        opacity: 0,
+        opacity: 0.3,
         y: 20,
-        duration: 0.6,
+        duration: 0.4,
         ease: "power2.out",
       });
     }, sectionRef);

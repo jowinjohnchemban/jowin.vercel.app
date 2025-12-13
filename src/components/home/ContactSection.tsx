@@ -26,9 +26,9 @@ export function ContactSection() {
           start: "top 80%",
           toggleActions: "play none none none",
         },
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
+        opacity: 0.3,
+        y: 20,
+        duration: 0.4,
         ease: "power2.out",
       });
     }, sectionRef);
