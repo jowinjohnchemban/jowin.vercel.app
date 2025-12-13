@@ -104,6 +104,14 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
             </td>
           </tr>
           
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 20px 30px; background-color: #000000; color: #ffffff; text-align: center;">
+              <a href="https://jowinjc.in" style="color: #ffffff; text-decoration: none; font-size: 14px;" target="_blank">📬 jowinjc.in</a>
+              <div style="margin-top: 8px; color: #999999; font-size: 12px;">${metadata.submittedAtIST}</div>
+            </td>
+          </tr>
+          
         </table>
       </td>
     </tr>
