@@ -44,7 +44,10 @@ export function HeroSection({ blurDataURL }: { blurDataURL?: string } = {}) {
       </div>
 
       {/* RIGHT */}
-      <div className="flex-1 flex justify-center hero-image max-w-xl mx-auto lg:mx-0">
+      <div
+        className="flex-1 flex justify-center hero-image max-w-xl mx-auto lg:mx-0"
+        style={{ opacity: 0.2, transform: 'translateY(10px)' }}
+      >
         <Image
           src="/profile.jpg"
           alt="Jowin John Chemban"
