@@ -42,3 +42,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogPosts,
   ];
 }
+
+/* Sitemap Generation
+
+1. Define the base URL from site configuration.
+2. Fetch the latest 100 blog posts from Hashnode using getBlogPosts.
+3. Map each blog post to a sitemap entry with URL, last modified date, change frequency, and priority.
+4. Define static pages with their respective sitemap entries.
+5. Combine static pages and blog post entries into a single sitemap array and return it.
+*/
