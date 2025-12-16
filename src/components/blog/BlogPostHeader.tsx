@@ -63,35 +63,41 @@ export function BlogPostHeader({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-4xl font-bold leading-tight tracking-tight">
+      <h1 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight">
         {title}
       </h1>
       
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             <time dateTime={publishedAt}>{formattedDate}</time>
           </div>
-          <Separator orientation="vertical" className="h-4" />
+          <Separator orientation="vertical" className="hidden sm:inline-flex h-4" />
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
             <span>{readTimeInMinutes} min read</span>
           </div>
-          <Separator orientation="vertical" className="h-4" />
+          <Separator orientation="vertical" className="hidden sm:inline-flex h-4" />
           <span>{authorName}</span>
-          <Separator orientation="vertical" className="h-4" />
+          <Separator orientation="vertical" className="hidden sm:inline-flex h-4" />
           <Button
             variant="ghost"
             size="sm"
             onClick={handleShare}
-            className="h-auto p-0 text-muted-foreground hover:bg-transparent hover:text-foreground"
+            className="h-auto px-2 py-1 text-sm text-muted-foreground hover:bg-transparent hover:text-foreground"
             title={shared ? "Link copied!" : "Share this post"}
           >
             {shared ? (
-              <Check className="h-4 w-4 text-green-500" />
+              <span className="inline-flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                <span>Copied</span>
+              </span>
             ) : (
-              <Share2 className="h-4 w-4" />
+              <span className="inline-flex items-center gap-2">
+                <Share2 className="h-4 w-4" />
+                <span>Share</span>
+              </span>
             )}
           </Button>
         </div>
