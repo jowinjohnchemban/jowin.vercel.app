@@ -68,38 +68,39 @@ export function BlogPostHeader({
       </h1>
       
       <div className="flex items-center justify-between gap-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+        <div className="w-full grid grid-cols-2 gap-2 text-xs text-muted-foreground sm:grid-cols-4 sm:flex sm:items-center sm:gap-4 sm:text-sm">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             <time dateTime={publishedAt}>{formattedDate}</time>
           </div>
-          <Separator orientation="vertical" className="hidden sm:inline-flex h-4" />
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
             <span>{readTimeInMinutes} min read</span>
           </div>
-          <Separator orientation="vertical" className="hidden sm:inline-flex h-4" />
-          <span>{authorName}</span>
-          <Separator orientation="vertical" className="hidden sm:inline-flex h-4" />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleShare}
-            className="h-auto px-2 py-1 text-sm text-muted-foreground hover:bg-transparent hover:text-foreground"
-            title={shared ? "Link copied!" : "Share this post"}
-          >
-            {shared ? (
-              <span className="inline-flex items-center gap-2">
-                <Check className="h-4 w-4" />
-                <span>Copied</span>
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-2">
-                <Share2 className="h-4 w-4" />
-                <span>Share</span>
-              </span>
-            )}
-          </Button>
+          <div className="flex items-center gap-2">
+            <span>{authorName}</span>
+          </div>
+          <div className="flex items-start sm:items-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleShare}
+              className="h-auto px-2 py-1 text-sm text-muted-foreground hover:bg-transparent hover:text-foreground"
+              title={shared ? "Link copied!" : "Share this post"}
+            >
+              {shared ? (
+                <span className="inline-flex items-center gap-2">
+                  <Check className="h-4 w-4" />
+                  <span>Copied</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-2">
+                  <Share2 className="h-4 w-4" />
+                  <span>Share</span>
+                </span>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
