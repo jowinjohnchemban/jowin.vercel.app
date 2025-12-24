@@ -185,7 +185,7 @@ export function PWAInstallPrompt() {
           </div>
           <CardDescription className="text-muted-foreground mt-2">
             <span className="block text-sm font-medium leading-relaxed">
-              Install our app for a better experience with offline access and quick loading!
+              Install App (PWA) for a better experience with offline access and quick loading!
             </span>
           </CardDescription>
         </CardHeader>
