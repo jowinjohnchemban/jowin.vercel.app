@@ -65,66 +65,59 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network First strategy for all content
+  // Network First for navigation, cache-first for static assets (industry standard)
   event.respondWith(
     (async () => {
+      const cache = await caches.open(CACHE_NAME);
       try {
-        // Try network first
-        const networkResponse = await fetch(event.request);
-
-        // If successful, cache based on content type
-        if (networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-
+        // For navigation requests (HTML pages)
+        if (event.request.mode === 'navigate') {
           try {
-            const cache = await caches.open(CACHE_NAME);
-
-            if (isStaticAsset(event.request)) {
-              // For static assets, check if update is needed
-              const cachedResponse = await cache.match(event.request);
-
-              if (cachedResponse) {
-                // Compare headers to see if content changed
-                const shouldUpdate = shouldUpdateCache(cachedResponse, responseClone);
-                if (shouldUpdate) {
-                  await cache.put(event.request, responseClone);
-                }
-              } else {
-                // No cache exists, store it
-                await cache.put(event.request, responseClone);
-              }
-            } else {
-              // For dynamic content, always cache latest version
-              await cache.put(event.request, responseClone);
+            const networkResponse = await fetch(event.request);
+            if (networkResponse && networkResponse.status === 200) {
+              // Cache the page for offline use
+              cache.put(event.request, networkResponse.clone());
             }
-          } catch (cacheError) {
-            console.warn('Cache operation failed:', cacheError);
-            // Continue without caching - don't break the response
-          }
-        }
-
-        return networkResponse;
-      } catch (networkError) {
-        console.warn('Network unavailable:', networkError);
-        // Network failed, try cache
-        try {
-          const cachedResponse = await caches.match(event.request);
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-
-          // No cache available
-          if (event.request.mode === 'navigate') {
-            // For navigation requests, show offline page
-            const offlineResponse = await caches.match('/offline');
+            return networkResponse;
+          } catch (err) {
+            // If offline, try to serve from cache
+            const cachedPage = await cache.match(event.request);
+            if (cachedPage) return cachedPage;
+            // Fallback to offline page
+            const offlineResponse = await cache.match('/offline');
             return offlineResponse || createOfflineResponse();
           }
+        }
 
-          return createOfflineResponse();
-        } catch (cacheError) {
-          console.warn('Cache fallback failed:', cacheError);
+        // For static assets: cache-first
+        if (isStaticAsset(event.request)) {
+          const cachedAsset = await cache.match(event.request);
+          if (cachedAsset) return cachedAsset;
+          try {
+            const networkResponse = await fetch(event.request);
+            if (networkResponse && networkResponse.status === 200) {
+              cache.put(event.request, networkResponse.clone());
+            }
+            return networkResponse;
+          } catch (err) {
+            return createOfflineResponse();
+          }
+        }
+
+        // For other GET requests, try network then cache
+        try {
+          const networkResponse = await fetch(event.request);
+          if (networkResponse && networkResponse.status === 200) {
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        } catch (err) {
+          const cachedResponse = await cache.match(event.request);
+          if (cachedResponse) return cachedResponse;
           return createOfflineResponse();
         }
+      } catch (err) {
+        return createOfflineResponse();
       }
     })()
   );
