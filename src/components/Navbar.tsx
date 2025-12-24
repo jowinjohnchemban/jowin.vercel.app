@@ -93,7 +93,10 @@ export default function Navbar() {
             )}
           </button>
         </nav>
+
       </header>
+      {/* Portal target for toast banners below navbar */}
+      <div id="banner-portal" />
 
       {/* Mobile Menu Overlay - Outside header */}
       {isOpen && (
