@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { getPublication } from "@/lib/api/hashnode";
 import { siteConfig, seoConfig } from "@/config/site";
+import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 
 
 const geistSans = Geist({
@@ -101,7 +102,12 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#ffffff" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Jowin" />
+        <meta name="mobile-web-app-capable" content="yes" />
         {/* Preload critical hero image for faster LCP */}
         <link
           rel="preload"
@@ -149,10 +155,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         )}
 
+        {/* Service Worker Registration */}
+        <Script
+          id="sw-registration"
+          strategy="afterInteractive"
+        >
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                  .then(function(registration) {
+                    console.log('SW registered: ', registration);
+                  })
+                  .catch(function(registrationError) {
+                    console.log('SW registration failed: ', registrationError);
+                  });
+              });
+            }
+          `}
+        </Script>
+
         {children}
         
         <SpeedInsights />
         <Analytics />
+
+        {/* PWA Install Prompt */}
+        <PWAInstallPrompt />
       </body>
     </html>
   );

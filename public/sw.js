@@ -1,0 +1,180 @@
+const CACHE_NAME = 'jowin-portfolio-v1';
+// IMPORTANT: This service worker ONLY caches content from the SAME ORIGIN/SITE
+// External resources (analytics, CDNs, etc.) are NEVER cached for security and functionality
+const urlsToCache = [
+  '/',
+  '/offline',
+  '/connect',
+  '/blog',
+  '/favicon.ico',
+  '/favicon.png',
+  '/profile.jpg',
+  '/site.webmanifest'
+];
+
+// Install event - cache resources with error handling
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        return cache.addAll(urlsToCache);
+      })
+      .catch((error) => {
+        console.warn('Some resources failed to cache during install:', error);
+        // Continue with service worker installation even if caching fails
+      })
+  );
+  // Force the waiting service worker to become the active service worker
+  self.skipWaiting();
+});
+
+// Activate event - clean up old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  // Take control of all clients immediately
+  self.clients.claim();
+});
+
+// Fetch event - Network First for all content with intelligent caching
+// Uses async/await for better error handling and performance
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // ONLY cache content from the SAME ORIGIN/SITE
+  // External requests (analytics, CDNs, APIs) are NEVER cached for security and functionality
+  if (!url.origin.includes(self.location.origin)) {
+    return;
+  }
+
+  // Network First strategy for all content
+  event.respondWith(
+    (async () => {
+      try {
+        // Try network first
+        const networkResponse = await fetch(event.request);
+
+        // If successful, cache based on content type
+        if (networkResponse.status === 200) {
+          const responseClone = networkResponse.clone();
+
+          try {
+            const cache = await caches.open(CACHE_NAME);
+
+            if (isStaticAsset(event.request)) {
+              // For static assets, check if update is needed
+              const cachedResponse = await cache.match(event.request);
+
+              if (cachedResponse) {
+                // Compare headers to see if content changed
+                const shouldUpdate = shouldUpdateCache(cachedResponse, responseClone);
+                if (shouldUpdate) {
+                  await cache.put(event.request, responseClone);
+                }
+              } else {
+                // No cache exists, store it
+                await cache.put(event.request, responseClone);
+              }
+            } else {
+              // For dynamic content, always cache latest version
+              await cache.put(event.request, responseClone);
+            }
+          } catch (cacheError) {
+            console.warn('Cache operation failed:', cacheError);
+            // Continue without caching - don't break the response
+          }
+        }
+
+        return networkResponse;
+      } catch (networkError) {
+        console.warn('Network unavailable:', networkError);
+        // Network failed, try cache
+        try {
+          const cachedResponse = await caches.match(event.request);
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+
+          // No cache available
+          if (event.request.mode === 'navigate') {
+            // For navigation requests, show offline page
+            const offlineResponse = await caches.match('/offline');
+            return offlineResponse || createOfflineResponse();
+          }
+
+          return createOfflineResponse();
+        } catch (cacheError) {
+          console.warn('Cache fallback failed:', cacheError);
+          return createOfflineResponse();
+        }
+      }
+    })()
+  );
+});
+
+// Helper function to identify static assets
+function isStaticAsset(request) {
+  // Check by destination (modern browsers) - most reliable
+  if (request.destination) {
+    return ['image', 'font', 'style', 'script'].includes(request.destination);
+  }
+
+  // Fallback: check by file extension (optimized - only common web assets)
+  const pathname = request.url.pathname.toLowerCase();
+  return /\.(png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|css|js)$/i.test(pathname);
+}
+
+// Helper function to determine if cache should be updated
+function shouldUpdateCache(cachedResponse, networkResponse) {
+  // Compare ETag headers (most reliable)
+  const cachedETag = cachedResponse.headers.get('ETag');
+  const networkETag = networkResponse.headers.get('ETag');
+
+  if (cachedETag && networkETag && cachedETag !== networkETag) {
+    return true; // Content has changed
+  }
+
+  // Compare Last-Modified headers (fallback)
+  const cachedLastModified = cachedResponse.headers.get('Last-Modified');
+  const networkLastModified = networkResponse.headers.get('Last-Modified');
+
+  if (cachedLastModified && networkLastModified && cachedLastModified !== networkLastModified) {
+    return true; // Content has changed
+  }
+
+  // If no validation headers, assume content might have changed
+  if (!cachedETag && !cachedLastModified) {
+    return true;
+  }
+
+  return false; // Content appears unchanged
+}
+
+// Helper function to create offline response
+function createOfflineResponse() {
+  return new Response(
+    JSON.stringify({
+      error: 'Offline',
+      message: 'Content not available offline. Please check your internet connection.'
+    }),
+    {
+      status: 503,
+      statusText: 'Service Unavailable',
+      headers: { 'Content-Type': 'application/json' }
+    }
+  );
+}
