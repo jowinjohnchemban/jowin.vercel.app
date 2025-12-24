@@ -4,8 +4,41 @@ import Footer from "@/components/Footer";
 import { ContactForm } from "@/components/ContactForm";
 import Link from "next/link";
 import { Github, Linkedin, Twitter, Youtube, Instagram, Facebook } from "lucide-react";
-import { socialLinks, features, siteConfig } from "@/config/site";
+import { features, siteConfig } from "@/config/site";
 import { generatePageSEO } from "@/config/seo";
+
+const socialPlatforms = [
+  {
+    name: "GitHub",
+    icon: Github,
+    enabled: features.social.github,
+  },
+  {
+    name: "Twitter",
+    icon: Twitter,
+    enabled: features.social.twitter,
+  },
+  {
+    name: "LinkedIn",
+    icon: Linkedin,
+    enabled: features.social.linkedin,
+  },
+  {
+    name: "YouTube",
+    icon: Youtube,
+    enabled: features.social.youtube,
+  },
+  {
+    name: "Instagram",
+    icon: Instagram,
+    enabled: features.social.instagram,
+  },
+  {
+    name: "Facebook",
+    icon: Facebook,
+    enabled: features.social.facebook,
+  },
+];
 
 export const metadata: Metadata = generatePageSEO(undefined, {
   title: "Let's Connect",
@@ -61,51 +94,14 @@ export default function ConnectPage() {
             <h2 className="text-xl sm:text-2xl font-bold mb-4">Catch me on socials 👇</h2>
             <p className="text-sm text-muted-foreground mb-6">Follow for the latest vibes, thoughts & more ✨</p>
             <div className="flex flex-wrap justify-center gap-4">
-              {[
-                {
-                  name: "GitHub",
-                  icon: Github,
-                  url: socialLinks.github,
-                  enabled: features.social.github,
-                },
-                {
-                  name: "Twitter",
-                  icon: Twitter,
-                  url: socialLinks.twitter,
-                  enabled: features.social.twitter,
-                },
-                {
-                  name: "LinkedIn",
-                  icon: Linkedin,
-                  url: socialLinks.linkedin,
-                  enabled: features.social.linkedin,
-                },
-                {
-                  name: "YouTube",
-                  icon: Youtube,
-                  url: socialLinks.youtube,
-                  enabled: features.social.youtube,
-                },
-                {
-                  name: "Instagram",
-                  icon: Instagram,
-                  url: socialLinks.instagram,
-                  enabled: features.social.instagram,
-                },
-                {
-                  name: "Facebook",
-                  icon: Facebook,
-                  url: socialLinks.facebook,
-                  enabled: features.social.facebook,
-                },
-              ]
+              {socialPlatforms
                 .filter((link) => link.enabled)
                 .map((link) => {
                   const Icon = link.icon;
                   return (
                     <Link
                       key={link.name}
-                      href={link.url}
+                      href={`/social/${link.name.toLowerCase()}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-card border border-border rounded-lg hover:bg-accent hover:border-primary transition-all group"
