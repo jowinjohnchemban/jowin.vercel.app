@@ -135,32 +135,6 @@ function isStaticAsset(request) {
   return /\.(png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|css|js)$/i.test(pathname);
 }
 
-// Helper function to determine if cache should be updated
-function shouldUpdateCache(cachedResponse, networkResponse) {
-  // Compare ETag headers (most reliable)
-  const cachedETag = cachedResponse.headers.get('ETag');
-  const networkETag = networkResponse.headers.get('ETag');
-
-  if (cachedETag && networkETag && cachedETag !== networkETag) {
-    return true; // Content has changed
-  }
-
-  // Compare Last-Modified headers (fallback)
-  const cachedLastModified = cachedResponse.headers.get('Last-Modified');
-  const networkLastModified = networkResponse.headers.get('Last-Modified');
-
-  if (cachedLastModified && networkLastModified && cachedLastModified !== networkLastModified) {
-    return true; // Content has changed
-  }
-
-  // If no validation headers, assume content might have changed
-  if (!cachedETag && !cachedLastModified) {
-    return true;
-  }
-
-  return false; // Content appears unchanged
-}
-
 // Helper function to create offline response
 function createOfflineResponse() {
   return new Response(
