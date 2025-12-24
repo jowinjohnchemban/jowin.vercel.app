@@ -16,10 +16,6 @@ export default function Error({
   }, [error]);
 
   return (
-    <ErrorPageContent 
-      statusCode={500} 
-      error={error}
-      reset={reset}
-    />
+    <ErrorPageContent />
   );
 }
