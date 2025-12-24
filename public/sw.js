@@ -1,4 +1,8 @@
-const CACHE_NAME = 'jowin-portfolio-v1';
+// Automated weekly cache versioning
+const now = new Date();
+const year = now.getFullYear();
+const week = Math.ceil(((now - new Date(year, 0, 1)) / 86400000 + new Date(year, 0, 1).getDay() + 1) / 7);
+const CACHE_NAME = `jowin-pwa-cache-${year}-W${week}`;
 // IMPORTANT: This service worker ONLY caches content from the SAME ORIGIN/SITE
 // External resources (analytics, CDNs, etc.) are NEVER cached for security and functionality
 const urlsToCache = [
