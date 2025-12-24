@@ -1,8 +1,7 @@
 import { Metadata } from "next";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import OfflineActions from "./OfflineActions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { WifiOff, Home, RefreshCw } from "lucide-react";
+import { WifiOff } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Offline - Jowin John Chemban",
@@ -12,12 +11,7 @@ export const metadata: Metadata = {
     follow: false,
   },
 };
-
 export default function OfflinePage() {
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="max-w-md w-full text-center">
@@ -39,20 +33,7 @@ export default function OfflinePage() {
               <li>• Some pages may still work offline</li>
             </ul>
           </div>
-
-          <div className="flex flex-col gap-2">
-            <Button onClick={handleRefresh} className="w-full">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Try Again
-            </Button>
-
-            <Link href="/">
-              <Button variant="outline" className="w-full">
-                <Home className="h-4 w-4 mr-2" />
-                Go Home
-              </Button>
-            </Link>
-          </div>
+          <OfflineActions />
         </CardContent>
       </Card>
     </div>
