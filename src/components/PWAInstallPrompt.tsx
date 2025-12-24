@@ -159,12 +159,17 @@ export function PWAInstallPrompt() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 max-w-sm animate-in slide-in-from-bottom-4">
-      <Card className="border-none bg-white/70 dark:bg-background/60 backdrop-blur-lg shadow-xl transition-all duration-300"
-        style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', borderRadius: '1rem' }}>
-        <CardHeader className="pb-3">
+    <div
+      className="fixed bottom-6 right-1/2 translate-x-1/2 sm:bottom-6 sm:right-6 sm:translate-x-0 z-50 w-[95vw] max-w-xs sm:max-w-sm animate-in slide-in-from-bottom-4"
+      style={{ pointerEvents: 'auto' }}
+    >
+      <Card
+        className="border border-border/60 bg-white/70 dark:bg-background/70 backdrop-blur-xl shadow-2xl p-0 rounded-2xl"
+        style={{ boxShadow: '0 8px 32px 0 rgba(31,38,135,0.18)', borderRadius: '1.25rem' }}
+      >
+        <CardHeader className="pb-2 pt-4 px-5">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg flex items-center gap-2 text-primary font-semibold">
+            <CardTitle className="text-base flex items-center gap-2 text-primary font-semibold">
               <Download className="h-5 w-5 text-primary drop-shadow" />
               Install App
             </CardTitle>
@@ -178,14 +183,16 @@ export function PWAInstallPrompt() {
               <X className="h-4 w-4 text-muted-foreground" />
             </Button>
           </div>
-          <CardDescription className="text-muted-foreground">
-            <span className="block text-base font-medium">Install our app for a better experience with offline access and quick loading!</span>
+          <CardDescription className="text-muted-foreground mt-2">
+            <span className="block text-sm font-medium leading-relaxed">
+              Install our app for a better experience with offline access and quick loading!
+            </span>
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-0">
+        <CardContent className="pt-0 pb-4 px-5">
           <Button
             onClick={handleInstallClick}
-            className="w-full bg-primary/80 hover:bg-primary/90 text-white font-semibold shadow-md backdrop-blur-md"
+            className="w-full bg-primary/90 hover:bg-primary text-white font-semibold shadow-md backdrop-blur-md rounded-lg py-2 text-base"
             disabled={!deferredPrompt}
             size="lg"
           >
