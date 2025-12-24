@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { getPublication } from "@/lib/api/hashnode";
 import { siteConfig, seoConfig } from "@/config/site";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
+import { OfflineBanner } from "@/components/ui/OfflineBanner";
 
 
 const geistSans = Geist({
@@ -175,6 +176,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           `}
         </Script>
 
+        <OfflineBanner />
         {children}
         
         <SpeedInsights />
