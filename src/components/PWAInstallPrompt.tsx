@@ -160,44 +160,47 @@ export function PWAInstallPrompt() {
 
   return (
     <div
-      className="fixed bottom-6 right-1/2 translate-x-1/2 sm:bottom-6 sm:right-6 sm:translate-x-0 z-50 w-[95vw] max-w-xs sm:max-w-sm animate-in slide-in-from-bottom-4"
+      className="fixed bottom-4 right-1/2 translate-x-1/2 sm:bottom-4 sm:right-4 sm:translate-x-0 z-50 w-[90vw] max-w-[280px] sm:max-w-[320px] animate-in slide-in-from-bottom-2"
       style={{ pointerEvents: 'auto' }}
     >
       <Card
-        className="border border-border/60 bg-white/70 dark:bg-background/70 backdrop-blur-xl shadow-2xl p-0 rounded-2xl"
-        style={{ boxShadow: '0 8px 32px 0 rgba(31,38,135,0.18)', borderRadius: '1.25rem' }}
+        className="border border-white/20 bg-white/10 dark:bg-black/10 backdrop-blur-2xl shadow-2xl p-0 rounded-xl"
+        style={{ 
+          boxShadow: '0 8px 32px 0 rgba(31,38,135,0.25), 0 2px 16px 0 rgba(31,38,135,0.15)',
+          borderRadius: '0.75rem' 
+        }}
       >
-        <CardHeader className="pb-2 pt-4 px-5">
+        <CardHeader className="pb-2 pt-3 px-4">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base flex items-center gap-2 text-primary font-semibold">
-              <Download className="h-5 w-5 text-primary drop-shadow" />
+            <CardTitle className="text-sm flex items-center gap-2 text-foreground font-semibold">
+              <Download className="h-4 w-4 text-primary drop-shadow-sm" />
               Install App
             </CardTitle>
             <Button
               variant="ghost"
               size="icon"
               onClick={handleDismiss}
-              className="h-8 w-8 p-0 rounded-full bg-white/30 dark:bg-background/30 hover:bg-white/50 dark:hover:bg-background/50 backdrop-blur-md"
+              className="h-6 w-6 p-0 rounded-full bg-white/20 dark:bg-black/20 hover:bg-white/30 dark:hover:bg-black/30 backdrop-blur-sm"
               aria-label="Dismiss install prompt"
             >
-              <X className="h-4 w-4 text-muted-foreground" />
+              <X className="h-3 w-3 text-muted-foreground" />
             </Button>
           </div>
-          <CardDescription className="text-muted-foreground mt-2">
-            <span className="block text-sm font-medium leading-relaxed">
-              Install App (PWA) for a better experience with offline access and quick loading!
+          <CardDescription className="text-muted-foreground mt-1">
+            <span className="block text-xs font-medium leading-relaxed">
+              Install PWA for offline access and faster loading!
             </span>
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-0 pb-4 px-5">
+        <CardContent className="pt-0 pb-3 px-4">
           <Button
             onClick={handleInstallClick}
-            className="w-full bg-primary/90 hover:bg-primary text-white font-semibold shadow-md backdrop-blur-md rounded-lg py-2 text-base"
+            className="w-full bg-primary/90 hover:bg-primary text-white font-medium shadow-lg backdrop-blur-sm rounded-md py-1.5 text-sm"
             disabled={!deferredPrompt}
-            size="lg"
+            size="sm"
           >
-            <Download className="h-4 w-4 mr-2" />
-            Install Now
+            <Download className="h-3.5 w-3.5 mr-1.5" />
+            Install
           </Button>
         </CardContent>
       </Card>

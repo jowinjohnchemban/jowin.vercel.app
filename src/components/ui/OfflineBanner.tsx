@@ -1,5 +1,5 @@
 "use client";
-import { WifiOff } from "lucide-react";
+import { WifiOff, Wifi } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
@@ -72,13 +72,13 @@ export function OfflineBanner() {
   const banner = (
     <div
       className={cn(
-        "mx-auto mt-2 flex items-center justify-center gap-2 px-4 py-2 rounded-xl border backdrop-blur-md bg-background/70 shadow-lg text-destructive-foreground text-sm font-medium w-fit animate-in fade-in slide-in-from-top duration-300",
-        offline ? "bg-destructive/70 border-destructive" : "bg-green-500/70 border-green-500"
+        "mx-auto mt-0 flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-white/20 backdrop-blur-2xl bg-white/10 dark:bg-black/10 shadow-2xl text-foreground text-sm font-medium w-fit animate-in fade-in slide-in-from-top duration-300",
+        offline ? "text-gray-400" : "text-green-400"
       )}
       role="status"
       aria-live="polite"
     >
-      <WifiOff className="w-4 h-4 mr-1" />
+      {offline ? <WifiOff className="w-4 h-4 mr-1" /> : <Wifi className="w-4 h-4 mr-1" />}
       {offline ? "You are offline. Showing cached content." : "You are back online."}
     </div>
   );
