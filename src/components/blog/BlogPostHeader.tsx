@@ -8,7 +8,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Share2, Check } from "lucide-react";
+import { Calendar, Clock, Share2, Check, User } from "lucide-react";
 import { useState } from "react";
 
 interface BlogPostHeaderProps {
@@ -73,33 +73,29 @@ export function BlogPostHeader({
             <Calendar className="h-4 w-4" />
             <time dateTime={publishedAt}>{formattedDate}</time>
           </div>
+          <Separator orientation="vertical" className="hidden sm:block h-4" />
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
             <span>{readTimeInMinutes} min read</span>
           </div>
+          <Separator orientation="vertical" className="hidden sm:block h-4" />
           <div className="flex items-center gap-2">
+            <User className="h-4 w-4" />
             <span>{authorName}</span>
           </div>
-          <div className="flex items-start sm:items-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleShare}
-              className="h-auto px-2 py-1 text-sm text-muted-foreground hover:bg-transparent hover:text-foreground"
-              title={shared ? "Link copied!" : "Share this post"}
-            >
-              {shared ? (
-                <span className="inline-flex items-center gap-2">
-                  <Check className="h-4 w-4" />
-                  <span>Copied</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-2">
-                  <Share2 className="h-4 w-4" />
-                  <span>Share</span>
-                </span>
-              )}
-            </Button>
+          <Separator orientation="vertical" className="hidden sm:block h-4" />
+          <div className="flex items-center gap-2 cursor-pointer" onClick={handleShare} title={shared ? "Link copied!" : "Share this post"}>
+            {shared ? (
+              <span className="inline-flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                <span>Copied</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2">
+                <Share2 className="h-4 w-4" />
+                <span>Share</span>
+              </span>
+            )}
           </div>
         </div>
       </div>
