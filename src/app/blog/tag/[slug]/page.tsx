@@ -46,6 +46,8 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function TagPage({
   params,
 }: {

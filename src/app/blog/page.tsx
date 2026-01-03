@@ -28,7 +28,7 @@ export const metadata: Metadata = generatePageSEO(undefined, {
       },
     ],
   },
-});
+export const revalidate = 3600; // Revalidate every hour
 
 export default async function BlogPage() {
   const posts = await getBlogPosts(20);
