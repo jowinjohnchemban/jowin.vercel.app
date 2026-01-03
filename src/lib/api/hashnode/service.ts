@@ -174,7 +174,7 @@ export class HashnodeService {
   /**
    * Fetch blog posts with automatic fallback to basic query
    */
-  async getBlogPosts(count?: number): Promise<BlogPost[]> {
+  async getBlogPosts(count?: number): Promise<readonly BlogPost[]> {
     const limit = Math.min(
       count ?? HASHNODE_CONFIG.DEFAULT_POSTS_COUNT,
       HASHNODE_CONFIG.MAX_POSTS_PER_REQUEST

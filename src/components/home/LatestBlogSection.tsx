@@ -18,7 +18,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 interface LatestBlogSectionProps {
-  posts: BlogPost[];
+  posts: readonly BlogPost[];
 }
 
 export function LatestBlogSection({ posts }: LatestBlogSectionProps) {

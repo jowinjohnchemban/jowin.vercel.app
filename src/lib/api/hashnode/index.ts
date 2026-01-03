@@ -49,7 +49,7 @@ export async function getPublication(): Promise<Publication | null> {
  * @param count - Number of posts to fetch
  * @returns Array of blog posts or empty array on error
  */
-export async function getBlogPosts(count?: number): Promise<BlogPost[]> {
+export async function getBlogPosts(count?: number): Promise<readonly BlogPost[]> {
   try {
     return await hashnodeService.getBlogPosts(count);
   } catch {

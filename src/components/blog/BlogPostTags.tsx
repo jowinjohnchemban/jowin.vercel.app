@@ -6,14 +6,10 @@
 
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-
-interface Tag {
-  name: string;
-  slug?: string;
-}
+import type { Tag } from "@/lib/api/hashnode/types";
 
 interface BlogPostTagsProps {
-  tags?: Tag[];
+  tags?: readonly Tag[];
 }
 
 export function BlogPostTags({ tags }: BlogPostTagsProps) {
