@@ -1,0 +1,53 @@
+# Git
+.git
+.gitignore
+
+# Dependencies
+node_modules
+package-lock.json
+npm-debug.log
+yarn.lock
+yarn-error.log
+
+# Build outputs
+.next
+dist
+build
+out
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE and Editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# OS files
+Thumbs.db
+
+# Testing
+coverage
+.nyc_output
+
+# Logs
+logs
+*.log
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# CI/CD
+.github
+
+# Development
+.turbo
+.turbopack-cache
