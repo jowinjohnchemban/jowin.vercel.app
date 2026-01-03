@@ -22,8 +22,8 @@ A modern, high-performance website and blog built with Next.js 16, React 19, and
 ### Installation
 ```bash
 # Clone repository
-https://github.com/jowinjohnchemban/jowin.vercel.app.git
-cd jowin.vercel.app
+https://github.com/jowinjohnchemban/jowinjc.in.git
+cd jowinjc.in
 npm install
 cp .env.example .env.local
 ```
