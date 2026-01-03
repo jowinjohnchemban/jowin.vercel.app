@@ -5,8 +5,6 @@ import "./globals.css";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { seoConfig, siteConfig } from "@/config/site";
-import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
-import { OfflineBanner } from "@/components/ui/OfflineBanner";
 
 export const runtime = 'nodejs';
 export const preferredRegion = 'auto';
@@ -172,24 +170,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         )}
 
-        {/* Service Worker registration for instant PWA */}
-        <Script
-          id="sw-registration"
-          strategy="beforeInteractive"
-        >
-          {`
-            if ('serviceWorker' in navigator) {
-              navigator.serviceWorker.register('/sw.js')
-                .then(function(registration) {
-                  console.log('SW registered: ', registration);
-                })
-                .catch(function(registrationError) {
-                  console.log('SW registration failed: ', registrationError);
-                });
-            }
-          `}
-        </Script>
-
         {/* Preload critical routes for instant navigation */}
         <Script
           id="preload-routes"
@@ -208,15 +188,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
 
-        <OfflineBanner />
         {children}
 
         {/* Analytics - non-blocking */}
         <SpeedInsights />
         <Analytics />
-
-        {/* PWA Install Prompt - loads instantly */}
-        <PWAInstallPrompt />
       </body>
     </html>
   );
