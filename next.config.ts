@@ -15,15 +15,6 @@ const nextConfig: NextConfig = {
   // Aggressive performance optimizations
   experimental: {
     optimizePackageImports: ["lucide-react"],
-    // Enable faster builds
-    turbo: {
-      rules: {
-        "*.svg": {
-          loaders: ["@svgr/webpack"],
-          as: "*.js",
-        },
-      },
-    },
   },
 
   // Remove console logs in production
@@ -136,9 +127,6 @@ const nextConfig: NextConfig = {
 
   // Optimize build output
   output: "standalone",
-
-  // Enable SWC minification for smaller bundles
-  swcMinify: true,
 };
 
 export default nextConfig;
