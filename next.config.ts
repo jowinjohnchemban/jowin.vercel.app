@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
 
   // Enable React 18's new SSR architecture
-  reactCompiler: true,
+  // reactCompiler: true,
 
   // Recommended for Next.js 16
   reactStrictMode: true,
