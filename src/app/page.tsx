@@ -8,10 +8,7 @@ import { generatePageSEO } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
-// Static generation for instant loading
-export const revalidate = 3600; // Revalidate every hour
-export const fetchCache = 'force-cache';
-export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = generatePageSEO(undefined, {
   title: siteConfig.name,

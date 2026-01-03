@@ -8,13 +8,10 @@ import { siteConfig, seoConfig } from "@/config/site";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import { OfflineBanner } from "@/components/ui/OfflineBanner";
 
-// Aggressive caching for instant loading
-export const revalidate = 3600; // Revalidate every hour
-export const fetchCache = 'force-cache';
 export const runtime = 'nodejs';
 export const preferredRegion = 'auto';
 
-// Preload critical fonts for instant text rendering
+// Font preload for optimal rendering
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

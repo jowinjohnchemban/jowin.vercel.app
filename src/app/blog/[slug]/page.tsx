@@ -68,8 +68,12 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 3600; // Revalidate every hour
+export const dynamic = 'force-dynamic';
 
+/**
+ * Generate static params for all blog posts
+ * Generates routes for up to 20 most recent posts at build time
+ */
 export async function generateStaticParams() {
   const posts = await getBlogPosts(20);
   return posts.map((post) => ({

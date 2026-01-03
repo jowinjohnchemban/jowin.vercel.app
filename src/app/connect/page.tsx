@@ -7,10 +7,9 @@ import { Github, Linkedin, Twitter, Youtube, Instagram, Facebook } from "lucide-
 import { features, siteConfig } from "@/config/site";
 import { generatePageSEO } from "@/config/seo";
 
-// Static generation for instant loading
-export const revalidate = false; // Never revalidate - fully static
-export const fetchCache = 'force-cache';
-export const runtime = 'nodejs';
+// Fully static page
+export const revalidate = false;
+export const dynamic = 'force-static';
 
 const socialPlatforms = [
   {

@@ -7,14 +7,8 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
-// Cache configuration for better performance
-export const revalidate = 3600; // Revalidate every hour
-export const fetchCache = 'force-cache'; // Cache fetch requests
-
-// Runtime configuration for optimal caching
-export const runtime = 'nodejs'; // Use Node.js runtime for better caching
-export const preferredRegion = 'auto'; // Auto-select region for optimal performance
-export const maxDuration = 30; // Maximum execution time for dynamic requests
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
 
 export async function generateMetadata({
   params,

@@ -3,10 +3,9 @@ import OfflineActions from "./OfflineActions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { WifiOff } from "lucide-react";
 
-// Static generation for instant loading
-export const revalidate = false; // Never revalidate - fully static
-export const fetchCache = 'force-cache';
-export const runtime = 'nodejs';
+// Fully static page
+export const revalidate = false;
+export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
   title: "Offline - Jowin John Chemban",
