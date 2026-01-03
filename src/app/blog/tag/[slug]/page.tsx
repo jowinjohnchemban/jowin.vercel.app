@@ -7,6 +7,15 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
+// Cache configuration for better performance
+export const revalidate = 3600; // Revalidate every hour
+export const fetchCache = 'force-cache'; // Cache fetch requests
+
+// Runtime configuration for optimal caching
+export const runtime = 'nodejs'; // Use Node.js runtime for better caching
+export const preferredRegion = 'auto'; // Auto-select region for optimal performance
+export const maxDuration = 30; // Maximum execution time for dynamic requests
+
 export async function generateMetadata({
   params,
 }: {
@@ -46,7 +55,41 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 3600; // Revalidate every hour
+export async function generateStaticParams() {
+  try {
+    const posts = await getBlogPosts(50);
+    const tagSlugs = new Set<string>();
+
+    // Collect unique tag slugs from posts
+    posts.forEach(post => {
+      post.tags?.forEach(tag => {
+        if (tag.slug) {
+          tagSlugs.add(tag.slug);
+        } else if (tag.name) {
+          // Convert tag name to slug format for consistency
+          const slugified = tag.name.toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove special characters
+            .replace(/\s+/g, '-') // Replace spaces with hyphens
+            .replace(/-+/g, '-') // Replace multiple hyphens with single
+            .trim();
+          if (slugified) {
+            tagSlugs.add(slugified);
+          }
+        }
+      });
+    });
+
+    // Return top 20 most common tags for static generation
+    // This improves performance for frequently accessed tags
+    return Array.from(tagSlugs).slice(0, 20).map(slug => ({
+      slug,
+    }));
+  } catch (error) {
+    // Log error but don't fail build - fallback to dynamic generation
+    console.warn('Failed to generate static params for tag pages:', error);
+    return [];
+  }
+}
 
 export default async function TagPage({
   params,
