@@ -4,14 +4,20 @@
  * @module lib/services/ip-geolocation
  */
 
+/**
+ * IP Geolocation Service
+ * Fetches IP information from ipinfo.io
+ * @module lib/services/ip-geolocation
+ */
+
 export interface IPInfo {
-  country: string;
-  region: string;
-  city: string;
-  timezone: string;
-  org: string;
-  postal: string;
-  loc?: string;
+  readonly country: string;
+  readonly region: string;
+  readonly city: string;
+  readonly timezone: string;
+  readonly org: string;
+  readonly postal: string;
+  readonly loc?: string;
 }
 
 export interface IPGeolocationProvider {

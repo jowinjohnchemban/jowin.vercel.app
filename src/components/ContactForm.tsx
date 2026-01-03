@@ -9,9 +9,9 @@ import { contactFormSchema } from "@/lib/validation";
 import { Sanitizer } from "@/lib/security";
 
 interface ContactFormProps {
-  title?: string;
-  description?: string;
-  showCard?: boolean;
+  readonly title?: string;
+  readonly description?: string;
+  readonly showCard?: boolean;
 }
 
 type FormStatus = "idle" | "loading" | "success" | "error";

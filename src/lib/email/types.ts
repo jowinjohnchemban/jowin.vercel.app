@@ -4,52 +4,54 @@
  * @module lib/email/types
  */
 
+import type { ISODateString, URLString } from '../api/hashnode/types';
+
 /**
  * Contact form submission data
  */
 export interface ContactFormData {
-  name: string;
-  email: string;
-  message: string;
-  ip: string;
-  userAgent: string;
-  referer: string;
+  readonly name: string;
+  readonly email: string;
+  readonly message: string;
+  readonly ip: string;
+  readonly userAgent: string;
+  readonly referer: URLString;
 }
 
 /**
  * Contact form submission metadata
  */
 export interface ContactFormMetadata {
-  ip: string;
-  location: string;
-  city: string;
-  region: string;
-  country: string;
-  postal: string;
-  timezone: string;
-  org: string;
-  loc?: string;
-  submittedAtIST: string;
-  submittedAtUTC: string;
-  userAgent: string;
-  referrer: string;
+  readonly ip: string;
+  readonly location: string;
+  readonly city: string;
+  readonly region: string;
+  readonly country: string;
+  readonly postal: string;
+  readonly timezone: string;
+  readonly org: string;
+  readonly loc?: string;
+  readonly submittedAtIST: ISODateString;
+  readonly submittedAtUTC: ISODateString;
+  readonly userAgent: string;
+  readonly referrer: URLString;
 }
 
 /**
  * Email template data for contact form
  */
 export interface ContactFormEmailData {
-  senderName: string;
-  senderEmail: string;
-  message: string;
-  metadata: ContactFormMetadata;
+  readonly senderName: string;
+  readonly senderEmail: string;
+  readonly message: string;
+  readonly metadata: ContactFormMetadata;
 }
 
 /**
  * Email sending result
  */
 export interface EmailResult {
-  success: boolean;
-  emailId?: string;
-  error?: string;
+  readonly success: boolean;
+  readonly emailId?: string;
+  readonly error?: string;
 }
