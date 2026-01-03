@@ -3,19 +3,13 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { siteConfig } from "@/config/site";
+import { siteConfig, navConfig } from "@/config/site";
 import { usePathname } from "next/navigation";
 import { Menu, X, Home } from "lucide-react";
 
-const navLinks = [
-  { href: "/blog", label: "Blog" },
-  { href: "/connect", label: "Let's Connect" },
-];
+const navLinks = navConfig.mainNav;
 
-const mobileNavLinks = [
-  { href: "/", label: "Home" },
-  ...navLinks,
-];
+const mobileNavLinks = navConfig.mobileNav;
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
