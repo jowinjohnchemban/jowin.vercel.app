@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { HeroSection, LatestBlogSection, ContactSection } from "@/components/home";
+import { ContactSection, HeroSection, LatestBlogSection } from "@/components/home";
 import { getBlogPosts } from "@/lib/api/hashnode";
 import { generatePageSEO } from "@/config/seo";
 import { siteConfig } from "@/config/site";

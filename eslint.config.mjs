@@ -13,6 +13,18 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Enforce consistent import ordering (optional)
+      "sort-imports": [
+        "warn",
+        {
+          ignoreCase: true,
+          ignoreDeclarationSort: true,
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

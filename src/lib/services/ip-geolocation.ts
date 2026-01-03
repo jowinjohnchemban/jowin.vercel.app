@@ -4,12 +4,6 @@
  * @module lib/services/ip-geolocation
  */
 
-/**
- * IP Geolocation Service
- * Fetches IP information from ipinfo.io
- * @module lib/services/ip-geolocation
- */
-
 export interface IPInfo {
   readonly country: string;
   readonly region: string;

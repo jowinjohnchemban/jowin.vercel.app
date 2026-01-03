@@ -10,9 +10,9 @@ import type {
   BlogPost,
   BlogPostDetail,
   GraphQLResponse,
-  PublicationPostsResponse,
-  PublicationPostResponse,
   Publication,
+  PublicationPostResponse,
+  PublicationPostsResponse,
   PublicationResponse,
 } from './types';
 

@@ -8,8 +8,8 @@
  * Site Metadata Configuration
  */
 export const siteConfig = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || "sitename",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "siteurl",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "",
   description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || "",
   
   author: {
@@ -48,7 +48,7 @@ export const seoConfig = {
  * Email Configuration
  */
 export const emailConfig = {
-  provider: (process.env.EMAIL_PROVIDER as 'resend' | 'nodemailer' | 'sendgrid' | 'ses') || 'resend',
+  provider: (process.env.EMAIL_PROVIDER as 'resend' | 'nodemailer') || 'resend',
   contactEmail: process.env.CONTACT_EMAIL || "",
   fromEmail: process.env.RESEND_FROM_EMAIL || "",
   
@@ -59,11 +59,11 @@ export const emailConfig = {
   
   // SMTP (Nodemailer)
   smtp: {
-    host: process.env.SMTP_HOST || "localhost",
-    port: parseInt(process.env.SMTP_PORT || "465", 10),
+    host: process.env.SMTP_HOST || "",
+    port: parseInt(process.env.SMTP_PORT || "0", 10),
     secure: process.env.SMTP_SECURE === "true",
-    user: process.env.SMTP_USER || "username",
-    pass: process.env.SMTP_PASS || "password",
+    user: process.env.SMTP_USER || "",
+    pass: process.env.SMTP_PASS || "",
   },
 } as const;
 
