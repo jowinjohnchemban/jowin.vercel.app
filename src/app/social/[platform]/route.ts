@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
 import { socialLinks } from "@/config/site";
 
 const socialMediaMap: Record<string, string> = {
@@ -10,11 +10,10 @@ const socialMediaMap: Record<string, string> = {
   facebook: socialLinks.facebook,
 };
 
-export default async function SocialRedirectPage({
-  params,
-}: {
-  params: Promise<{ platform: string }>;
-}) {
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ platform: string }> }
+) {
   const { platform: platformParam } = await params;
   const platform = platformParam.toLowerCase();
 
@@ -23,9 +22,9 @@ export default async function SocialRedirectPage({
 
   // If no URL configured or platform doesn't exist, redirect to connect page
   if (!socialUrl) {
-    redirect("/connect");
+    return NextResponse.redirect(new URL("/connect", _request.url));
   }
 
-  // Redirect to the social media URL
-  redirect(socialUrl);
+  // Redirect to the social media URL (external)
+  return NextResponse.redirect(socialUrl);
 }
