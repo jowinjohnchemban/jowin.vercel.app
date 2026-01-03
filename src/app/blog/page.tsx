@@ -6,6 +6,11 @@ import { generatePageSEO } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
+// Aggressive caching for instant loading
+export const revalidate = 3600; // Revalidate every hour
+export const fetchCache = 'force-cache';
+export const runtime = 'nodejs';
+
 export const metadata: Metadata = generatePageSEO(undefined, {
   title: "Blog",
   description: `Read the latest articles and insights from ${siteConfig.author.name}.`,
@@ -29,8 +34,6 @@ export const metadata: Metadata = generatePageSEO(undefined, {
     ],
   },
 });
-
-export const revalidate = 3600; // Revalidate every hour
 
 export default async function BlogPage() {
   const posts = await getBlogPosts(20);

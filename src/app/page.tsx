@@ -7,7 +7,11 @@ import { getBlogPosts } from "@/lib/api/hashnode";
 import { generatePageSEO } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
-import { Suspense } from "react";
+
+// Static generation for instant loading
+export const revalidate = 3600; // Revalidate every hour
+export const fetchCache = 'force-cache';
+export const runtime = 'nodejs';
 
 export const metadata: Metadata = generatePageSEO(undefined, {
   title: siteConfig.name,
@@ -37,24 +41,20 @@ export const metadata: Metadata = generatePageSEO(undefined, {
 });
 
 export default async function Home() {
-  // Fetch blog posts on the server
+  // Fetch blog posts on the server with caching
   const latestPosts = await getBlogPosts(3);
 
   // Skip blur placeholder generation for faster initial load
-  // Will use default blur or no blur for immediate paint
   const heroBlurDataURL = undefined; // Remove expensive blur generation
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen w-full bg-background text-foreground">
+        {/* All sections render instantly - no Suspense needed */}
         <HeroSection blurDataURL={heroBlurDataURL} />
-        <Suspense fallback={<div className="h-32" />}> {/* Minimal fallback for fast paint */}
-          <LatestBlogSection posts={latestPosts} />
-        </Suspense>
-        <Suspense fallback={null}>
-          <ContactSection />
-        </Suspense>
+        <LatestBlogSection posts={latestPosts} />
+        <ContactSection />
       </main>
       <Footer />
     </>

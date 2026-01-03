@@ -7,6 +7,11 @@ import { Github, Linkedin, Twitter, Youtube, Instagram, Facebook } from "lucide-
 import { features, siteConfig } from "@/config/site";
 import { generatePageSEO } from "@/config/seo";
 
+// Static generation for instant loading
+export const revalidate = false; // Never revalidate - fully static
+export const fetchCache = 'force-cache';
+export const runtime = 'nodejs';
+
 const socialPlatforms = [
   {
     name: "GitHub",
@@ -82,7 +87,7 @@ export default function ConnectPage() {
 
           {/* Contact Form */}
           <div className="max-w-2xl mx-auto mb-12 sm:mb-16">
-            <ContactForm 
+            <ContactForm
               title="Slide into my inbox 📬"
               description=""
               showCard={true}

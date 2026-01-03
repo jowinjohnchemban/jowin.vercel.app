@@ -12,9 +12,18 @@ const nextConfig: NextConfig = {
   // Recommended for Next.js 16
   reactStrictMode: true,
 
-  // (Optional) Useful for debugging GSAP animations
+  // Aggressive performance optimizations
   experimental: {
     optimizePackageImports: ["lucide-react"],
+    // Enable faster builds
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
+        },
+      },
+    },
   },
 
   // Remove console logs in production
@@ -24,7 +33,7 @@ const nextConfig: NextConfig = {
     } : false,
   },
 
-  // Security and performance headers
+  // Aggressive caching and performance headers
   async headers() {
     return [
       {
@@ -45,6 +54,21 @@ const nextConfig: NextConfig = {
           {
             key: "Referrer-Policy",
             value: "origin-when-cross-origin",
+          },
+          // Aggressive caching for instant loading
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      // Static assets - cache forever
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
@@ -86,7 +110,7 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Allow images from external hosts
+  // Optimized image configuration for instant loading
   images: {
     remotePatterns: [
       {
@@ -98,12 +122,23 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 192, 256, 384],
     formats: ["image/webp"],
     qualities: [75, 85],
+    // Enable image optimization for instant loading
+    unoptimized: false,
   },
 
   // Allow dev server access from local network
   allowedDevOrigins: [
     "http://localhost:3000",
   ],
+
+  // Enable compression for faster loading
+  compress: true,
+
+  // Optimize build output
+  output: "standalone",
+
+  // Enable SWC minification for smaller bundles
+  swcMinify: true,
 };
 
 export default nextConfig;
