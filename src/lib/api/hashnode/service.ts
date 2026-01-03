@@ -48,7 +48,7 @@ export class HashnodeService {
   private readonly apiUrl: string;
   private readonly publicationHost: string;
   private readonly timeout: number;
-  private readonly cache = new Map<string, { data: any; timestamp: number }>();
+  private readonly cache = new Map<string, { data: unknown; timestamp: number }>();
   private readonly cacheTTL = 5 * 60 * 1000; // 5 minutes TTL for API responses
 
   constructor(
@@ -64,10 +64,10 @@ export class HashnodeService {
   /**
    * Get cached data if available and not expired
    */
-  private getCachedData(key: string): any | null {
-    const cached = this.cache.get(key);
+  private getCachedData<T>(key: string): GraphQLResponse<T> | null {
+    const cached = this.cache.get(key) as { data: unknown; timestamp: number } | undefined;
     if (cached && Date.now() - cached.timestamp < this.cacheTTL) {
-      return cached.data;
+      return cached.data as GraphQLResponse<T>;
     }
     // Remove expired cache entry
     if (cached) {
@@ -79,7 +79,7 @@ export class HashnodeService {
   /**
    * Set data in cache
    */
-  private setCachedData(key: string, data: any): void {
+  private setCachedData<T>(key: string, data: GraphQLResponse<T>): void {
     this.cache.set(key, { data, timestamp: Date.now() });
   }
 
@@ -98,7 +98,7 @@ export class HashnodeService {
     variables: Record<string, unknown>
   ): Promise<GraphQLResponse<T>> {
     const cacheKey = this.getCacheKey(query, variables);
-    const cachedData = this.getCachedData(cacheKey);
+    const cachedData = this.getCachedData<T>(cacheKey);
     
     if (cachedData) {
       return cachedData;
@@ -114,6 +114,12 @@ export class HashnodeService {
         },
       }
     );
+
+    // Cache the response
+    this.setCachedData(cacheKey, response);
+    
+    return response;
+  }
 
   /**
    * Clear all cached data
