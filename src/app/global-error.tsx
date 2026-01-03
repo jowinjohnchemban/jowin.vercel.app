@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, RefreshCcw, Home, MessageCircle } from "lucide-react";
+import { AlertTriangle, Home, MessageCircle, RefreshCcw } from "lucide-react";
+import "@/app/globals.css";
 
 export default function GlobalError({
   error,
@@ -12,27 +13,10 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const [countdown, setCountdown] = useState(10);
-  
   useEffect(() => {
     // Log the error to an error reporting service
     console.error("Global error:", error);
   }, [error]);
-
-  // Auto-redirect after 10 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          window.location.href = '/';
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <html>
@@ -103,11 +87,6 @@ export default function GlobalError({
                 </Link>
               </Button>
             </div>
-
-            {/* Auto-redirect countdown */}
-            <p className="text-xs text-muted-foreground pt-2">
-              Redirecting in {countdown} second{countdown !== 1 ? 's' : ''}...
-            </p>
           </div>
         </div>
       </body>
