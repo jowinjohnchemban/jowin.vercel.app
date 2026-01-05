@@ -2,6 +2,10 @@
  * On-Demand Revalidation API Route
  * Triggers instant cache revalidation when Hashnode content changes
  * 
+ * Supports two modes:
+ * 1. Hashnode webhooks (signature verification via x-hashnode-signature header)
+ * 2. Manual triggers (secret token in body/query)
+ * 
  * Usage: Configure this as a webhook in your Hashnode publication settings
  * URL: https://yourdomain.com/api/revalidate
  * 
@@ -10,6 +14,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 
 // Security: Validate webhook requests
 const REVALIDATE_SECRET = process.env.HASHNODE_REVALIDATE_WEBHOOK_SECRET || '';
@@ -24,50 +29,138 @@ interface RevalidateRequestBody {
   type?: 'post' | 'tag' | 'all';
 }
 
+interface HashnodeWebhookBody {
+  metadata?: {
+    uuid?: string;
+  };
+  data?: {
+    publication?: {
+      id?: string;
+    };
+    post?: {
+      id?: string;
+      slug?: string;
+    };
+    staticPage?: {
+      id?: string;
+      slug?: string;
+    };
+    eventType?: string;
+  };
+}
+
+/**
+ * Verify Hashnode webhook signature
+ */
+function verifyHashnodeSignature(
+  body: string,
+  signature: string,
+  secret: string
+): boolean {
+  if (!signature || !secret) return false;
+
+  try {
+    // Parse signature header: t=timestamp,v1=signature
+    const parts = signature.split(',');
+    const timestamp = parts.find(p => p.startsWith('t='))?.split('=')[1];
+    const sig = parts.find(p => p.startsWith('v1='))?.split('=')[1];
+
+    if (!timestamp || !sig) return false;
+
+    // Create expected signature
+    const payload = `${timestamp}.${body}`;
+    const expectedSig = crypto
+      .createHmac('sha256', secret)
+      .update(payload)
+      .digest('hex');
+
+    // Compare signatures
+    return crypto.timingSafeEqual(
+      Buffer.from(sig),
+      Buffer.from(expectedSig)
+    );
+  } catch {
+    return false;
+  }
+}
+
 /**
  * POST /api/revalidate
  * 
  * Body examples:
- * - Revalidate specific post: { "secret": "xxx", "slug": "my-post", "type": "post" }
- * - Revalidate all blog pages: { "secret": "xxx", "type": "all" }
- * - Revalidate specific path: { "secret": "xxx", "path": "/blog" }
+ * - Manual: { "secret": "xxx", "slug": "my-post", "type": "post" }
+ * - Hashnode: Uses x-hashnode-signature header for verification
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json() as RevalidateRequestBody;
+    const bodyText = await request.text();
+    const body = JSON.parse(bodyText) as RevalidateRequestBody & HashnodeWebhookBody;
     
-    // Security check: Validate secret token
-    if (!REVALIDATE_SECRET || body.secret !== REVALIDATE_SECRET) {
-      return NextResponse.json(
-        { 
-          error: 'Invalid secret token',
-          message: 'Set HASHNODE_REVALIDATE_WEBHOOK_SECRET environment variable and provide it in the request'
-        },
-        { status: 401 }
-      );
+    const hashnodeSignature = request.headers.get('x-hashnode-signature');
+    const isHashnodeWebhook = !!hashnodeSignature;
+
+    // Security check: Verify Hashnode webhook signature or manual secret token
+    if (isHashnodeWebhook) {
+      if (!verifyHashnodeSignature(bodyText, hashnodeSignature, REVALIDATE_SECRET)) {
+        return NextResponse.json(
+          { 
+            error: 'Invalid webhook signature',
+            message: 'Hashnode webhook signature verification failed'
+          },
+          { status: 401 }
+        );
+      }
+    } else {
+      // Manual trigger - check secret in body
+      if (!REVALIDATE_SECRET || body.secret !== REVALIDATE_SECRET) {
+        return NextResponse.json(
+          { 
+            error: 'Invalid secret token',
+            message: 'Set HASHNODE_REVALIDATE_WEBHOOK_SECRET environment variable and provide it in the request'
+          },
+          { status: 401 }
+        );
+      }
     }
 
     // Handle different revalidation types
     const pathsRevalidated: string[] = [];
 
-    if (body.type === 'all') {
-      // Revalidate all blog-related pages
+    if (isHashnodeWebhook && body.data) {
+      // Handle Hashnode webhook events
+      const eventType = body.data.eventType;
+      const postSlug = body.data.post?.slug;
+
+      if (eventType?.includes('post') && postSlug) {
+        // Post published/updated/deleted
+        await revalidatePath(`/blog/${postSlug}`);
+        await revalidatePath('/blog');
+        await revalidatePath('/');
+        pathsRevalidated.push(`/blog/${postSlug}`, '/blog', '/');
+      } else {
+        // Other events - revalidate all
+        await revalidatePath('/', 'layout');
+        await revalidatePath('/blog', 'layout');
+        pathsRevalidated.push('/', '/blog', '/blog/[slug]', '/blog/tag/[slug]');
+      }
+    } else if (body.type === 'all') {
+      // Manual: Revalidate all blog-related pages
       await revalidatePath('/', 'layout');
       await revalidatePath('/blog', 'layout');
       pathsRevalidated.push('/', '/blog', '/blog/[slug]', '/blog/tag/[slug]');
     } else if (body.type === 'post' && body.slug) {
-      // Revalidate specific blog post
+      // Manual: Revalidate specific blog post
       await revalidatePath(`/blog/${body.slug}`);
       await revalidatePath('/blog');
       await revalidatePath('/');
       pathsRevalidated.push(`/blog/${body.slug}`, '/blog', '/');
     } else if (body.type === 'tag' && body.slug) {
-      // Revalidate specific tag page
+      // Manual: Revalidate specific tag page
       await revalidatePath(`/blog/tag/${body.slug}`);
       await revalidatePath('/blog');
       pathsRevalidated.push(`/blog/tag/${body.slug}`, '/blog');
     } else if (body.path) {
-      // Revalidate specific path
+      // Manual: Revalidate specific path
       await revalidatePath(body.path);
       pathsRevalidated.push(body.path);
     } else {
@@ -85,6 +178,7 @@ export async function POST(request: NextRequest) {
       revalidated: true,
       paths: pathsRevalidated,
       timestamp: new Date().toISOString(),
+      source: isHashnodeWebhook ? 'hashnode-webhook' : 'manual',
     });
 
   } catch (error) {
