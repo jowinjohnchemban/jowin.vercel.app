@@ -35,6 +35,9 @@ export const metadata: Metadata = generatePageSEO(undefined, {
       },
     ],
   },
+  alternates: {
+    canonical: siteConfig.url,
+  },
 });
 
 export default async function Home() {

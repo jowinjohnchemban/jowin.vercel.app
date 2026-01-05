@@ -2,4 +2,7 @@
 User-agent: *
 Allow: /
 
+# Disallow redirect routes
+Disallow: /social/
+
 Sitemap: https://jowinjc.in/sitemap.xml

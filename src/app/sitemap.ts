@@ -15,6 +15,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  // Extract unique tag pages from posts
+  const tagSlugs = new Set<string>();
+  posts.forEach((post) => {
+    post.tags?.forEach((tag) => {
+      if (tag.slug) {
+        tagSlugs.add(tag.slug);
+      } else if (tag.name) {
+        // Convert tag name to slug format
+        const slugified = tag.name
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .trim();
+        if (slugified) {
+          tagSlugs.add(slugified);
+        }
+      }
+    });
+  });
+
+  const tagPages = Array.from(tagSlugs).map((slug) => ({
+    url: `${baseUrl}/blog/tag/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
   // Static pages
   const staticPages = [
     {
@@ -40,6 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticPages,
     ...blogPosts,
+    ...tagPages,
   ];
 }
 

@@ -83,9 +83,6 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
-  alternates: {
-    canonical: siteConfig.url,
-  },
   verification: {
     google: seoConfig.googleSiteVerification,
   },

@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { socialLinks } from "@/config/site";
+import type { Metadata } from "next";
+
+// Prevent indexing of redirect routes
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 const socialMediaMap: Record<string, string> = {
   github: socialLinks.github,
