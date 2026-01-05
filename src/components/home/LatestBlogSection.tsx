@@ -12,10 +12,6 @@ import { ChevronRight } from "lucide-react";
 import type { BlogPost } from "@/lib/api/hashnode";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface LatestBlogSectionProps {
   posts: readonly BlogPost[];
@@ -27,50 +23,57 @@ export function LatestBlogSection({ posts }: LatestBlogSectionProps) {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      // Animate title
-      gsap.from(".blog-title", {
-        scrollTrigger: {
-          trigger: ".blog-title",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        opacity: 0.3,
-        y: 20,
-        duration: 0.4,
-        ease: "power2.out",
-      });
+    // Dynamic import to reduce initial bundle size
+    let ctx: any;
+    import("gsap").then(({ default: gsap }) => {
+      import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+        gsap.registerPlugin(ScrollTrigger);
+        ctx = gsap.context(() => {
+          // Animate title
+          gsap.from(".blog-title", {
+            scrollTrigger: {
+              trigger: ".blog-title",
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+            opacity: 0.3,
+            y: 20,
+            duration: 0.4,
+            ease: "power2.out",
+          });
 
-      // Animate cards with stagger
-      gsap.from(".blog-card-animate", {
-        scrollTrigger: {
-          trigger: ".blog-grid",
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
-        opacity: 0.3,
-        y: 20,
-        duration: 0.4,
-        stagger: 0.08,
-        ease: "power2.out",
-      });
+          // Animate cards with stagger
+          gsap.from(".blog-card-animate", {
+            scrollTrigger: {
+              trigger: ".blog-grid",
+              start: "top 75%",
+              toggleActions: "play none none none",
+            },
+            opacity: 0.3,
+            y: 20,
+            duration: 0.4,
+            stagger: 0.08,
+            ease: "power2.out",
+          });
 
-      // Animate button
-      gsap.from(".blog-cta", {
-        scrollTrigger: {
-          trigger: ".blog-cta",
-          start: "top 85%",
-          toggleActions: "play none none none",
-        },
-        opacity: 0.3,
-        y: 20,
-        duration: 0.4,
-        ease: "power2.out",
+          // Animate button
+          gsap.from(".blog-cta", {
+            scrollTrigger: {
+              trigger: ".blog-cta",
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+            opacity: 0.3,
+            y: 20,
+            duration: 0.4,
+            ease: "power2.out",
+          });
+        }, sectionRef);
       });
-    }, sectionRef);
+    });
 
     return () => {
-      ctx.revert();
+      if (ctx) ctx.revert();
     };
   }, [posts]);
 

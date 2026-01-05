@@ -8,7 +8,9 @@ import { generatePageSEO } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate every 300 seconds (5 minutes) - same as blog pages for consistency
+// Webhook API provides instant updates on top of this
+export const revalidate = 300;
 
 export const metadata: Metadata = generatePageSEO(undefined, {
   title: siteConfig.name,

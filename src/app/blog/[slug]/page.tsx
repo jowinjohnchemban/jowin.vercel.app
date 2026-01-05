@@ -68,14 +68,16 @@ export async function generateMetadata({
   };
 }
 
-export const dynamic = 'force-dynamic';
+// ISR: Static generation with revalidation every 300 seconds (5 minutes)
+// Combined with on-demand revalidation via webhooks for instant updates
+export const revalidate = 300;
 
 /**
  * Generate static params for all blog posts
- * Generates routes for up to 20 most recent posts at build time
+ * Generates routes for up to 50 most recent posts at build time
  */
 export async function generateStaticParams() {
-  const posts = await getBlogPosts(20);
+  const posts = await getBlogPosts(50);
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -87,14 +89,18 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  
+  // Fetch post and navigation posts in parallel for better performance
+  const [post, allPosts] = await Promise.all([
+    getBlogPostBySlug(slug),
+    getBlogPosts(50)
+  ]);
 
   if (!post) {
     notFound();
   }
 
-  // Get all posts for navigation
-  const allPosts = await getBlogPosts(50); // Fetch more posts for better navigation
+  // Get navigation posts
   const currentIndex = allPosts.findIndex((p) => p.slug === slug);
   
   const previousPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;

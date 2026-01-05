@@ -67,6 +67,9 @@ const envSchema = z.object({
   NEXT_PUBLIC_FACEBOOK_URL: z.string().url().optional(),
   NEXT_PUBLIC_TWITTER_HANDLE: z.string().optional(),
 
+  // API Security
+  HASHNODE_REVALIDATE_WEBHOOK_SECRET: z.string().optional().describe('Secret for Hashnode webhook revalidation'),
+
   // Application
   NODE_ENV: z.enum(['development', 'production', 'test']).default('production'),
 });

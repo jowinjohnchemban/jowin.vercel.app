@@ -45,9 +45,12 @@ export async function getPublication(): Promise<Publication | null> {
 }
 
 /**
- * Fetch blog posts from Hashnode
+ * Fetch blog posts from Hashnode with caching
  * @param count - Number of posts to fetch
  * @returns Array of blog posts or empty array on error
+ * 
+ * Note: Next.js automatically caches fetch requests.
+ * This function benefits from Next.js's built-in request memoization.
  */
 export async function getBlogPosts(count?: number): Promise<readonly BlogPost[]> {
   try {

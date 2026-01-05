@@ -2,6 +2,9 @@ import { getBlogPosts } from "@/lib/api/hashnode";
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 
+// Revalidate sitemap every 5 minutes
+export const revalidate = 300;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
   

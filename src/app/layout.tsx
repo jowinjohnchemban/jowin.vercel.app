@@ -13,8 +13,10 @@ export const preferredRegion = 'auto';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: 'swap', // Prevent invisible text during font load
+  display: 'swap',
   preload: true,
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const geistMono = Geist_Mono({
@@ -22,6 +24,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: 'swap',
   preload: true,
+  adjustFontFallback: true,
+  fallback: ['Courier New', 'monospace'],
 });
 
 // Static metadata for instant loading - no API calls during initial render
@@ -116,20 +120,6 @@ export default function RootLayout({
           type="image/jpeg"
           fetchPriority="high"
         />
-
-        {/* Aggressive caching headers for static assets */}
-        <meta httpEquiv="Cache-Control" content="public, max-age=31536000, immutable" />
-
-        {/* Critical CSS inlined for instant rendering */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            /* Critical CSS for instant loading */
-            body { margin: 0; font-family: var(--font-geist-sans), sans-serif; }
-            .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-            /* Hide content until fonts load to prevent FOUC */
-            .font-loading { visibility: hidden; }
-          `
-        }} />
       </head>
       <body className="antialiased">
         {/* Google Tag Manager - non-blocking */}

@@ -7,7 +7,8 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate every 300 seconds (5 minutes) for active sync with Hashnode
+export const revalidate = 300;
 export const maxDuration = 30;
 
 export async function generateMetadata({

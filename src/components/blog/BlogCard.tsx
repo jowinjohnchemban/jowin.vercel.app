@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Clock } from "lucide-react";
 
@@ -33,18 +32,6 @@ export function BlogCard({
   author,
   forceHorizontal = false,
 }: BlogCardProps) {
-  // Start with SSR-safe quality, then update on client
-  const [quality, setQuality] = useState(75);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    // Dynamic import to avoid SSR issues
-    import("@/lib/imageQuality").then(({ getImageQuality }) => {
-      setQuality(getImageQuality());
-    });
-  }, []);
-
   const publishedDate = new Date(publishedAt);
   const formattedDate = publishedDate.toLocaleDateString("en-US", {
     year: "numeric",
@@ -52,8 +39,8 @@ export function BlogCard({
     day: "numeric",
   });
 
-  // Only use dynamic quality after client-side hydration
-  const imageQuality = isClient ? quality : 75;
+  // Use optimized quality for all images
+  const imageQuality = 80;
 
   return (
     <Link href={`/blog/${slug}`} className="group h-full">
@@ -71,7 +58,7 @@ export function BlogCard({
                 sizes="112px"
                 placeholder={coverImage.blurDataURL ? "blur" : undefined}
                 blurDataURL={coverImage.blurDataURL}
-                fetchPriority={slug === 'first' ? 'high' : undefined}
+                priority={false}
                 quality={imageQuality}
               />
             </div>
@@ -116,7 +103,7 @@ export function BlogCard({
                 sizes="(max-width: 768px) 100vw, 50vw"
                 placeholder={coverImage.blurDataURL ? "blur" : undefined}
                 blurDataURL={coverImage.blurDataURL}
-                fetchPriority={slug === 'first' ? 'high' : undefined}
+                priority={false}
                 quality={imageQuality}
               />
             </div>
@@ -150,7 +137,7 @@ export function BlogCard({
                     {author.name.charAt(0)}
                   </div>
                 )}
-                <span className="font-medium truncate max-w-[120px]">{author.name}</span>
+                <span className="font-medium truncate max-w-30">{author.name}</span>
               </div>
 
               <div className="flex items-center gap-3 text-muted-foreground">
