@@ -74,10 +74,11 @@ export const revalidate = 300;
 
 /**
  * Generate static params for all blog posts
- * Generates routes for up to 50 most recent posts at build time
+ * Generates routes for up to 100 most recent posts at build time
+ * for maximum static generation coverage
  */
 export async function generateStaticParams() {
-  const posts = await getBlogPosts(50);
+  const posts = await getBlogPosts(100);
   return posts.map((post) => ({
     slug: post.slug,
   }));

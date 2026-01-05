@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
       const postSlug = body.data.post?.slug;
 
       if (eventType?.includes('post') && postSlug) {
-        // Post published/updated/deleted
+        // Post published/updated/deleted - revalidate specific paths
         await revalidatePath(`/blog/${postSlug}`);
         await revalidatePath('/blog');
         await revalidatePath('/');
