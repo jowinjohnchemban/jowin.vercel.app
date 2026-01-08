@@ -66,7 +66,7 @@ export const metadata: Metadata = generatePageSEO(undefined, {
       },
     ],
   },
-});
+}, "/connect");
 
 export default function ConnectPage() {
   return (

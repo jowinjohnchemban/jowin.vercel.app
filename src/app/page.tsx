@@ -37,10 +37,7 @@ export const metadata: Metadata = generatePageSEO(undefined, {
       },
     ],
   },
-  alternates: {
-    canonical: siteConfig.url,
-  },
-});
+}, "/");
 
 export default async function Home() {
   // Fetch blog posts on the server with caching

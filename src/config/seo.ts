@@ -81,6 +81,7 @@ export const pageSEO: PageSEOMap = {
  * 
  * @param page - Page key from pageSEO configuration (optional if using full local metadata)
  * @param localMetadata - Page-specific metadata defined locally (highest priority)
+ * @param path - Optional path for canonical URL (e.g., "/connect", "/blog")
  * @returns Complete Next.js Metadata object
  * 
  * @example
@@ -95,26 +96,36 @@ export const pageSEO: PageSEOMap = {
  *   keywords: ["custom", "keywords"],
  * });
  * 
- * // Fully custom (no config needed)
+ * // Fully custom with explicit path (no config needed)
  * export const metadata = generatePageSEO(undefined, {
  *   title: "Standalone Page",
  *   description: "Fully custom metadata",
  *   keywords: ["standalone"],
  *   openGraph: { title: "OG Title", description: "OG Desc", images: [...] },
- * });
+ * }, "/connect");
  * ```
  */
 export function generatePageSEO(
   page?: keyof typeof pageSEO,
   localMetadata?: Partial<Metadata> & {
     openGraph?: Partial<Metadata['openGraph']> & { images?: OpenGraphImage[] };
-  }
+  },
+  path?: string
 ): Metadata {
   // Use page config if available, otherwise create minimal config
   const pageConfig = page ? pageSEO[page] : null;
-  const url = page 
-    ? (page === "home" ? siteConfig.url : `${siteConfig.url}/${page}`)
-    : siteConfig.url;
+  
+  // Priority: explicit path > page config > homepage
+  let url: string;
+  if (path) {
+    url = path.startsWith('http') ? path : `${siteConfig.url}${path.startsWith('/') ? path : `/${path}`}`;
+  } else if (page) {
+    url = page === "home" ? siteConfig.url : `${siteConfig.url}/${page}`;
+  } else {
+    // Don't default to homepage - return undefined canonical to let Next.js handle it
+    url = '';
+  }
+  
   const twitterCreator = seoConfig.twitterHandle || undefined;
 
   // Merge: local > config > defaults (local has highest priority)
@@ -140,7 +151,7 @@ export function generatePageSEO(
     openGraph: {
       type: "website",
       locale: "en_US",
-      url,
+      ...(url && { url }),
       siteName: siteConfig.name,
       title: ogTitle,
       description: ogDescription,
@@ -154,9 +165,11 @@ export function generatePageSEO(
       ...(twitterCreator && { creator: twitterCreator }),
       images: ogImages.map((img) => typeof img === 'string' ? img : img.url),
     },
-    alternates: {
-      canonical: url,
-    },
+    ...(url && {
+      alternates: {
+        canonical: url,
+      },
+    }),
     ...localMetadata,
   };
 }

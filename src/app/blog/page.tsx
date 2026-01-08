@@ -31,10 +31,7 @@ export const metadata: Metadata = generatePageSEO(undefined, {
       },
     ],
   },
-  alternates: {
-    canonical: `${siteConfig.url}/blog`,
-  },
-});
+}, "/blog");
 
 export default async function BlogPage() {
   const posts = await getBlogPosts(20);
