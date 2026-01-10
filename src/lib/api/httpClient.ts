@@ -5,7 +5,7 @@
  * Provides a consistent interface for making HTTP requests with
  * error handling, timeouts, and type safety.
  * 
- * @module lib/api/http-client
+ * @module lib/api/httpClient
  * 
  * @architecture
  * - **Adapter Pattern**: Wraps axios for easier replacement
@@ -18,7 +18,7 @@
  * 
  * @example
  * ```typescript
- * import { HttpClient } from '@/lib/api/http-client';
+ * import { HttpClient } from '@/lib/api/httpClient';
  * 
  * const data = await HttpClient.postJSON('/api/endpoint', { key: 'value' });
  * ```

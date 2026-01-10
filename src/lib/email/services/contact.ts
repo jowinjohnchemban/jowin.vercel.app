@@ -5,7 +5,7 @@
  */
 
 import { EmailProvider, EmailProviderFactory } from "../providers";
-import { IPGeolocationService, IPInfoProvider } from "@/lib/services/ip-geolocation";
+import { IPGeolocationService, IPInfoProvider } from "@/lib/services/ipGeolocation";
 import { generateContactFormEmail } from "../templates/contact";
 import type { ContactFormData, ContactFormMetadata, EmailResult } from "../types";
 

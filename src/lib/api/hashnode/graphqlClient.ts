@@ -19,7 +19,7 @@
  * 
  * @example
  * ```typescript
- * import { GraphQLClient } from './graphql-client';
+ * import { GraphQLClient } from './graphqlClient';
  * 
  * const data = await GraphQLClient.query('https://gql.hashnode.com', { query });
  * ```

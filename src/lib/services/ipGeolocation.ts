@@ -1,7 +1,7 @@
 /**
  * IP Geolocation Service
  * Fetches IP information from ipinfo.io
- * @module lib/services/ip-geolocation
+ * @module lib/services/ipGeolocation
  */
 
 export interface IPInfo {
