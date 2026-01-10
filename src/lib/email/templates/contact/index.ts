@@ -7,16 +7,16 @@
  */
 
 import type { ContactFormEmailData } from "../../types";
-import { unescape } from "@/lib/escape";
+import { escapeEmail, escapeHtml, unescape } from "@/lib/escape";
 
 export function generateContactFormEmail(data: ContactFormEmailData): string {
   const { senderName, senderEmail, message, metadata } = data;
 
   // Escape for safety, then decode for rendering (reverse transform)
-  const safeSenderName = unescape(senderName);
-  const safeSenderEmail = unescape(senderEmail);
+  const safeSenderName = unescape(escapeHtml(senderName));
+  const safeSenderEmail = unescape(escapeEmail(senderEmail));
   // For message body, only unescape (assume already escaped before storage)
-  const safeMessage = unescape(message);
+  const safeMessage = message;
 
   // Generate Google Maps link if coordinates are available
   const mapsLink = metadata.loc 
