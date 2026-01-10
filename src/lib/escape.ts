@@ -1,18 +1,24 @@
+
 import he from "he";
 
 /**
- * Escapes all HTML entities in a string using the 'he' library.
+ * Decodes HTML entities in a string using the 'he' library. Use for any context (HTML, email, etc).
  */
-export function escapeHtml(input: string): string {
-  return he.encode(input, { useNamedReferences: true });
+export function unescape(input: string): string {
+  return he.decode(input);
 }
 
 /**
- * Escapes only <, >, &, ", ' in an email string, but not @ or .
+ * Escapes HTML special characters in a string using the 'he' library (standard way).
+ */
+export function escapeHtml(input: string): string {
+  return he.escape(input);
+}
+
+/**
+ * Escapes HTML special characters in an email string using the 'he' library (standard way).
+ * Use unescape to decode when rendering or processing.
  */
 export function escapeEmail(input: string): string {
-  // Temporarily replace @ and . to prevent encoding
-  return he.encode(input.replace(/[@.]/g, c => `__SAFE__${c.charCodeAt(0)}__`), { useNamedReferences: true })
-    .replace(/__SAFE__(\d+)__/g, (_, code) => String.fromCharCode(Number(code)))
-    .trim();
+  return he.escape(input);
 }
