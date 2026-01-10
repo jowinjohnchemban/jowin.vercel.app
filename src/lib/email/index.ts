@@ -3,8 +3,8 @@
  * @module lib/email
  */
 
-export { generateContactFormEmail } from './templates/contact-form';
-export { ContactEmailService, createContactEmailService } from './services/contact-email';
+export { generateContactFormEmail } from './templates/contact';
+export { ContactEmailService, createContactEmailService } from './services/contact';
 export { EmailProviderFactory } from './providers';
 export type { 
   ContactFormData,

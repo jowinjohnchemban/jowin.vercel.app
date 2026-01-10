@@ -1,12 +1,12 @@
 /**
  * Contact Email Service
  * Orchestrates contact form email sending with IP geolocation
- * @module lib/email/services/contact-email
+ * @module lib/email/services/contact
  */
 
 import { EmailProvider, EmailProviderFactory } from "../providers";
 import { IPGeolocationService, IPInfoProvider } from "@/lib/services/ip-geolocation";
-import { generateContactFormEmail } from "../templates/contact-form";
+import { generateContactFormEmail } from "../templates/contact";
 import type { ContactFormData, ContactFormMetadata, EmailResult } from "../types";
 
 /**

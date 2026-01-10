@@ -1,10 +1,12 @@
 /**
  * Contact Form Email Template
+ * 
  * Plain text-based email template for contact form submissions
- * @module lib/email/templates/contact-form
+ * 
+ * @module lib/email/templates/contact
  */
 
-import type { ContactFormEmailData } from "../types";
+import type { ContactFormEmailData } from "../../types";
 
 export function generateContactFormEmail(data: ContactFormEmailData): string {
   const { senderName, senderEmail, message, metadata } = data;
