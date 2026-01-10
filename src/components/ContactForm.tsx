@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AlertCircle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validation";
-import he from "he";
+
+import { escapeHtml } from "@/lib/escape";
 
 interface ContactFormProps {
   readonly title?: string;
@@ -29,30 +30,14 @@ export function ContactForm({
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const sanitizeInput = (input: string): string => {
-    // Escape all relevant HTML entities
-    return input
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&apos;")
-      .trim();
-  };
-
   const validateForm = (): string | null => {
     try {
       // Sanitize inputs first
       const sanitizedData = {
-        name: sanitizeInput(formData.name),
-        email: sanitizeInput(formData.email),
-        message: sanitizeInput(formData.message),
+        name: escapeHtml(formData.name),
+        email: escapeHtml(formData.email),
+        message: escapeHtml(formData.message),
       };
-
-      // Escape and base64-encode the message for safe transport
-      const encodedMessage = typeof window !== 'undefined' && window.btoa
-        ? window.btoa(he.escape(formData.message))
-        : Buffer.from(he.escape(formData.message), 'utf-8').toString('base64');
 
       // Validate with Zod schema
       contactFormSchema.parse(sanitizedData);
@@ -92,12 +77,13 @@ export function ContactForm({
       return;
     }
 
+
     try {
       // Sanitize all inputs before sending
       const sanitizedData = {
-        name: sanitizeInput(formData.name),
-        email: sanitizeInput(formData.email),
-        message: encodedMessage,
+        name: escapeHtml(formData.name),
+        email: escapeHtml(formData.email),
+        message: escapeHtml(formData.message),
       };
 
       const response = await fetch("/api/contact", {
