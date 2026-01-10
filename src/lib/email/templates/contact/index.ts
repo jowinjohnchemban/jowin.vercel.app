@@ -7,6 +7,7 @@
  */
 
 import type { ContactFormEmailData } from "../../types";
+import { escapeHtml } from "@/lib/escape";
 
 export function generateContactFormEmail(data: ContactFormEmailData): string {
   const { senderName, senderEmail, message, metadata } = data;
