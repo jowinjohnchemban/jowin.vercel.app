@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AlertCircle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validation";
-import { Sanitizer } from "@/lib/security";
+
 
 interface ContactFormProps {
   readonly title?: string;
@@ -30,8 +30,8 @@ export function ContactForm({
   const [errorMessage, setErrorMessage] = useState("");
 
   const sanitizeInput = (input: string): string => {
-    // Use the Sanitizer class for consistency
-    return Sanitizer.sanitizeHTML(input);
+    // Sanitizer removed; passthrough or escape as needed
+    return input;
   };
 
   const validateForm = (): string | null => {

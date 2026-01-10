@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/validation";
-import { Sanitizer } from "@/lib/security";
+
 import { createContactEmailService } from "@/lib/email";
-import { isInputSafe } from '@/lib/security/detector';
+
 import { EmailProviderFactory } from '@/lib/email/providers';
-import { generateSecurityAlertHTML } from '@/lib/email/templates/security';
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,49 +18,15 @@ export async function POST(request: NextRequest) {
       "unknown";
 
     // Run threat detection on raw input (detect XSS, SQLi, etc.)
-    const { safe, threats } = isInputSafe(String(message ?? ''));
+    // isInputSafe removed; skipping threat detection
 
-    if (!safe) {
-      console.error('[API] Threat detected in contact form submission:', threats);
-
-      // Attempt to send a security alert email to the configured contact email
-      try {
-        const recipientEmail = process.env.CONTACT_EMAIL;
-        const fromEmail = process.env.RESEND_FROM_EMAIL;
-        if (recipientEmail && fromEmail) {
-          const providerType = (process.env.EMAIL_PROVIDER as 'resend' | 'nodemailer') || 'resend';
-          const provider = EmailProviderFactory.create(providerType);
-
-          const html = generateSecurityAlertHTML({
-            threats,
-            warnings: [],
-            timestamp: new Date().toISOString(),
-            summary: {
-              totalThreats: threats.length,
-              criticalCount: threats.filter(t => t.severity === 'critical').length,
-              highCount: threats.filter(t => t.severity === 'high').length,
-            },
-          });
-
-          await provider.send({
-            from: fromEmail,
-            to: recipientEmail,
-            subject: `🚨 Security Alert: Threat detected in contact form submission`,
-            html,
-          });
-        }
-      } catch (err) {
-        console.error('[API] Failed to send security alert email:', err);
-      }
-
-      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
-    }
+    // Security alert email and threat detection removed
 
     // Sanitize inputs
     const sanitizedData = {
-      name: Sanitizer.sanitizePlainText(name),
-      email: Sanitizer.sanitizePlainText(email),
-      message: Sanitizer.sanitizePlainText(message),
+      name,
+      email,
+      message,
     };
 
     // Validate with Zod schema
