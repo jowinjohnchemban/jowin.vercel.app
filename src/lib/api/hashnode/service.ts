@@ -3,7 +3,7 @@
  * Provides real-time fetching of blog data from Hashnode GraphQL API
  */
 
-import { GraphQLClient } from './graphql-client';
+import { GraphQLClient } from './graphqlClient';
 import { HASHNODE_CONFIG } from './config';
 import { HashnodeQueries } from './queries';
 import type {
