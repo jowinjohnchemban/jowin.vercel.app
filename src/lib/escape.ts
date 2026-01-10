@@ -1,3 +1,24 @@
+/**
+ * Encodes a string to base64 (browser safe)
+ */
+export function encodeBase64(input: string): string {
+  if (typeof window !== 'undefined' && window.btoa) {
+    return window.btoa(input);
+  } else {
+    return Buffer.from(input, 'utf-8').toString('base64');
+  }
+}
+
+/**
+ * Decodes a base64 string (browser/node safe)
+ */
+export function decodeBase64(input: string): string {
+  if (typeof window !== 'undefined' && window.atob) {
+    return window.atob(input);
+  } else {
+    return Buffer.from(input, 'base64').toString('utf-8');
+  }
+}
 
 import he from "he";
 

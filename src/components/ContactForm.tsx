@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AlertCircle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validation";
+import he from "he";
 
 interface ContactFormProps {
   readonly title?: string;
@@ -47,6 +48,11 @@ export function ContactForm({
         email: sanitizeInput(formData.email),
         message: sanitizeInput(formData.message),
       };
+
+      // Escape and base64-encode the message for safe transport
+      const encodedMessage = typeof window !== 'undefined' && window.btoa
+        ? window.btoa(he.escape(formData.message))
+        : Buffer.from(he.escape(formData.message), 'utf-8').toString('base64');
 
       // Validate with Zod schema
       contactFormSchema.parse(sanitizedData);
@@ -91,7 +97,7 @@ export function ContactForm({
       const sanitizedData = {
         name: sanitizeInput(formData.name),
         email: sanitizeInput(formData.email),
-        message: sanitizeInput(formData.message),
+        message: encodedMessage,
       };
 
       const response = await fetch("/api/contact", {
