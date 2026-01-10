@@ -24,6 +24,17 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
     ? `https://www.google.com/maps?q=${metadata.loc}`
     : null;
 
+
+  // Add a unique date-time string to the subline for threading, formatted as [MM/DD/YYYY hh:mmam/pm]
+  const now = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  let hours = now.getHours();
+  const ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // 0 should be 12
+  const minutes = pad(now.getMinutes());
+  const formattedDate = `[${pad(now.getMonth() + 1)}/${pad(now.getDate())}/${now.getFullYear()} ${pad(hours)}:${minutes}${ampm}]`;
+
   return `
 <html lang="en">
 <body style="margin: 0; padding: 0; background-color: #ffffff;">
@@ -36,7 +47,7 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
           <tr>
             <td style="padding: 30px 30px 20px 30px; background-color: #000000; color: #ffffff;">
               <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Message from ${safeSenderName}</strong>
-              <span style="font-size: 13px; color: #999999;">${metadata.submittedAtIST}</span>
+              <span style="font-size: 13px; color: #999999;">${metadata.submittedAtIST} | ${formattedDate}</span>
             </td>
           </tr>
           
