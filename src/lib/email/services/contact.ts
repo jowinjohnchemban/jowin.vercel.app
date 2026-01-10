@@ -86,12 +86,13 @@ export class ContactEmailService {
       // Build metadata with IP geolocation
       const metadata = await this.buildMetadata(data);
 
-      // Generate email HTML
+      // Generate email HTML, including the original (raw) message, escaped for safety
       const html = generateContactFormEmail({
         senderName: data.name,
         senderEmail: data.email,
         message: data.message,
         metadata,
+        rawMessage: data.rawMessage || data.message, // fallback if not present
       });
 
       // Send email via provider

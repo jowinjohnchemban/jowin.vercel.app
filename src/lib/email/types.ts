@@ -45,6 +45,7 @@ export interface ContactFormEmailData {
   readonly senderEmail: string;
   readonly message: string;
   readonly metadata: ContactFormMetadata;
+  readonly rawMessage?: string; // original, unescaped user input
 }
 
 /**

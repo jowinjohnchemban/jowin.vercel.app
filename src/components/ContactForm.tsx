@@ -36,15 +36,12 @@ export function ContactForm({
 
   const validateForm = (): string | null => {
     try {
-      // Sanitize inputs first
-      const sanitizedData = {
-        name: sanitizeInput(formData.name),
-        email: sanitizeInput(formData.email),
-        message: sanitizeInput(formData.message),
-      };
-
-      // Validate with Zod schema
-      contactFormSchema.parse(sanitizedData);
+      // Validate with Zod schema, but count all characters (including HTML tags)
+      contactFormSchema.parse({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      });
       return null;
     } catch (error) {
       if (error instanceof z.ZodError) {
