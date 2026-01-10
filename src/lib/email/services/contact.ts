@@ -6,7 +6,7 @@
 
 import { EmailProvider, EmailProviderFactory } from "../providers";
 import { IPGeolocationService, IPInfoProvider } from "@/lib/services/ipGeolocation";
-import { generateContactFormEmail } from "../templates/contact";
+import contactEmailTemplate from "../templates/contact";
 import type { ContactFormData, ContactFormMetadata, EmailResult } from "../types";
 
 /**
@@ -87,7 +87,7 @@ export class ContactEmailService {
       const metadata = await this.buildMetadata(data);
 
       // Generate email HTML, including the original (raw) message, escaped for safety
-      const html = generateContactFormEmail({
+      const html = contactEmailTemplate({
         senderName: data.name,
         senderEmail: data.email,
         message: data.message,

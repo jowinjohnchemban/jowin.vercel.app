@@ -9,9 +9,8 @@
 import type { ContactFormEmailData } from "../../types";
 
 // No need to escape here, already escaped in route.ts
-
+export default function contactEmailTemplate(data: ContactFormEmailData) {
   const { senderName, senderEmail, message, metadata, rawMessage } = data;
-  
   // Generate Google Maps link if coordinates are available
   const mapsLink = metadata.loc 
     ? `https://www.google.com/maps?q=${metadata.loc}`
@@ -58,8 +57,7 @@ import type { ContactFormEmailData } from "../../types";
                 <tr>
                   <td style="padding-top: 5px;">
                     <span style="color: #6b7280; font-size: 13px;">Original Message (escaped)</span>
-                    <div style="margin-top: 10px; padding-left: 20px; white-space: pre-wrap; color: #991b1b; background: #f3f4f6; font-size: 13px; border-radius: 4px;">${rawMessage ? escapeHTML(rawMessage) : ''}</div>
-                                      <div style="margin-top: 10px; padding-left: 20px; white-space: pre-wrap; color: #991b1b; background: #f3f4f6; font-size: 13px; border-radius: 4px;">${rawMessage || ''}</div>
+                    <div style="margin-top: 10px; padding-left: 20px; white-space: pre-wrap; color: #991b1b; background: #f3f4f6; font-size: 13px; border-radius: 4px;">${rawMessage || ''}</div>
                   </td>
                 </tr>
               </table>
