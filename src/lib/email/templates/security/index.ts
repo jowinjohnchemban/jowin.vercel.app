@@ -366,71 +366,47 @@ export function generateSecurityAlertHTML(data: SecurityAlertData): string {
  * Generate plain text version of security alert
  */
 export function generateSecurityAlertText(data: SecurityAlertData): string {
-  const { leaks, warnings, userAgent, url, timestamp } = data;
-
-  let text = `
-🚨 SECURITY ALERT: Secret Leak Detected
-========================================
-
-⚠️ IMMEDIATE ACTION REQUIRED
-
-`;
-
-  if (leaks && leaks.detected) {
-    text += `
-🔓 ENVIRONMENT SECRETS LEAKED TO CLIENT
----------------------------------------
-
-CRITICAL SECURITY BREACH: Server-only secrets are exposed in the client-side JavaScript bundle.
-
-Leaked Secrets:
-${leaks.leakedSecrets.map(secret => `  - ${secret}`).join('\n')}
-
-Environment: ${leaks.environment}
-Detection Time: ${leaks.timestamp}
-
-`;
+  const { leaks, threats, warnings, userAgent, url, timestamp, summary } = data;
+  let text = `SECURITY ALERT: Threat Detected\n`;
+  text += `==============================\n\n`;
+  text += `IMMEDIATE ACTION REQUIRED\n\n`;
+  if (summary) {
+    text += `Threat Summary:\n`;
+    text += `  Total Threats: ${summary.totalThreats}\n`;
+    text += `  Critical: ${summary.criticalCount}\n`;
+    text += `  High: ${summary.highCount}\n\n`;
   }
-
-  if (warnings.length > 0) {
-    text += `
-⚠️ SECURITY WARNINGS
---------------------
-${warnings.map(warning => `  - ${warning}`).join('\n')}
-
-`;
+  if (threats && threats.length > 0) {
+    text += `Attack Patterns Detected:\n`;
+    threats.forEach((threat, idx) => {
+      text += `  ${idx + 1}. Type: ${threat.threatType}\n`;
+      text += `     Severity: ${threat.severity}\n`;
+      text += `     Description: ${threat.description}\n`;
+      text += `     Payload: ${threat.payload}\n`;
+      text += `     Action: ${threat.recommendation}\n`;
+    });
+    text += `\n`;
   }
-
-  text += `
-DETAILS
--------
-Timestamp: ${timestamp}
-${url ? `URL: ${url}` : ''}
-${userAgent ? `User Agent: ${userAgent}` : ''}
-
-RECOMMENDED ACTIONS
--------------------
-1. Immediately verify that .env files are in .gitignore
-2. Check build configuration for accidental secret bundling
-3. Rotate all leaked credentials immediately
-4. Review Next.js config for proper env variable handling
-5. Ensure only NEXT_PUBLIC_* variables are used client-side
-6. Audit recent code changes that may have caused the leak
-
-INVESTIGATION STEPS
--------------------
-1. Check browser DevTools Console for error messages
-2. Inspect Network tab for exposed credentials
-3. Review recent deployments and changes
-4. Run: npm run build locally to test
-5. Check server logs for additional context
-
----
-This is an automated security alert from your application.
-If you did not expect this alert, investigate immediately.
-
-🚨 Do not ignore this alert - it indicates a critical security vulnerability
-`;
-
+  if (warnings && warnings.length > 0) {
+    text += `Security Warnings:\n`;
+    warnings.forEach(warning => {
+      text += `  - ${warning}\n`;
+    });
+    text += `\n`;
+  }
+  text += `Details:\n`;
+  text += `  Timestamp: ${timestamp}\n`;
+  if (url) text += `  URL: ${url}\n`;
+  if (userAgent) text += `  User Agent: ${userAgent}\n`;
+  text += `\nRecommended Actions:\n`;
+  text += `  1. Verify .env files are in .gitignore\n`;
+  text += `  2. Check build configuration for secret bundling\n`;
+  text += `  3. Rotate all compromised credentials immediately\n`;
+  text += `  4. Review Next.js config for proper env handling\n`;
+  text += `  5. Audit recent code changes\n`;
+  text += `  6. Block malicious IPs if needed\n`;
+  text += `  7. Enable additional monitoring\n`;
+  text += `\nThis is an automated security alert from your application.\nIf you did not expect this alert, investigate immediately.\n`;
+  text += `\nDo not ignore this alert - it indicates a security vulnerability.\n`;
   return text.trim();
 }
