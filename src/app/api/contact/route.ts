@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/validation";
-import { Sanitizer } from "@/lib/security";
+
 import { createContactEmailService } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
@@ -16,9 +16,9 @@ export async function POST(request: NextRequest) {
 
     // Sanitize inputs
     const sanitizedData = {
-      name: Sanitizer.sanitizePlainText(name),
-      email: Sanitizer.sanitizePlainText(email),
-      message: Sanitizer.sanitizePlainText(message),
+      name,
+      email,
+      message,
     };
 
     // Validate with Zod schema
