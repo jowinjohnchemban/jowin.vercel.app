@@ -7,8 +7,6 @@ import { AlertCircle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validation";
 
-import { escapeHtml } from "@/lib/escape";
-
 interface ContactFormProps {
   readonly title?: string;
   readonly description?: string;
@@ -32,15 +30,8 @@ export function ContactForm({
 
   const validateForm = (): string | null => {
     try {
-      // Sanitize inputs first
-      const sanitizedData = {
-        name: escapeHtml(formData.name),
-        email: escapeHtml(formData.email),
-        message: escapeHtml(formData.message),
-      };
-
       // Validate with Zod schema
-      contactFormSchema.parse(sanitizedData);
+      contactFormSchema.parse(formData);
       return null;
     } catch (error) {
       if (error instanceof z.ZodError) {
