@@ -8,7 +8,7 @@
 import { EmailProvider, EmailProviderFactory } from "../providers";
 import { IPGeolocationService, IPInfoProvider } from "@/lib/services/ipGeolocation";
 import { generateContactFormEmail } from "../templates/contact";
-import { escapeHtml, decodeBase64, unescape } from "@/lib/escape";
+import { escapeHtml, unescape } from "@/lib/escape";
 import type { ContactFormData, ContactFormMetadata, EmailResult } from "../types";
 
 /**
@@ -88,11 +88,10 @@ export class ContactEmailService {
       // Build metadata with IP geolocation
       const metadata = await this.buildMetadata(data);
 
-      // Escape all fields for email safety
-      const safeName = escapeHtml(data.name);
-      const safeEmail = escapeHtml(data.email);
-      // Decode base64 and unescape the message before sending to the template
-      const decodedMessage = unescape(decodeBase64(data.message));
+      // Sanitize inputs for email content
+      const safeName = unescape(escapeHtml(data.name));
+      const safeEmail = unescape(escapeHtml(data.email));
+      const decodedMessage = unescape(escapeHtml(data.message));
       const html = generateContactFormEmail({
         senderName: safeName,
         senderEmail: safeEmail,

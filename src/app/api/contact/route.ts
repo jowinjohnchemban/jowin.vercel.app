@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/validation";
-import { escapeEmail, escapeHtml } from "@/lib/escape";
+import { escapeHtml, unescape } from "@/lib/escape";
 import { createContactEmailService } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
@@ -14,10 +14,11 @@ export async function POST(request: NextRequest) {
       request.headers.get("x-real-ip") ||
       "unknown";
 
+    // Sanitize inputs for email content
     const sanitizedData = {
-      name: escapeHtml(name),
-      email: escapeEmail(email),
-      message: escapeHtml(message),
+      name: unescape(escapeHtml(name)),
+      email: unescape(escapeHtml(email)),
+      message: unescape(escapeHtml(message)),
     };
 
     // Validate with Zod schema
