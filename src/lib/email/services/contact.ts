@@ -6,7 +6,7 @@
 
 import { EmailProvider, EmailProviderFactory } from "../providers";
 import { IPGeolocationService, IPInfoProvider } from "@/lib/services/ipGeolocation";
-import contactEmailTemplate from "../templates/contact";
+import { generateContactFormEmail } from "../templates/contact";
 import type { ContactFormData, ContactFormMetadata, EmailResult } from "../types";
 
 /**
@@ -86,13 +86,12 @@ export class ContactEmailService {
       // Build metadata with IP geolocation
       const metadata = await this.buildMetadata(data);
 
-      // Generate email HTML, including the original (raw) message, escaped for safety
-      const html = contactEmailTemplate({
+      // Generate email HTML
+      const html = generateContactFormEmail({
         senderName: data.name,
         senderEmail: data.email,
         message: data.message,
         metadata,
-        rawMessage: data.rawMessage || data.message, // fallback if not present
       });
 
       // Send email via provider

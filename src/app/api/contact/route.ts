@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/validation";
-
+import { Sanitizer } from "@/lib/security";
 import { createContactEmailService } from "@/lib/email";
-
-import { EmailProviderFactory } from '@/lib/email/providers';
-
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,16 +14,11 @@ export async function POST(request: NextRequest) {
       request.headers.get("x-real-ip") ||
       "unknown";
 
-    // Run threat detection on raw input (detect XSS, SQLi, etc.)
-    // isInputSafe removed; skipping threat detection
-
-    // Security alert email and threat detection removed
-
     // Sanitize inputs
     const sanitizedData = {
-      name,
-      email,
-      message,
+      name: Sanitizer.sanitizePlainText(name),
+      email: Sanitizer.sanitizePlainText(email),
+      message: Sanitizer.sanitizePlainText(message),
     };
 
     // Validate with Zod schema
@@ -47,25 +39,15 @@ export async function POST(request: NextRequest) {
     const referer = request.headers.get("referer") || "Direct";
 
     // Send contact email using service
-      const emailService = createContactEmailService();
-      // Always escape the original message before passing to the email template
-      function escapeHTML(str: string): string {
-        return String(str)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/\"/g, "&quot;")
-          .replace(/'/g, "&#39;");
-      }
-      const emailResult = await emailService.sendEmail({
-        name: sanitizedName,
-        email: sanitizedEmail,
-        message: sanitizedMessage,
-        ip,
-        userAgent,
-        referer,
-        rawMessage: escapeHTML(message),
-      });
+    const emailService = createContactEmailService();
+    const emailResult = await emailService.sendEmail({
+      name: sanitizedName,
+      email: sanitizedEmail,
+      message: sanitizedMessage,
+      ip,
+      userAgent,
+      referer,
+    });
 
     if (!emailResult.success) {
       console.error("[API] Email sending failed:", emailResult.error);

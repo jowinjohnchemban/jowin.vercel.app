@@ -16,7 +16,6 @@ export interface ContactFormData {
   readonly ip: string;
   readonly userAgent: string;
   readonly referer: URLString;
-  readonly rawMessage?: string; // optional, for original (escaped) message
 }
 
 /**
@@ -46,7 +45,6 @@ export interface ContactFormEmailData {
   readonly senderEmail: string;
   readonly message: string;
   readonly metadata: ContactFormMetadata;
-  readonly rawMessage?: string; // original, unescaped user input
 }
 
 /**

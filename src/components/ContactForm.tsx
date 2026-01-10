@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AlertCircle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validation";
-
+import { Sanitizer } from "@/lib/security";
 
 interface ContactFormProps {
   readonly title?: string;
@@ -30,18 +30,21 @@ export function ContactForm({
   const [errorMessage, setErrorMessage] = useState("");
 
   const sanitizeInput = (input: string): string => {
-    // Sanitizer removed; passthrough or escape as needed
-    return input;
+    // Use the Sanitizer class for consistency
+    return Sanitizer.sanitizeHTML(input);
   };
 
   const validateForm = (): string | null => {
     try {
-      // Validate with Zod schema, but count all characters (including HTML tags)
-      contactFormSchema.parse({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-      });
+      // Sanitize inputs first
+      const sanitizedData = {
+        name: sanitizeInput(formData.name),
+        email: sanitizeInput(formData.email),
+        message: sanitizeInput(formData.message),
+      };
+
+      // Validate with Zod schema
+      contactFormSchema.parse(sanitizedData);
       return null;
     } catch (error) {
       if (error instanceof z.ZodError) {
