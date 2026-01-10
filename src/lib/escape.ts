@@ -1,3 +1,6 @@
+
+import he from 'he';
+
 /**
  * Encodes a string to base64 (browser safe)
  */
@@ -20,13 +23,11 @@ export function decodeBase64(input: string): string {
   }
 }
 
-import he from "he";
-
 /**
  * Decodes HTML entities in a string using the 'he' library. Use for any context (HTML, email, etc).
  */
 export function unescape(input: string): string {
-  return he.decode(input);
+  return he.unescape(input);
 }
 
 /**
