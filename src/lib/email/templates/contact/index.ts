@@ -10,7 +10,15 @@ import type { ContactFormEmailData } from "../../types";
 
 export function generateContactFormEmail(data: ContactFormEmailData): string {
   const { senderName, senderEmail, message, metadata } = data;
-  
+
+
+  // Escape all HTML entities for email content using centralized util
+  import { escapeHtml } from "@/lib/escape";
+
+  const safeSenderName = escapeHtml(senderName);
+  const safeSenderEmail = escapeHtml(senderEmail);
+  const safeMessage = escapeHtml(message);
+
   // Generate Google Maps link if coordinates are available
   const mapsLink = metadata.loc 
     ? `https://www.google.com/maps?q=${metadata.loc}`
@@ -27,7 +35,7 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
           <!-- Header -->
           <tr>
             <td style="padding: 30px 30px 20px 30px; background-color: #000000; color: #ffffff;">
-              <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Message from ${senderName}</strong>
+              <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Message from ${safeSenderName}</strong>
               <span style="font-size: 13px; color: #999999;">${metadata.submittedAtIST}</span>
             </td>
           </tr>
@@ -39,19 +47,19 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
                 <tr>
                   <td style="padding-bottom: 12px;">
                     <span style="color: #6b7280; font-size: 13px;">From:</span>
-                    <strong style="color: #111827; margin-left: 8px; font-size: 15px;">${senderName}</strong>
+                    <strong style="color: #111827; margin-left: 8px; font-size: 15px;">${safeSenderName}</strong>
                   </td>
                 </tr>
                 <tr>
                   <td style="padding-bottom: 12px;">
                     <span style="color: #6b7280; font-size: 13px;">Email:</span>
-                    <a href="mailto:${senderEmail}" style="color: #2563eb; text-decoration: none; margin-left: 8px;">${senderEmail}</a>
+                    <a href="mailto:${safeSenderEmail}" style="color: #2563eb; text-decoration: none; margin-left: 8px;">${safeSenderEmail}</a>
                   </td>
                 </tr>
                 <tr>
                   <td style="padding-top: 5px;">
                     <span style="color: #6b7280; font-size: 13px;">Message</span>
-                    <div style="margin-top: 15px; padding-left: 20px; white-space: pre-wrap; color: #111827; line-height: 1.6; font-size: 14px;">${message}</div>
+                    <div style="margin-top: 15px; padding-left: 20px; white-space: pre-wrap; color: #111827; line-height: 1.6; font-size: 14px;">${safeMessage}</div>
                   </td>
                 </tr>
               </table>

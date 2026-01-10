@@ -4,9 +4,11 @@
  * @module lib/email/services/contact
  */
 
+
 import { EmailProvider, EmailProviderFactory } from "../providers";
 import { IPGeolocationService, IPInfoProvider } from "@/lib/services/ipGeolocation";
 import { generateContactFormEmail } from "../templates/contact";
+import { escapeHtml } from "@/lib/escape";
 import type { ContactFormData, ContactFormMetadata, EmailResult } from "../types";
 
 /**
@@ -86,11 +88,16 @@ export class ContactEmailService {
       // Build metadata with IP geolocation
       const metadata = await this.buildMetadata(data);
 
+      // Escape all fields for email safety
+      const safeName = escapeHtml(data.name);
+      const safeEmail = escapeHtml(data.email);
+      const safeMessage = escapeHtml(data.message);
+
       // Generate email HTML
       const html = generateContactFormEmail({
-        senderName: data.name,
-        senderEmail: data.email,
-        message: data.message,
+        senderName: safeName,
+        senderEmail: safeEmail,
+        message: safeMessage,
         metadata,
       });
 
@@ -98,8 +105,8 @@ export class ContactEmailService {
       const result = await this.emailProvider.send({
         from: this.fromEmail,
         to: this.recipientEmail,
-        replyTo: data.email,
-        subject: `Message from ${data.name} - ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} via jowinjc.in`,
+        replyTo: safeEmail,
+        subject: `Message from ${safeName} - ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} via jowinjc.in`,
         html,
       });
 

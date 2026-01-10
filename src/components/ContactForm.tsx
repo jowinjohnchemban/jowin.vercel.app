@@ -29,8 +29,14 @@ export function ContactForm({
   const [errorMessage, setErrorMessage] = useState("");
 
   const sanitizeInput = (input: string): string => {
-    // Use the Sanitizer class for consistency
-    return input.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+    // Escape all relevant HTML entities
+    return input
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;")
+      .trim();
   };
 
   const validateForm = (): string | null => {

@@ -14,16 +14,16 @@ export const contactFormSchema = z.object({
   name: z
     .string()
     .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must be less than 100 characters")
-    .regex(
-      /^[a-zA-Z\s\-']+$/,
-      "Name can only contain letters, spaces, hyphens, and apostrophes"
-    ),
-  email: z.string().email("Please enter a valid email address"),
+    .max(100, "Name must be less than 100 characters"), // allow any Unicode
+  email: z
+    .string()
+    .email("Please enter a valid email address")
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Email must use only English letters and numbers"),
   message: z
     .string()
     .min(10, "Message must be at least 10 characters")
-    .max(2000, "Message must be less than 2000 characters"),
+    .max(2000, "Message must be less than 2000 characters"), // allow any Unicode, safe for all scripts
 });
 
 /**
