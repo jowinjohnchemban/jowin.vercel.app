@@ -30,7 +30,7 @@ export function ContactForm({
 
   const sanitizeInput = (input: string): string => {
     // Use the Sanitizer class for consistency
-    return Sanitizer.sanitizeHTML(input);
+    return input.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
   };
 
   const validateForm = (): string | null => {
