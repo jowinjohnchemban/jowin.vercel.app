@@ -12,8 +12,6 @@ export function generateContactFormEmail(data: ContactFormEmailData): string {
   const { senderName, senderEmail, message, metadata } = data;
 
 
-  // Escape all HTML entities for email content using centralized util
-  import { escapeHtml } from "@/lib/escape";
 
   const safeSenderName = escapeHtml(senderName);
   const safeSenderEmail = escapeHtml(senderEmail);
